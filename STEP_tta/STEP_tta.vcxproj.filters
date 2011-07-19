@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{e5e2a355-9af0-4cc1-a62d-f265fff79aea}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a4dde7e5-6f9d-4c38-bf55-9e5fca615a28}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{2c5f0ba1-eba2-470f-9b56-b8d5df0cc8bf}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="ID3v2">
+      <UniqueIdentifier>{018a05c2-7963-4220-a350-17f2d2b5e017}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DlgSetup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTTA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="STEP_tta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STEP_SDK\STEPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ID3v2\GlobalCommand.cpp">
+      <Filter>ID3v2</Filter>
+    </ClCompile>
+    <ClCompile Include="ID3v2\Id3tagv1.cpp">
+      <Filter>ID3v2</Filter>
+    </ClCompile>
+    <ClCompile Include="ID3v2\Id3tagv2.cpp">
+      <Filter>ID3v2</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="STEP_tta.def">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="bitmap_tta.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\STEP_tta.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="STEP_tta.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DlgSetup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="id3tag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="STEP_tta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ID3v2\classID.h">
+      <Filter>ID3v2</Filter>
+    </ClInclude>
+    <ClInclude Include="ID3v2\GlobalCommand.h">
+      <Filter>ID3v2</Filter>
+    </ClInclude>
+    <ClInclude Include="ID3v2\Id3tagv1.h">
+      <Filter>ID3v2</Filter>
+    </ClInclude>
+    <ClInclude Include="ID3v2\Id3tagv2.h">
+      <Filter>ID3v2</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

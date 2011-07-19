@@ -1,0 +1,7 @@
+; STEP_fla.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_fla"
+DESCRIPTION  'STEP_fla Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

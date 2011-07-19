@@ -1,0 +1,7 @@
+; STEP_mp3.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_mp3"
+DESCRIPTION  'STEP_mp3 Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

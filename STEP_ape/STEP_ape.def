@@ -1,0 +1,7 @@
+; STEP_ape.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_ape"
+DESCRIPTION  'STEP_ape Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

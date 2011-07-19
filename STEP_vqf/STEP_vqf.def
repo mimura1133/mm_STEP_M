@@ -1,0 +1,7 @@
+; STEP_vqf.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_vqf"
+DESCRIPTION  'STEP_vqf Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

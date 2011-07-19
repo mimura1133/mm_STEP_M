@@ -1,0 +1,7 @@
+; STEP_riff.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_riff"
+DESCRIPTION  'STEP_riff Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

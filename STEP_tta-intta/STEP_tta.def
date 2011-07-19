@@ -1,0 +1,7 @@
+; STEP_tta.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_tta"
+DESCRIPTION  'STEP_tta Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

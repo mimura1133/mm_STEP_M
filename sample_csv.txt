@@ -1,0 +1,4 @@
+"ファイル名","アーティスト","アルバム","タイトル",トラック番号,"演奏時間","ファイル更新日","フルパス","SHORT"
+[LOOP_START]
+"%FILE_NAME%","%ARTIST_NAME%","%ALBUM_NAME%","%TRACK_NAME%",%TRACK_NUMBER%,"%TOTAL_SEC%","%FILE_TIME%","%FULL_PATH%","%PLAY_PATH_SHORT%"
+[LOOP_END]

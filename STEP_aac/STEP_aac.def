@@ -1,0 +1,7 @@
+; STEP_aac.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_aac"
+DESCRIPTION  'STEP_aac Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

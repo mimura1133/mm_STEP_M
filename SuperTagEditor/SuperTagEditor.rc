@@ -1,0 +1,2711 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "VisualStyle.manifest"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\SuperTagEditor.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SuperTagEditor.ico"
+IDR_SUPERTTYPE          ICON                    "res\\SuperTagEditorDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_BITMAP_TREE         BITMAP                  "res\\tree.bmp"
+IDB_BITMAP_CHECK        BITMAP                  "res\\check.bmp"
+IDR_TOOLBAR_DYNAMIC     BITMAP                  "res\\toolbar_.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_OPEN_FOLDER
+    BUTTON      ID_SAVE_ALL_TAG
+    BUTTON      ID_SELECT_EDIT_DESTORY
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_CELL_COPY_DOWN
+    SEPARATOR
+    BUTTON      ID_EDIT_TD3_TAG
+    BUTTON      ID_EDIT_FIELD_SI
+    SEPARATOR
+    BUTTON      ID_WINAMP_PLAY_PREV
+    BUTTON      ID_WINAMP_PLAY
+    BUTTON      ID_WINAMP_STOP
+    BUTTON      ID_WINAMP_PLAY_NEXT
+    SEPARATOR
+    BUTTON      ID_DLG_ENVIRONMENT
+    BUTTON      ID_APP_ABOUT
+    SEPARATOR
+    BUTTON      ID_CONV_FORMAT_USER
+    BUTTON      ID_SET_NUMBER
+    BUTTON      ID_SET_NUMBER_ADD
+    BUTTON      ID_SELECT_TREE_COLUM
+    BUTTON      ID_TEIKEI_TOOL
+    BUTTON      ID_CHECK_FILENAME_MAX
+    BUTTON      ID_SELECT_DELETE_LIST
+    BUTTON      ID_DELETE_CHAR
+    BUTTON      ID_UNIFY_CHAR
+    BUTTON      ID_END_EDIT_RIGHT
+    BUTTON      ID_FAVORITES_FOLDER
+    BUTTON      ID_CALC_FOLDER_TOTAL
+    BUTTON      ID_EDIT_PASTE_ADD
+    BUTTON      ID_DELETE_CHAR_SPACE
+    BUTTON      ID_SELECT_TREE_FILE
+    BUTTON      ID_MOVE_TO_PARENT
+    BUTTON      ID_DLG_SETUP_PLUGIN
+END
+
+IDR_TOOLBAR_DYNAMIC TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_BUTTON32892
+    BUTTON      ID_BUTTON32892
+    BUTTON      ID_BUTTON32892
+    BUTTON      ID_BUTTON32924
+    BUTTON      ID_BUTTON32925
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "ファイル(&F)"
+    BEGIN
+        MENUITEM "リストをクリア(&N)",                 ID_FILE_NEW
+        MENUITEM "フォルダを開く(&F)",                 ID_OPEN_FOLDER
+        MENUITEM "タグ情報を更新(&S)",                 ID_SAVE_ALL_TAG
+        MENUITEM SEPARATOR
+        POPUP "リスト出力(&L)"
+        BEGIN
+            MENUITEM "01: リスト",                     ID_WRITE_LIST1
+            MENUITEM "02: リスト",                     ID_WRITE_LIST2
+            MENUITEM "03: リスト",                     ID_WRITE_LIST3
+            MENUITEM "04: リスト",                     ID_WRITE_LIST4
+            MENUITEM "05: リスト",                     ID_WRITE_LIST5
+        END
+        MENUITEM SEPARATOR
+        POPUP "ファイルを移動(&M)"
+        BEGIN
+            MENUITEM "書式1",                         ID_MOVE_FOLDER_01
+            MENUITEM "書式2",                         ID_MOVE_FOLDER_02
+            MENUITEM "書式3",                         ID_MOVE_FOLDER_03
+            MENUITEM "書式4",                         ID_MOVE_FOLDER_04
+            MENUITEM "書式5",                         ID_MOVE_FOLDER_05
+        END
+        MENUITEM SEPARATOR
+        POPUP "最近使ったフォルダ(&R)"
+        BEGIN
+            MENUITEM "最近使ったフォルダ",                  ID_FILE_MRU_FILE1, GRAYED
+        END
+        POPUP "お気に入りのフォルダ(&A)"
+        BEGIN
+            MENUITEM "お気に入り1",                      ID_FAVORITE_FOLDER_01
+            MENUITEM "お気に入り2",                      ID_FAVORITE_FOLDER_02
+            MENUITEM "お気に入り3",                      ID_FAVORITE_FOLDER_03
+            MENUITEM "お気に入り4",                      ID_FAVORITE_FOLDER_04
+            MENUITEM "お気に入り5",                      ID_FAVORITE_FOLDER_05
+            MENUITEM "お気に入り6",                      ID_FAVORITE_FOLDER_06
+            MENUITEM "お気に入り7",                      ID_FAVORITE_FOLDER_07
+            MENUITEM "お気に入り8",                      ID_FAVORITE_FOLDER_08
+            MENUITEM "お気に入り9",                      ID_FAVORITE_FOLDER_09
+            MENUITEM "お気に入り10",                     ID_FAVORITE_FOLDER_10
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "終了(&X)",                      ID_APP_EXIT
+    END
+    POPUP "編集(&E)"
+    BEGIN
+        MENUITEM "切り取り(&T)",                    ID_EDIT_CUT
+        MENUITEM "コピー(&C)",                     ID_EDIT_COPY
+        MENUITEM "貼り付け(&P)",                    ID_EDIT_PASTE
+        MENUITEM "追加で貼り付け(&B)",                 ID_EDIT_PASTE_ADD
+        POPUP "定型文貼り付け"
+        BEGIN
+            POPUP "グループ1"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_01
+                MENUITEM "定型2",                         ID_TEIKEI_02
+                MENUITEM "定型3",                         ID_TEIKEI_03
+                MENUITEM "定型4",                         ID_TEIKEI_04
+                MENUITEM "定型5",                         ID_TEIKEI_05
+                MENUITEM "定型6",                         ID_TEIKEI_06
+                MENUITEM "定型7",                         ID_TEIKEI_07
+                MENUITEM "定型8",                         ID_TEIKEI_08
+                MENUITEM "定型9",                         ID_TEIKEI_09
+                MENUITEM "定型10",                        ID_TEIKEI_10
+            END
+            POPUP "グループ2"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_2_01
+                MENUITEM "定型2",                         ID_TEIKEI_2_02
+                MENUITEM "定型3",                         ID_TEIKEI_2_03
+                MENUITEM "定型4",                         ID_TEIKEI_2_04
+                MENUITEM "定型5",                         ID_TEIKEI_2_05
+                MENUITEM "定型6",                         ID_TEIKEI_2_06
+                MENUITEM "定型7",                         ID_TEIKEI_2_07
+                MENUITEM "定型8",                         ID_TEIKEI_2_08
+                MENUITEM "定型9",                         ID_TEIKEI_2_09
+                MENUITEM "定型10",                        ID_TEIKEI_2_10
+            END
+            POPUP "グループ3"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_3_01
+                MENUITEM "定型2",                         ID_TEIKEI_3_02
+                MENUITEM "定型3",                         ID_TEIKEI_3_03
+                MENUITEM "定型4",                         ID_TEIKEI_3_04
+                MENUITEM "定型5",                         ID_TEIKEI_3_05
+                MENUITEM "定型6",                         ID_TEIKEI_3_06
+                MENUITEM "定型7",                         ID_TEIKEI_3_07
+                MENUITEM "定型8",                         ID_TEIKEI_3_08
+                MENUITEM "定型9",                         ID_TEIKEI_3_09
+                MENUITEM "定型10",                        ID_TEIKEI_3_10
+            END
+        END
+        POPUP "書式コピー"
+        BEGIN
+            MENUITEM "書式1",                         ID_EDIT_COPY_FORMAT_01
+            MENUITEM "書式2",                         ID_EDIT_COPY_FORMAT_02
+            MENUITEM "書式3",                         ID_EDIT_COPY_FORMAT_03
+            MENUITEM "書式4",                         ID_EDIT_COPY_FORMAT_04
+            MENUITEM "書式5",                         ID_EDIT_COPY_FORMAT_05
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "下方向へコピー(&D)",                 ID_CELL_COPY_DOWN
+        MENUITEM "下方向へ連番(&N)",                  ID_SET_NUMBER
+        MENUITEM "下方向へ連番を追加",                   ID_SET_NUMBER_ADD
+        MENUITEM SEPARATOR
+        MENUITEM "検索...(&F)",                   ID_EDIT_FIND
+        MENUITEM "置換...(&R)",                   ID_EDIT_REPLACE
+        MENUITEM SEPARATOR
+        MENUITEM "リストから削除",                     ID_SELECT_DELETE_LIST
+        MENUITEM "ファイルを削除",                     ID_SELECT_DELETE_FILE
+        MENUITEM "編集前の状態に戻す",                   ID_SELECT_EDIT_DESTORY
+        MENUITEM SEPARATOR
+        MENUITEM "フォルダ構成の同期",                   ID_FOLDER_TREE_SYNC
+        MENUITEM "フォルダ構成の同期(チェックのみ)",           ID_CHECK_FILE_SYNC
+        MENUITEM SEPARATOR
+        MENUITEM "先頭/末尾の空白文字を削除",               ID_DELETE_CHAR_SPACE
+        MENUITEM "先頭/末尾のｎ文字を削除",                ID_DELETE_CHAR
+    END
+    POPUP "表示(&V)"
+    BEGIN
+        MENUITEM "ツールバー(&T)",                   ID_VIEW_TOOLBAR
+        MENUITEM "ステータスバー(&S)",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "全てのカラム幅を調整(&W)",              ID_ADJUST_COLUMN_WIDTH
+        MENUITEM SEPARATOR
+        MENUITEM "並べ替え...(&R)",                 ID_SORT_LIST
+        MENUITEM "並べ替えを再実行(&D)",                ID_SORT_LIST_DIRECT
+        MENUITEM "分類表示を更新(&C)",                 ID_EXEC_CLASSIFICATION
+        MENUITEM SEPARATOR
+        MENUITEM "ID3 tagを表示／編集(&I)",           ID_EDIT_TD3_TAG
+        MENUITEM "SI/ID3v2フィールドを表示／編集(&F)",     ID_EDIT_FIELD_SI
+        MENUITEM "[ID3 tag]<=>[SI/ID3v2フィールド]切替(&X)", ID_EDIT_CHANGE_FIELD
+        MENUITEM SEPARATOR
+        MENUITEM "項目変更後にカーソルを右に移動",             ID_END_EDIT_RIGHT, CHECKED
+    END
+    POPUP "変換(&C)"
+    BEGIN
+        POPUP "デフォルト変換(&D)"
+        BEGIN
+            MENUITEM "ファイル名 => トラック名(&F)",          ID_CONV_FILENAME_TO_TRACKNAME
+            MENUITEM "トラック名 => ファイル名(&T)",          ID_CONV_TRACKNAME_TO_FILENAME
+        END
+        POPUP "ユーザー指定変換(&U)"
+        BEGIN
+            MENUITEM "タグ情報 => ファイル名(&T)",           ID_CONV_TAG2FILE_USER
+            MENUITEM "ファイル名 => タグ情報(&F)",           ID_CONV_FILE2TAG_USER
+            POPUP "書式を切替(&C)"
+            BEGIN
+                MENUITEM "書式１",                         ID_CONV_FORMAT_USER_01
+                MENUITEM "書式2",                         ID_CONV_FORMAT_USER_02
+                MENUITEM "書式3",                         ID_CONV_FORMAT_USER_03
+                MENUITEM "書式4",                         ID_CONV_FORMAT_USER_04
+                MENUITEM "書式5",                         ID_CONV_FORMAT_USER_05
+            END
+            MENUITEM "書式設定...(&O)",                 ID_CONV_USER_SETUP
+        END
+        POPUP "拡張書式変換(&E)"
+        BEGIN
+            MENUITEM "書式１",                         ID_CONV_FORMAT_EX_01
+            MENUITEM "書式2",                         ID_CONV_FORMAT_EX_02
+            MENUITEM "書式3",                         ID_CONV_FORMAT_EX_03
+            MENUITEM "書式4",                         ID_CONV_FORMAT_EX_04
+            MENUITEM "書式5",                         ID_CONV_FORMAT_EX_05
+            MENUITEM "書式6",                         ID_CONV_FORMAT_EX_06
+            MENUITEM "書式7",                         ID_CONV_FORMAT_EX_07
+            MENUITEM "書式8",                         ID_CONV_FORMAT_EX_08
+            MENUITEM "書式9",                         ID_CONV_FORMAT_EX_09
+            MENUITEM "書式10",                        ID_CONV_FORMAT_EX_10
+            MENUITEM "書式設定...(&O)",                 ID_CONV_EX_SETUP
+        END
+        POPUP "タグ情報変換(&T)"
+        BEGIN
+            MENUITEM "書式1",                         ID_CONV_TAG_TO_TAG_01
+            MENUITEM "書式2",                         ID_CONV_TAG_TO_TAG_02
+            MENUITEM "書式3",                         ID_CONV_TAG_TO_TAG_03
+            MENUITEM "書式4",                         ID_CONV_TAG_TO_TAG_04
+            MENUITEM "書式5",                         ID_CONV_TAG_TO_TAG_05
+            MENUITEM "書式設定...(&O)",                 ID_CONV_TAG2TAG_SETUP
+        END
+        MENUITEM SEPARATOR
+        POPUP "半角 => 全角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_ZEN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_ZEN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_ZEN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_ZEN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_ZEN_ALPHA
+        END
+        POPUP "全角 => 半角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_HAN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_HAN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_HAN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_HAN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_HAN_ALPHA
+        END
+        MENUITEM "小文字 => 大文字",                  ID_CONV_STR_TO_UPPER
+        MENUITEM "大文字 => 小文字",                  ID_CONV_STR_TO_LOWER
+        MENUITEM "単語の１文字目のみ大文字",                ID_CONV_STR_FIRST_UPPER
+        MENUITEM "大文字小文字固定",                    ID_CONV_STR_FIXED_UPPER_LOWER
+        MENUITEM "ひらがな => カタカナ",                ID_CONV_STR_HIRA2KATA
+        MENUITEM "カタカナ => ひらがな",                ID_CONV_STR_KATA2HIRA
+        MENUITEM "文字種の統一...(&C)",               ID_UNIFY_CHAR
+        MENUITEM SEPARATOR
+        MENUITEM "SI/ID3v2フィールドからID3tagに変換",    ID_CONV_SI_FIELD_TO_ID3TAG
+    END
+    POPUP "プレイリスト(&P)"
+    BEGIN
+        MENUITEM "プレイリストの読み込み(&L)",             ID_LOAD_PLAYLIST
+        MENUITEM "プレイリストを出力(&P)",               ID_WRITE_PLAYLIST
+        MENUITEM "ツリー分類のプレイリスト出力(&E)",          ID_WRITE_TREE_PLAYLIST
+        MENUITEM SEPARATOR
+        MENUITEM "全てのファイルをチェックする(&A)",          ID_ALL_FILES_CHECK
+        MENUITEM "全てのファイルのチェックを外す(&D)",         ID_ALL_FILES_UNCHECK
+        MENUITEM "チェック状態を反転する(&X)",             ID_REVERSE_CHECK
+        MENUITEM SEPARATOR
+        MENUITEM "チェックされているファイルを選択する(&C)",      ID_CHECK_FILES_SELECT
+        MENUITEM "選択ファイルをチェックする(&S)",           ID_SELECT_FILES_CHECK
+        MENUITEM "選択ファイルのチェックを外す(&U)",          ID_SELECT_FILES_UNCHECK
+        MENUITEM SEPARATOR
+        MENUITEM "条件を指定してチェック...(&I)",          ID_CHECK_WORD
+        MENUITEM "ファイル名の長さをチェック",               ID_CHECK_FILENAME_MAX
+        MENUITEM SEPARATOR
+        MENUITEM "ツリー配下のセル括選択(&A)",             ID_SELECT_TREE_COLUM
+        MENUITEM "ツリー配下のファイルを一括選択(&F)",         ID_SELECT_TREE_FILE
+        MENUITEM SEPARATOR
+        MENUITEM "カーソル位置を親ツリーへ移動(&M)",          ID_MOVE_TO_PARENT
+        MENUITEM "カーソル位置を一つ上のツリーへ移動",           ID_MOVE_TO_PREVIOUS
+        MENUITEM "カーソル位置を一つ下のツリーへ移動",           ID_MOVE_TO_NEXT
+    END
+    POPUP "プレイヤー制御(&P)"
+    BEGIN
+        MENUITEM "前の曲へ(&P)",                    ID_WINAMP_PLAY_PREV
+        MENUITEM "再生(&P)",                      ID_WINAMP_PLAY
+        MENUITEM "停止(&S)",                      ID_WINAMP_STOP
+        MENUITEM "次の曲へ(&N)",                    ID_WINAMP_PLAY_NEXT
+        MENUITEM "プレイヤー終了(&X)",                 ID_WINAMP_EXIT
+    END
+    POPUP "オプション(&O)"
+    BEGIN
+        MENUITEM "フォント設定...(&F)",               ID_SET_LIST_FONT
+        MENUITEM SEPARATOR
+        MENUITEM "オプション設定...(&O)",              ID_DLG_ENVIRONMENT
+        MENUITEM SEPARATOR
+        MENUITEM "定型文...(&T)",                  ID_DLG_TEIKEI
+        MENUITEM "お気に入りのフォルダ...",               ID_DLG_FAVORITES
+        MENUITEM SEPARATOR
+        MENUITEM "ツールバーのカスタマイズ...",             ID_POPUP_CUSTOMIZE
+        MENUITEM SEPARATOR
+        MENUITEM "プラグイン...(&P)",                ID_DLG_SETUP_PLUGIN
+    END
+    POPUP "ヘルプ(&H)"
+    BEGIN
+        MENUITEM "目次(&C)",                      ID_HELP_INDEX
+        MENUITEM "バージョン情報(&A)...",              ID_APP_ABOUT
+    END
+END
+
+IDR_MENU_CELL_RANGE MENU 
+BEGIN
+    POPUP "ポップアップ"
+    BEGIN
+        POPUP "拡張書式変換"
+        BEGIN
+            MENUITEM "書式１",                         ID_CONV_FORMAT_EX_01
+            MENUITEM "書式2",                         ID_CONV_FORMAT_EX_02
+            MENUITEM "書式3",                         ID_CONV_FORMAT_EX_03
+            MENUITEM "書式4",                         ID_CONV_FORMAT_EX_04
+            MENUITEM "書式5",                         ID_CONV_FORMAT_EX_05
+            MENUITEM "書式6",                         ID_CONV_FORMAT_EX_06
+            MENUITEM "書式7",                         ID_CONV_FORMAT_EX_07
+            MENUITEM "書式8",                         ID_CONV_FORMAT_EX_08
+            MENUITEM "書式9",                         ID_CONV_FORMAT_EX_09
+            MENUITEM "書式10",                        ID_CONV_FORMAT_EX_10
+        END
+        POPUP "タグ情報変換(&T)"
+        BEGIN
+            MENUITEM "書式1",                         ID_CONV_TAG_TO_TAG_01
+            MENUITEM "書式2",                         ID_CONV_TAG_TO_TAG_02
+            MENUITEM "書式3",                         ID_CONV_TAG_TO_TAG_03
+            MENUITEM "書式4",                         ID_CONV_TAG_TO_TAG_04
+            MENUITEM "書式5",                         ID_CONV_TAG_TO_TAG_05
+            MENUITEM "書式設定...(&O)",                 ID_CONV_TAG2TAG_SETUP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "切り取り",                        ID_EDIT_CUT
+        MENUITEM "コピー",                         ID_EDIT_COPY
+        MENUITEM "貼り付け",                        ID_EDIT_PASTE
+        MENUITEM "追加で貼り付け(&B)",                 ID_EDIT_PASTE_ADD
+        POPUP "定型文貼り付け"
+        BEGIN
+            POPUP "グループ1"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_01
+                MENUITEM "定型2",                         ID_TEIKEI_02
+                MENUITEM "定型3",                         ID_TEIKEI_03
+                MENUITEM "定型4",                         ID_TEIKEI_04
+                MENUITEM "定型5",                         ID_TEIKEI_05
+                MENUITEM "定型6",                         ID_TEIKEI_06
+                MENUITEM "定型7",                         ID_TEIKEI_07
+                MENUITEM "定型8",                         ID_TEIKEI_08
+                MENUITEM "定型9",                         ID_TEIKEI_09
+                MENUITEM "定型10",                        ID_TEIKEI_10
+            END
+            POPUP "グループ2"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_2_01
+                MENUITEM "定型2",                         ID_TEIKEI_2_02
+                MENUITEM "定型3",                         ID_TEIKEI_2_03
+                MENUITEM "定型4",                         ID_TEIKEI_2_04
+                MENUITEM "定型5",                         ID_TEIKEI_2_05
+                MENUITEM "定型6",                         ID_TEIKEI_2_06
+                MENUITEM "定型7",                         ID_TEIKEI_2_07
+                MENUITEM "定型8",                         ID_TEIKEI_2_08
+                MENUITEM "定型9",                         ID_TEIKEI_2_09
+                MENUITEM "定型10",                        ID_TEIKEI_2_10
+            END
+            POPUP "グループ3"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_3_01
+                MENUITEM "定型2",                         ID_TEIKEI_3_02
+                MENUITEM "定型3",                         ID_TEIKEI_3_03
+                MENUITEM "定型4",                         ID_TEIKEI_3_04
+                MENUITEM "定型5",                         ID_TEIKEI_3_05
+                MENUITEM "定型6",                         ID_TEIKEI_3_06
+                MENUITEM "定型7",                         ID_TEIKEI_3_07
+                MENUITEM "定型8",                         ID_TEIKEI_3_08
+                MENUITEM "定型9",                         ID_TEIKEI_3_09
+                MENUITEM "定型10",                        ID_TEIKEI_3_10
+            END
+        END
+        MENUITEM SEPARATOR
+        POPUP "半角 => 全角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_ZEN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_ZEN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_ZEN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_ZEN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_ZEN_ALPHA
+        END
+        POPUP "全角 => 半角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_HAN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_HAN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_HAN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_HAN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_HAN_ALPHA
+        END
+        MENUITEM "小文字 => 大文字",                  ID_CONV_STR_TO_UPPER
+        MENUITEM "大文字 => 小文字",                  ID_CONV_STR_TO_LOWER
+        MENUITEM "単語の１文字目のみ大文字",                ID_CONV_STR_FIRST_UPPER
+        MENUITEM "大文字小文字固定",                    ID_CONV_STR_FIXED_UPPER_LOWER
+        MENUITEM "ひらがな => カタカナ",                ID_CONV_STR_HIRA2KATA
+        MENUITEM "カタカナ => ひらがな",                ID_CONV_STR_KATA2HIRA
+        MENUITEM "文字種の統一...(&C)",               ID_UNIFY_CHAR
+        MENUITEM SEPARATOR
+        MENUITEM "下方向へコピー",                     ID_CELL_COPY_DOWN
+        MENUITEM "下方向へ連番",                      ID_SET_NUMBER
+        MENUITEM "下方向へ連番を追加",                   ID_SET_NUMBER_ADD
+        MENUITEM SEPARATOR
+        MENUITEM "先頭/末尾のｎ文字を削除",                ID_DELETE_CHAR
+    END
+END
+
+IDR_MENU_FILE_RANGE MENU 
+BEGIN
+    POPUP "ポップアップ"
+    BEGIN
+        POPUP "デフォルト変換(&D)"
+        BEGIN
+            MENUITEM "ファイル名 => トラック名(&F)",          ID_CONV_FILENAME_TO_TRACKNAME
+            MENUITEM "トラック名 => ファイル名(&T)",          ID_CONV_TRACKNAME_TO_FILENAME
+        END
+        POPUP "ユーザー指定変換(&U)"
+        BEGIN
+            MENUITEM "タグ情報 => ファイル名(&T)",           ID_CONV_TAG2FILE_USER
+            MENUITEM "ファイル名 => タグ情報(&F)",           ID_CONV_FILE2TAG_USER
+            POPUP "書式を切替(&C)"
+            BEGIN
+                MENUITEM "書式１",                         ID_CONV_FORMAT_USER_01
+                MENUITEM "書式2",                         ID_CONV_FORMAT_USER_02
+                MENUITEM "書式3",                         ID_CONV_FORMAT_USER_03
+                MENUITEM "書式4",                         ID_CONV_FORMAT_USER_04
+                MENUITEM "書式5",                         ID_CONV_FORMAT_USER_05
+            END
+            MENUITEM "書式設定...(&O)",                 ID_CONV_USER_SETUP
+        END
+        MENUITEM SEPARATOR
+        POPUP "書式コピー"
+        BEGIN
+            MENUITEM "書式1",                         ID_EDIT_COPY_FORMAT_01
+            MENUITEM "書式2",                         ID_EDIT_COPY_FORMAT_02
+            MENUITEM "書式3",                         ID_EDIT_COPY_FORMAT_03
+            MENUITEM "書式4",                         ID_EDIT_COPY_FORMAT_04
+            MENUITEM "書式5",                         ID_EDIT_COPY_FORMAT_05
+        END
+        MENUITEM SEPARATOR
+        POPUP "チェック状態変更"
+        BEGIN
+            MENUITEM "全てのファイルをチェックする",              ID_ALL_FILES_CHECK
+            MENUITEM "全てのファイルのチェックを外す",             ID_ALL_FILES_UNCHECK
+            MENUITEM "チェック状態を反転する",                 ID_REVERSE_CHECK
+            MENUITEM "選択ファイルをチェックする",               ID_SELECT_FILES_CHECK
+            MENUITEM "選択ファイルのチェックを外す",              ID_SELECT_FILES_UNCHECK
+            MENUITEM "条件を指定してチェック",                 ID_CHECK_WORD
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "検索...(&F)",                   ID_EDIT_FIND
+        MENUITEM "置換...(&R)",                   ID_EDIT_REPLACE
+        MENUITEM SEPARATOR
+        MENUITEM "リストから削除",                     ID_SELECT_DELETE_LIST
+        MENUITEM "ファイルを削除",                     ID_SELECT_DELETE_FILE
+        MENUITEM "編集前の状態に戻す",                   ID_SELECT_EDIT_DESTORY
+        MENUITEM SEPARATOR
+        MENUITEM "SI/ID3v2フィールドからID3tagに変換",    ID_CONV_SI_FIELD_TO_ID3TAG
+        MENUITEM SEPARATOR
+        POPUP "ファイルを移動(&M)"
+        BEGIN
+            MENUITEM "書式1",                         ID_MOVE_FOLDER_01
+            MENUITEM "書式2",                         ID_MOVE_FOLDER_02
+            MENUITEM "書式3",                         ID_MOVE_FOLDER_03
+            MENUITEM "書式4",                         ID_MOVE_FOLDER_04
+            MENUITEM "書式5",                         ID_MOVE_FOLDER_05
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "プレイヤーで再生",                    ID_WINAMP_PLAY
+        MENUITEM "プレイリストを出力",                   ID_WRITE_PLAYLIST
+    END
+END
+
+IDR_MENU_SELECT_FOLDER MENU 
+BEGIN
+    POPUP "ポップアップ"
+    BEGIN
+        POPUP "デフォルト変換(&D)"
+        BEGIN
+            MENUITEM "ファイル名 => トラック名(&F)",          ID_CONV_FILENAME_TO_TRACKNAME
+            MENUITEM "トラック名 => ファイル名(&T)",          ID_CONV_TRACKNAME_TO_FILENAME
+        END
+        POPUP "ユーザー指定変換(&U)"
+        BEGIN
+            MENUITEM "タグ情報 => ファイル名(&T)",           ID_CONV_TAG2FILE_USER
+            MENUITEM "ファイル名 => タグ情報(&F)",           ID_CONV_FILE2TAG_USER
+            POPUP "書式を切替(&C)"
+            BEGIN
+                MENUITEM "書式１",                         ID_CONV_FORMAT_USER_01
+                MENUITEM "書式2",                         ID_CONV_FORMAT_USER_02
+                MENUITEM "書式3",                         ID_CONV_FORMAT_USER_03
+                MENUITEM "書式4",                         ID_CONV_FORMAT_USER_04
+                MENUITEM "書式5",                         ID_CONV_FORMAT_USER_05
+            END
+            MENUITEM "書式設定...(&O)",                 ID_CONV_USER_SETUP
+        END
+        MENUITEM SEPARATOR
+        POPUP "書式コピー"
+        BEGIN
+            MENUITEM "書式1",                         ID_EDIT_COPY_FORMAT_01
+            MENUITEM "書式2",                         ID_EDIT_COPY_FORMAT_02
+            MENUITEM "書式3",                         ID_EDIT_COPY_FORMAT_03
+            MENUITEM "書式4",                         ID_EDIT_COPY_FORMAT_04
+            MENUITEM "書式5",                         ID_EDIT_COPY_FORMAT_05
+        END
+        MENUITEM SEPARATOR
+        POPUP "チェック状態変更"
+        BEGIN
+            MENUITEM "全てのファイルをチェックする",              ID_ALL_FILES_CHECK
+            MENUITEM "全てのファイルのチェックを外す",             ID_ALL_FILES_UNCHECK
+            MENUITEM "チェック状態を反転する",                 ID_REVERSE_CHECK
+            MENUITEM "選択ファイルをチェックする",               ID_SELECT_FILES_CHECK
+            MENUITEM "選択ファイルのチェックを外す",              ID_SELECT_FILES_UNCHECK
+            MENUITEM "条件を指定してチェック",                 ID_CHECK_WORD
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "検索...(&F)",                   ID_EDIT_FIND
+        MENUITEM "置換...(&R)",                   ID_EDIT_REPLACE
+        MENUITEM SEPARATOR
+        MENUITEM "リストから削除",                     ID_SELECT_DELETE_LIST
+        MENUITEM "ファイルを削除",                     ID_SELECT_DELETE_FILE
+        MENUITEM "編集前の状態に戻す",                   ID_SELECT_EDIT_DESTORY
+        MENUITEM SEPARATOR
+        MENUITEM "SI/ID3v2フィールドからID3tagに変換",    ID_CONV_SI_FIELD_TO_ID3TAG
+        MENUITEM SEPARATOR
+        POPUP "ファイルを移動(&M)"
+        BEGIN
+            MENUITEM "書式1",                         ID_MOVE_FOLDER_01
+            MENUITEM "書式2",                         ID_MOVE_FOLDER_02
+            MENUITEM "書式3",                         ID_MOVE_FOLDER_03
+            MENUITEM "書式4",                         ID_MOVE_FOLDER_04
+            MENUITEM "書式5",                         ID_MOVE_FOLDER_05
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "プレイリストを出力",                   ID_WRITE_PLAYLIST
+        MENUITEM SEPARATOR
+        MENUITEM "合計を算出",                       ID_CALC_FOLDER_TOTAL
+    END
+END
+
+IDR_MENU_FILE_EDIT_OK MENU 
+BEGIN
+    POPUP "ポップアップ"
+    BEGIN
+        POPUP "デフォルト変換(&D)"
+        BEGIN
+            MENUITEM "ファイル名 => トラック名(&F)",          ID_CONV_FILENAME_TO_TRACKNAME
+            MENUITEM "トラック名 => ファイル名(&T)",          ID_CONV_TRACKNAME_TO_FILENAME
+        END
+        POPUP "ユーザー指定変換(&U)"
+        BEGIN
+            MENUITEM "タグ情報 => ファイル名(&T)",           ID_CONV_TAG2FILE_USER
+            MENUITEM "ファイル名 => タグ情報(&F)",           ID_CONV_FILE2TAG_USER
+            POPUP "書式を切替(&C)"
+            BEGIN
+                MENUITEM "書式１",                         ID_CONV_FORMAT_USER_01
+                MENUITEM "書式2",                         ID_CONV_FORMAT_USER_02
+                MENUITEM "書式3",                         ID_CONV_FORMAT_USER_03
+                MENUITEM "書式4",                         ID_CONV_FORMAT_USER_04
+                MENUITEM "書式5",                         ID_CONV_FORMAT_USER_05
+            END
+            MENUITEM "書式設定...(&O)",                 ID_CONV_USER_SETUP
+        END
+        POPUP "拡張書式変換(&E)"
+        BEGIN
+            MENUITEM "書式１",                         ID_CONV_FORMAT_EX_01
+            MENUITEM "書式2",                         ID_CONV_FORMAT_EX_02
+            MENUITEM "書式3",                         ID_CONV_FORMAT_EX_03
+            MENUITEM "書式4",                         ID_CONV_FORMAT_EX_04
+            MENUITEM "書式5",                         ID_CONV_FORMAT_EX_05
+            MENUITEM "書式6",                         ID_CONV_FORMAT_EX_06
+            MENUITEM "書式7",                         ID_CONV_FORMAT_EX_07
+            MENUITEM "書式8",                         ID_CONV_FORMAT_EX_08
+            MENUITEM "書式9",                         ID_CONV_FORMAT_EX_09
+            MENUITEM "書式10",                        ID_CONV_FORMAT_EX_10
+            MENUITEM "書式設定...(&O)",                 ID_CONV_EX_SETUP
+        END
+        POPUP "タグ情報変換(&T)"
+        BEGIN
+            MENUITEM "書式1",                         ID_CONV_TAG_TO_TAG_01
+            MENUITEM "書式2",                         ID_CONV_TAG_TO_TAG_02
+            MENUITEM "書式3",                         ID_CONV_TAG_TO_TAG_03
+            MENUITEM "書式4",                         ID_CONV_TAG_TO_TAG_04
+            MENUITEM "書式5",                         ID_CONV_TAG_TO_TAG_05
+            MENUITEM "書式設定...(&O)",                 ID_CONV_TAG2TAG_SETUP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "切り取り",                        ID_EDIT_CUT
+        MENUITEM "コピー",                         ID_EDIT_COPY
+        MENUITEM "貼り付け",                        ID_EDIT_PASTE
+        MENUITEM "追加で貼り付け(&B)",                 ID_EDIT_PASTE_ADD
+        POPUP "定型文貼り付け"
+        BEGIN
+            POPUP "グループ1"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_01
+                MENUITEM "定型2",                         ID_TEIKEI_02
+                MENUITEM "定型3",                         ID_TEIKEI_03
+                MENUITEM "定型4",                         ID_TEIKEI_04
+                MENUITEM "定型5",                         ID_TEIKEI_05
+                MENUITEM "定型6",                         ID_TEIKEI_06
+                MENUITEM "定型7",                         ID_TEIKEI_07
+                MENUITEM "定型8",                         ID_TEIKEI_08
+                MENUITEM "定型9",                         ID_TEIKEI_09
+                MENUITEM "定型10",                        ID_TEIKEI_10
+            END
+            POPUP "グループ2"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_2_01
+                MENUITEM "定型2",                         ID_TEIKEI_2_02
+                MENUITEM "定型3",                         ID_TEIKEI_2_03
+                MENUITEM "定型4",                         ID_TEIKEI_2_04
+                MENUITEM "定型5",                         ID_TEIKEI_2_05
+                MENUITEM "定型6",                         ID_TEIKEI_2_06
+                MENUITEM "定型7",                         ID_TEIKEI_2_07
+                MENUITEM "定型8",                         ID_TEIKEI_2_08
+                MENUITEM "定型9",                         ID_TEIKEI_2_09
+                MENUITEM "定型10",                        ID_TEIKEI_2_10
+            END
+            POPUP "グループ3"
+            BEGIN
+                MENUITEM "定型1",                         ID_TEIKEI_3_01
+                MENUITEM "定型2",                         ID_TEIKEI_3_02
+                MENUITEM "定型3",                         ID_TEIKEI_3_03
+                MENUITEM "定型4",                         ID_TEIKEI_3_04
+                MENUITEM "定型5",                         ID_TEIKEI_3_05
+                MENUITEM "定型6",                         ID_TEIKEI_3_06
+                MENUITEM "定型7",                         ID_TEIKEI_3_07
+                MENUITEM "定型8",                         ID_TEIKEI_3_08
+                MENUITEM "定型9",                         ID_TEIKEI_3_09
+                MENUITEM "定型10",                        ID_TEIKEI_3_10
+            END
+        END
+        MENUITEM SEPARATOR
+        POPUP "半角 => 全角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_ZEN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_ZEN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_ZEN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_ZEN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_ZEN_ALPHA
+        END
+        POPUP "全角 => 半角"
+        BEGIN
+            MENUITEM "全て",                          ID_CONV_STR_HAN_ALL
+            MENUITEM "記号のみ",                        ID_CONV_STR_HAN_KIGOU
+            MENUITEM "数字のみ",                        ID_CONV_STR_HAN_SUJI
+            MENUITEM "カタカナのみ",                      ID_CONV_STR_HAN_KATA
+            MENUITEM "アルファベットのみ",                   ID_CONV_STR_HAN_ALPHA
+        END
+        MENUITEM "小文字 => 大文字",                  ID_CONV_STR_TO_UPPER
+        MENUITEM "大文字 => 小文字",                  ID_CONV_STR_TO_LOWER
+        MENUITEM "単語の１文字目のみ大文字",                ID_CONV_STR_FIRST_UPPER
+        MENUITEM "大文字小文字固定",                    ID_CONV_STR_FIXED_UPPER_LOWER
+        MENUITEM "ひらがな => カタカナ",                ID_CONV_STR_HIRA2KATA
+        MENUITEM "カタカナ => ひらがな",                ID_CONV_STR_KATA2HIRA
+        MENUITEM "文字種の統一...(&C)",               ID_UNIFY_CHAR
+        MENUITEM SEPARATOR
+        MENUITEM "先頭/末尾のｎ文字を削除",                ID_DELETE_CHAR
+        MENUITEM SEPARATOR
+        POPUP "チェック状態変更"
+        BEGIN
+            MENUITEM "全てのファイルをチェックする",              ID_ALL_FILES_CHECK
+            MENUITEM "全てのファイルのチェックを外す",             ID_ALL_FILES_UNCHECK
+            MENUITEM "チェック状態を反転する",                 ID_REVERSE_CHECK
+            MENUITEM "選択ファイルをチェックする",               ID_SELECT_FILES_CHECK
+            MENUITEM "選択ファイルのチェックを外す",              ID_SELECT_FILES_UNCHECK
+            MENUITEM "条件を指定してチェック",                 ID_CHECK_WORD
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "リストから削除",                     ID_SELECT_DELETE_LIST
+        MENUITEM "ファイルを削除",                     ID_SELECT_DELETE_FILE
+        MENUITEM "編集前の状態に戻す",                   ID_SELECT_EDIT_DESTORY
+        MENUITEM SEPARATOR
+        MENUITEM "SI/ID3v2フィールドからID3tagに変換",    ID_CONV_SI_FIELD_TO_ID3TAG
+        MENUITEM SEPARATOR
+        POPUP "ファイルを移動(&M)"
+        BEGIN
+            MENUITEM "書式1",                         ID_MOVE_FOLDER_01
+            MENUITEM "書式2",                         ID_MOVE_FOLDER_02
+            MENUITEM "書式3",                         ID_MOVE_FOLDER_03
+            MENUITEM "書式4",                         ID_MOVE_FOLDER_04
+            MENUITEM "書式5",                         ID_MOVE_FOLDER_05
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "プレイヤーで再生",                    ID_WINAMP_PLAY
+        MENUITEM "プレイリストを出力",                   ID_WRITE_PLAYLIST
+    END
+END
+
+IDR_MENU_CONV_FORMAT_USER MENU 
+BEGIN
+    POPUP "ユーザ書式切替"
+    BEGIN
+        MENUITEM "書式１",                         ID_CONV_FORMAT_USER_01
+        MENUITEM "書式2",                         ID_CONV_FORMAT_USER_02
+        MENUITEM "書式3",                         ID_CONV_FORMAT_USER_03
+        MENUITEM "書式4",                         ID_CONV_FORMAT_USER_04
+        MENUITEM "書式5",                         ID_CONV_FORMAT_USER_05
+    END
+END
+
+CG_IDR_POPUP_DK_TOOL_BAR MENU 
+BEGIN
+    POPUP "ツールバーのカスタマイズ"
+    BEGIN
+        MENUITEM "ツールバーのカスタマイズ",                ID_POPUP_CUSTOMIZE
+    END
+END
+
+IDR_MENU_TEIKEI MENU 
+BEGIN
+    POPUP "定型文貼り付け"
+    BEGIN
+        POPUP "グループ1"
+        BEGIN
+            MENUITEM "定型1",                         ID_TEIKEI_01
+            MENUITEM "定型2",                         ID_TEIKEI_02
+            MENUITEM "定型3",                         ID_TEIKEI_03
+            MENUITEM "定型4",                         ID_TEIKEI_04
+            MENUITEM "定型5",                         ID_TEIKEI_05
+            MENUITEM "定型6",                         ID_TEIKEI_06
+            MENUITEM "定型7",                         ID_TEIKEI_07
+            MENUITEM "定型8",                         ID_TEIKEI_08
+            MENUITEM "定型9",                         ID_TEIKEI_09
+            MENUITEM "定型10",                        ID_TEIKEI_10
+        END
+        POPUP "グループ2"
+        BEGIN
+            MENUITEM "定型1",                         ID_TEIKEI_2_01
+            MENUITEM "定型2",                         ID_TEIKEI_2_02
+            MENUITEM "定型3",                         ID_TEIKEI_2_03
+            MENUITEM "定型4",                         ID_TEIKEI_2_04
+            MENUITEM "定型5",                         ID_TEIKEI_2_05
+            MENUITEM "定型6",                         ID_TEIKEI_2_06
+            MENUITEM "定型7",                         ID_TEIKEI_2_07
+            MENUITEM "定型8",                         ID_TEIKEI_2_08
+            MENUITEM "定型9",                         ID_TEIKEI_2_09
+            MENUITEM "定型10",                        ID_TEIKEI_2_10
+        END
+        POPUP "グループ3"
+        BEGIN
+            MENUITEM "定型1",                         ID_TEIKEI_3_01
+            MENUITEM "定型2",                         ID_TEIKEI_3_02
+            MENUITEM "定型3",                         ID_TEIKEI_3_03
+            MENUITEM "定型4",                         ID_TEIKEI_3_04
+            MENUITEM "定型5",                         ID_TEIKEI_3_05
+            MENUITEM "定型6",                         ID_TEIKEI_3_06
+            MENUITEM "定型7",                         ID_TEIKEI_3_07
+            MENUITEM "定型8",                         ID_TEIKEI_3_08
+            MENUITEM "定型9",                         ID_TEIKEI_3_09
+            MENUITEM "定型10",                        ID_TEIKEI_3_10
+        END
+    END
+END
+
+IDR_MENU_FAVORITE_FOLDER MENU 
+BEGIN
+    POPUP "お気に入りのフォルダ"
+    BEGIN
+        MENUITEM "お気に入り1",                      ID_FAVORITE_FOLDER_01
+        MENUITEM "お気に入り2",                      ID_FAVORITE_FOLDER_02
+        MENUITEM "お気に入り3",                      ID_FAVORITE_FOLDER_03
+        MENUITEM "お気に入り4",                      ID_FAVORITE_FOLDER_04
+        MENUITEM "お気に入り5",                      ID_FAVORITE_FOLDER_05
+        MENUITEM "お気に入り6",                      ID_FAVORITE_FOLDER_06
+        MENUITEM "お気に入り7",                      ID_FAVORITE_FOLDER_07
+        MENUITEM "お気に入り8",                      ID_FAVORITE_FOLDER_08
+        MENUITEM "お気に入り9",                      ID_FAVORITE_FOLDER_09
+        MENUITEM "お気に入り10",                     ID_FAVORITE_FOLDER_10
+    END
+END
+
+IDR_MENU_CONV_FORMAT_USER_T2F MENU 
+BEGIN
+    POPUP "タグ情報 => ファイル名"
+    BEGIN
+        MENUITEM "選択している書式で変換",                 ID_CONV_TAG2FILE_USER_SUB
+        MENUITEM "書式１",                         ID_CONV_FORMAT_USER_T2F_01
+        MENUITEM "書式2",                         ID_CONV_FORMAT_USER_T2F_02
+        MENUITEM "書式3",                         ID_CONV_FORMAT_USER_T2F_03
+        MENUITEM "書式4",                         ID_CONV_FORMAT_USER_T2F_04
+        MENUITEM "書式5",                         ID_CONV_FORMAT_USER_T2F_05
+    END
+END
+
+IDR_MENU_CONV_FORMAT_USER_F2T MENU 
+BEGIN
+    POPUP "ファイル名 => タグ情報"
+    BEGIN
+        MENUITEM "選択している書式で変換",                 ID_CONV_FILE2TAG_USER_SUB
+        MENUITEM "書式１",                         ID_CONV_FORMAT_USER_F2T_01
+        MENUITEM "書式2",                         ID_CONV_FORMAT_USER_F2T_02
+        MENUITEM "書式3",                         ID_CONV_FORMAT_USER_F2T_03
+        MENUITEM "書式4",                         ID_CONV_FORMAT_USER_F2T_04
+        MENUITEM "書式5",                         ID_CONV_FORMAT_USER_F2T_05
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 219, 318
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "バージョン情報"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,18,21
+    CONTROL         "xxxxx Version 1.0",IDC_ST_VERSION,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,33,7,179,25
+    LTEXT           "Copyright(C) 2000 MERCURY.\nCopyright(C) 2001-2006 haseta.\nCopyright(C) 2008-2010 Mimura.",IDC_STATIC,113,32,99,26
+    DEFPUSHBUTTON   "OK",IDOK,89,297,50,14,WS_GROUP
+    LTEXT           "URL: http://www5.wisnet.ne.jp/~mercury/",IDC_STATIC,15,170,135,8
+    LTEXT           "E-Mail : mercury@mail5.wisnet.ne.jp",IDC_STATIC,17,178,111,8
+    GROUPBOX        "オリジナル作者",IDC_STATIC,7,148,205,84
+    LTEXT           "本ソフトウェアでは、RIFF MP3ファイルの操作に \n VBMP3 を使用しています。\n\nVBMP3(VBMP3.DLL/VBMP3.H/VBMP3/LIB) の著作権は\n 苅込 大輔さんにあります。",IDC_STATIC,14,245,189,40
+    LTEXT           "STEP （haseta さん）",IDC_STATIC,14,190,149,8
+    GROUPBOX        "STEP_M (Mimura)",IDC_STATIC,7,65,205,76
+    LTEXT           "本バージョンは、\nhaseta 様作の STEP Version 1.02 を元に\nさらに改造を加えたバージョンとなります。\n\n不具合連絡や要望は以下の連絡先までご連絡ください。",IDC_STATIC,14,76,186,41
+    GROUPBOX        "",IDC_STATIC,7,235,205,56
+    LTEXT           "SuperTagEditor （MERCURYさん）",IDC_STATIC,14,160,97,8
+    LTEXT           "URL: http://haseta2003.hp.infoseek.co.jp/",IDC_STATIC,19,199,140,8
+    LTEXT           "URL: http://mimumimu.net\nE-Mail: customer@mimumimu.net",IDC_STATIC,24,120,172,17
+    LTEXT           "本プログラムの要望や不具合連絡は\n オリジナル作者へしないようにお願いします。",IDC_STATIC,15,211,190,15
+END
+
+IDR_MAINFRAME DIALOG  0, 0, 330, 16
+STYLE DS_SETFONT | WS_CHILD
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "Static",IDC_STATIC,5,4,171,8
+END
+
+CG_IDD_PROGRESS DIALOG  0, 0, 187, 63
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_VISIBLE | WS_CAPTION
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "Progress1",CG_IDC_PROGDLG_PROGRESS,"msctls_progress32",WS_BORDER,26,23,154,13
+    LTEXT           " 0 %",CG_IDC_PROGDLG_PERCENT,7,27,18,8
+    LTEXT           "ファイル検索中",IDC_ST_MESSAGE,7,7,173,8
+    PUSHBUTTON      "中止",IDCANCEL,68,42,50,14
+END
+
+IDD_DLG_LIST_SORT DIALOG  0, 0, 194, 209
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ソート方法設定ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,46,188,40,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,106,188,40,14
+    COMBOBOX        IDC_LIST_KEY1,13,19,84,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "昇順",IDC_RA_UP_SORT1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,109,21,30,10
+    CONTROL         "降順",IDC_RA_DOWN_SORT1,"Button",BS_AUTORADIOBUTTON,147,21,30,10
+    GROUPBOX        "キー１(最優先)",IDC_STATIC,7,7,180,31
+    COMBOBOX        IDC_LIST_KEY2,13,53,84,55,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "昇順",IDC_RA_UP_SORT2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,109,55,30,10
+    CONTROL         "降順",IDC_RA_DOWN_SORT2,"Button",BS_AUTORADIOBUTTON,147,55,30,10
+    GROUPBOX        "キー２",IDC_STATIC,7,42,180,31
+    COMBOBOX        IDC_LIST_KEY3,13,89,84,58,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "昇順",IDC_RA_UP_SORT3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,109,91,30,10
+    CONTROL         "降順",IDC_RA_DOWN_SORT3,"Button",BS_AUTORADIOBUTTON,147,91,30,10
+    GROUPBOX        "キー３",IDC_STATIC,7,77,180,31
+    COMBOBOX        IDC_LIST_KEY4,13,124,84,55,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "昇順",IDC_RA_UP_SORT4,"Button",BS_AUTORADIOBUTTON | WS_GROUP,109,126,30,10
+    CONTROL         "降順",IDC_RA_DOWN_SORT4,"Button",BS_AUTORADIOBUTTON,147,126,30,10
+    GROUPBOX        "キー４",IDC_STATIC,7,112,180,31
+    COMBOBOX        IDC_LIST_KEY5,13,160,84,58,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "昇順",IDC_RA_UP_SORT5,"Button",BS_AUTORADIOBUTTON | WS_GROUP,109,162,30,10
+    CONTROL         "降順",IDC_RA_DOWN_SORT5,"Button",BS_AUTORADIOBUTTON,147,162,30,10
+    GROUPBOX        "キー５",IDC_STATIC,7,148,180,31
+END
+
+IDD_DLG_SET_CLASSIFICATION DIALOG  0, 0, 179, 213
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "分類設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "フォルダ構成で分類",IDC_RA_FOLDER,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,21,74,10
+    CONTROL         "タグ情報で分類",IDC_RA_FILE_TAG,"Button",BS_AUTORADIOBUTTON,15,36,61,10
+    GROUPBOX        "分類方法",IDC_STATIC,7,7,165,144
+    LTEXT           "階層１",IDC_ST_CLASS1,28,55,23,8
+    COMBOBOX        IDC_LIST_CLASS1,60,53,92,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "階層２",IDC_ST_CLASS2,28,74,23,8
+    COMBOBOX        IDC_LIST_CLASS2,60,72,92,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "階層３",IDC_ST_CLASS3,28,93,23,8
+    COMBOBOX        IDC_LIST_CLASS3,60,91,92,71,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "階層４",IDC_ST_CLASS4,28,112,23,8
+    COMBOBOX        IDC_LIST_CLASS4,60,110,92,69,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "階層５",IDC_ST_CLASS5,28,131,23,8
+    COMBOBOX        IDC_LIST_CLASS5,60,129,92,68,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "※[フォルダ構成で分類] の場合は、使用できません\n次回のファイルの読み込み時から反映されます",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,7,169,165,17
+    CONTROL         "分類表示を最新の情報に更新する",IDC_CH_EXEC_CLASSIFICATION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,156,165,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,192,50,14
+END
+
+IDD_DLG_FILE_OVERWRITE DIALOG  0, 0, 253, 107
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイル上書き確認ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "読み出し専用属性が設定されていますが、上書きしてもよろしいですか？",IDC_STATIC,7,7,210,8
+    LTEXT           "ファイル名",IDC_STATIC,7,27,31,8
+    EDITTEXT        IDC_ED_FILENAME,45,24,201,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "更新日",IDC_STATIC,7,46,33,8
+    EDITTEXT        IDC_ED_TIME_STAMP,45,43,81,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "サイズ",IDC_STATIC,7,65,33,8
+    EDITTEXT        IDC_ED_SIZE,45,62,81,14,ES_AUTOHSCROLL | ES_READONLY
+    DEFPUSHBUTTON   "このファイルを上書き(&O)",IDC_BT_OVERWRITE,7,86,75,14
+    PUSHBUTTON      "以降全て上書き(&A)",IDC_BT_ALL_OVERWRITE,88,86,60,14
+    PUSHBUTTON      "スキップ(&S)",IDC_BT_SKIP,154,86,43,14
+    PUSHBUTTON      "中止",IDCANCEL,203,86,43,14
+END
+
+IDD_DLG_USER_CONV_FORMAT DIALOG  0, 0, 191, 217
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ユーザー変換書式"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "カレント書式",IDC_STATIC,7,9,45,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,55,7,96,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,154,7,30,14
+    EDITTEXT        IDC_ED_FORMAT_TAG2FILE,13,38,165,14,ES_AUTOHSCROLL
+    GROUPBOX        "タグ情報 => ファイル名",IDC_STATIC,7,26,177,32
+    EDITTEXT        IDC_ED_FORMAT_FILE2TAG,13,73,165,14,ES_AUTOHSCROLL
+    GROUPBOX        "ファイル名 => タグ情報",IDC_STATIC,7,62,177,32
+    PUSHBUTTON      "アーティスト名 - %ARTIST_NAME%",IDC_BT_ARTIST_NAME,13,110,165,12,BS_LEFT
+    PUSHBUTTON      "アルバム名 - %ALBUM_NAME%",IDC_BT_ALBUM_NAME,13,122,165,12,BS_LEFT
+    PUSHBUTTON      "トラック名 - %TRACK_NAME%",IDC_BT_TRACK_NAME,13,134,165,12,BS_LEFT
+    PUSHBUTTON      "リリース年号 - %RELEASE_YEAR%",IDC_BT_RELEASE_YEAR,13,146,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号 - %TRACK_NUMBER%",IDC_BT_TRACK_NUMBER,13,158,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(２桁で出力) - %TRACK_NUMBER2%",IDC_BT_TRACK_NUMBER2,13,170,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(３桁で出力) - %TRACK_NUMBER3%",IDC_BT_TRACK_NUMBER3,13,182,165,12,BS_LEFT
+    PUSHBUTTON      "コメント - %COMMENT%",IDC_BT_COMMENT,13,194,165,12,BS_LEFT
+    GROUPBOX        "使用可能変数一覧(var_list2.txt参照)",IDC_STATIC,7,98,177,112
+END
+
+IDD_DLG_NAME_CHANGE DIALOG  0, 0, 125, 49
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "名称変更ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,34,7,84,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,17,28,37,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,69,28,37,14
+    LTEXT           "名称",IDC_STATIC,7,9,15,8
+END
+
+IDD_DLG_SAVE_PLAYLIST DIALOG  0, 0, 187, 135
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プレイリスト出力設定ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,28,114,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,108,114,50,14
+    GROUPBOX        "設定",IDC_STATIC,7,7,173,29
+    CONTROL         "常に絶対パスで出力する",IDC_CH_OUTPUT_FULLPATH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,20,89,10
+END
+
+IDD_DLG_LOAD_PLAYLIST DIALOG  0, 0, 171, 141
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プレイリスト入力設定ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,28,120,41,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,101,120,41,14
+    CONTROL         "登録する",IDC_RA_ADD_LIST_ON,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,21,42,10
+    CONTROL         "登録しない",IDC_RA_ADD_LIST_OFF,"Button",BS_AUTORADIOBUTTON,90,21,47,10
+    GROUPBOX        "リストへの登録",IDC_STATIC,7,7,157,49
+    CONTROL         "読みこむ前にリストをクリアする",IDC_CH_CLEAR_LIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,39,107,10
+    CONTROL         "チェックする",IDC_RA_FILE_CHECK_ON,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,77,51,10
+    CONTROL         "チェックしない",IDC_RA_FILE_CHECK_OFF,"Button",BS_AUTORADIOBUTTON,90,77,56,10
+    GROUPBOX        "チェックマークの設定",IDC_STATIC,7,63,157,49
+    CONTROL         "読みこむ前にチェックマークをクリアする",IDC_CH_CLEAR_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,95,132,10
+END
+
+IDD_DLG_SEARCH_STATE DIALOG  0, 0, 162, 151
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "検索設定ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "次を検索",IDOK,26,130,43,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,93,130,43,14
+    LTEXT           "検索",IDC_STATIC,7,10,15,8
+    COMBOBOX        IDC_ED_SEARCH_WORD,27,7,128,14,CBS_OEMCONVERT
+    LTEXT           "置換",IDC_STATIC,7,29,15,8
+    COMBOBOX        IDC_ED_REPLACE_WORD,27,26,128,14,CBS_OEMCONVERT
+    CONTROL         "大文字／小文字を区別する",IDC_CH_CHECK_UL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,59,96,10
+    CONTROL         "正規表現を使用する",IDC_CH_REGEXP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,75,10
+    CONTROL         "選択されている範囲のみ検索する",IDC_CH_RANGE_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,87,114,10
+    LTEXT           "検索方向",IDC_STATIC,14,105,28,8
+    COMBOBOX        IDC_LIST_SEARCH_DIR,50,103,94,40,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "動作設定",IDC_STATIC,7,47,148,76
+END
+
+IDD_DLG_CHECK_WORD DIALOG  0, 0, 163, 163
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "条件を指定してチェック"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "文字列",IDC_STATIC,7,10,22,8
+    EDITTEXT        IDC_ED_SEARCH_WORD,34,7,122,14,ES_AUTOHSCROLL
+    LTEXT           "対象",IDC_STATIC,7,30,15,8
+    COMBOBOX        IDC_LIST_TARGET,34,27,95,67,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "大文字／小文字を区別する",IDC_CH_CHECK_UL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,60,96,10
+    CONTROL         "正規表現を使用する",IDC_CH_REGEXP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,74,75,10
+    CONTROL         "行選択されている範囲のみ検索する",IDC_CH_RANGE_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,88,121,10
+    CONTROL         "完全に一致する場合のみ",IDC_CH_MATCH_COMPLETE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,102,90,10
+    CONTROL         "チェックせずに選択状態にする",IDC_CH_MATCH_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,116,105,10
+    GROUPBOX        "動作設定",IDC_STATIC,7,48,149,87
+    DEFPUSHBUTTON   "実行",IDOK,32,142,38,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,92,142,38,14
+END
+
+IDD_DLG_KEY_CONFIG DIALOG  0, 0, 211, 211
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "キー割り当て"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "コマンド(&C)",IDC_STATIC,7,7,32,8
+    COMBOBOX        IDC_LIST_GROUP,7,19,100,62,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_COMMAND,7,37,100,164,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "ホットキー(&K)",IDC_STATIC,114,7,39,8
+    LISTBOX         IDC_LIST_KEY,114,19,91,144,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "CTRL(&T)",IDC_CH_CTRL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,116,168,41,10
+    CONTROL         "ALT(&A)",IDC_CH_ALT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,168,37,10
+    LTEXT           "※組み合わせによっては使えない場合もあります",IDC_STATIC,113,183,89,18
+END
+
+IDD_DLG_CONV_FORMAT_EX DIALOG  0, 0, 191, 239
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "拡張変換書式"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,9,15,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,24,7,126,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,154,7,30,14
+    LTEXT           "書式",IDC_STATIC,7,26,15,8
+    EDITTEXT        IDC_EDIT_FORMAT,24,23,160,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "ファイル名(拡張子なし)  - %FILE_NAME%",IDC_BT_FILE_NAME,13,52,165,12,BS_LEFT
+    PUSHBUTTON      "アーティスト名 - %ARTIST_NAME%",IDC_BT_ARTIST_NAME,13,64,165,12,BS_LEFT
+    PUSHBUTTON      "アルバム名 - %ALBUM_NAME%",IDC_BT_ALBUM_NAME,13,76,165,12,BS_LEFT
+    PUSHBUTTON      "トラック名 - %TRACK_NAME%",IDC_BT_TRACK_NAME,13,88,165,12,BS_LEFT
+    PUSHBUTTON      "リリース年号 - %RELEASE_YEAR%",IDC_BT_RELEASE_YEAR,13,100,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号 - %TRACK_NUMBER%",IDC_BT_TRACK_NUMBER,13,112,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(２桁で出力) - %TRACK_NUMBER2%",IDC_BT_TRACK_NUMBER2,13,124,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(３桁で出力) - %TRACK_NUMBER3%",IDC_BT_TRACK_NUMBER3,13,136,165,12,BS_LEFT
+    PUSHBUTTON      "コメント - %COMMENT%",IDC_BT_COMMENT,13,148,165,12,BS_LEFT
+    PUSHBUTTON      "連番 - %NUMBER%",IDC_BT_NUMBER,13,160,165,12,BS_LEFT
+    PUSHBUTTON      "実行時入力型固定文字列 - %STRING%",IDC_BT_FIX_STRING,13,172,165,12,BS_LEFT
+    GROUPBOX        "使用可能変数一覧(var_list2.txt参照)",IDC_STATIC,7,41,178,147
+    LTEXT           "初期値",IDC_STATIC,12,207,22,8
+    EDITTEXT        IDC_ED_INIT_NUMBER,37,203,31,14,ES_AUTOHSCROLL
+    LTEXT           "増分",IDC_STATIC,75,207,15,8
+    EDITTEXT        IDC_ED_ADD_NUMBER,91,203,31,14,ES_AUTOHSCROLL
+    LTEXT           "桁数",IDC_STATIC,127,207,15,8
+    EDITTEXT        IDC_ED_MIN_COLUMN,147,203,31,14,ES_AUTOHSCROLL
+    CONTROL         "書き込みできるセルが途切れたら連番を初期値に戻す",IDC_CH_SPACE_INIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,219,173,10
+    GROUPBOX        "連番設定",IDC_STATIC,7,193,178,39
+END
+
+IDD_DLG_EDIT_SHOW_COLUMN DIALOG  0, 0, 195, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "表示項目設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "List2",IDC_LIST_COLUMN,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,7,127,181
+    PUSHBUTTON      "上へ",IDC_BT_UP,138,7,50,14
+    PUSHBUTTON      "下へ",IDC_BT_DOWN,138,28,50,14
+    LTEXT           "※変更は、次回起動時から有効になります",IDC_STATIC,7,197,124,8
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,138,194,50,14
+    GROUPBOX        "最大カラム幅",IDC_STATIC,139,57,49,40
+    EDITTEXT        IDC_EDIT_MAX_WIDTH,145,69,37,14,ES_AUTOHSCROLL
+    LTEXT           "※0で無制限",IDC_STATIC,145,86,38,8
+END
+
+IDD_DLG_ENV_CONF DIALOG  0, 0, 199, 105
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "確認メッセージ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "ファイルをリストから削除するときに確認する",IDC_CH_CONF_DELETE_LIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,20,143,10
+    CONTROL         "ファイルを削除するときに確認する",IDC_CH_CONF_DELETE_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,34,159,10
+    CONTROL         "[編集前の状態に戻す]を実行するときに確認する",IDC_CH_CONF_EDIT_MODIFY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,48,157,10
+    GROUPBOX        "確認メッセージの表示",IDC_STATIC,7,7,185,70
+    CONTROL         "[フォルダの同期]を実行するときに確認する",IDC_CH_CONF_FOLDER_SYNC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,62,141,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,84,50,14
+END
+
+IDD_DLG_REPLACE_WORD DIALOG  0, 0, 223, 151
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "置換"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "検索(&F)",IDC_STATIC,7,10,23,8
+    CONTROL         "",IDC_ED_SEARCH_WORD,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,34,7,122,51
+    LTEXT           "置換(&H)",IDC_ST_REPLACE,7,28,24,8
+    CONTROL         "",IDC_ED_REPLACE_WORD,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,34,26,122,53
+    LTEXT           "対象(&I)",IDC_STATIC,7,52,21,8
+    COMBOBOX        IDC_LIST_TARGET,34,49,95,67,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "動作設定",IDC_STATIC,7,70,147,71
+    CONTROL         "大文字／小文字を区別する(&C)",IDC_CH_CHECK_UL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,82,105,10
+    CONTROL         "正規表現を使用する(&E)",IDC_CH_REGEXP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,96,84,10
+    CONTROL         "行選択されている範囲のみ検索する(&L)",IDC_CH_RANGE_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,110,129,10
+    CONTROL         "完全に一致する場合のみ(&M)",IDC_CH_MATCH_COMPLETE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,124,99,10
+    PUSHBUTTON      "前を検索(&P)",ID_BT_SEARCH_BEFORE,169,7,47,14
+    DEFPUSHBUTTON   "次を検索(&N)",ID_BT_SEARCH_NEXT,169,25,47,14
+    PUSHBUTTON      "閉じる",IDCANCEL,169,49,47,14
+    PUSHBUTTON      "置換(&R)",ID_BT_REPLACE,169,74,47,14
+    PUSHBUTTON      "すべて置換(&A)",IDOK,169,92,47,14
+END
+
+IDD_DLG_REPLACE_FILENAME DIALOG  0, 0, 203, 255
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイル名文字置換"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "ファイル名の以下の文字を置換する",IDC_CH_FILENAME_MULTI_BYTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,119,10
+    GROUPBOX        "置換文字設定",IDC_STATIC,7,23,189,101
+    EDITTEXT        IDC_ED_BEFORE1,15,38,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,36,40,8,8
+    EDITTEXT        IDC_ED_AFTER1,46,38,17,14
+    EDITTEXT        IDC_ED_BEFORE2,78,38,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,99,40,8,8
+    EDITTEXT        IDC_ED_AFTER2,109,38,17,14
+    EDITTEXT        IDC_ED_BEFORE3,139,38,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,160,40,8,8
+    EDITTEXT        IDC_ED_AFTER3,171,38,17,14
+    EDITTEXT        IDC_ED_BEFORE4,15,57,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,36,60,8,8
+    EDITTEXT        IDC_ED_AFTER4,46,57,17,14
+    EDITTEXT        IDC_ED_BEFORE5,78,57,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,99,60,8,8
+    EDITTEXT        IDC_ED_AFTER5,109,57,17,14
+    EDITTEXT        IDC_ED_BEFORE6,139,57,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,160,60,8,8
+    EDITTEXT        IDC_ED_AFTER6,171,57,17,14
+    EDITTEXT        IDC_ED_BEFORE7,15,77,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,36,80,8,8
+    EDITTEXT        IDC_ED_AFTER7,46,77,17,14
+    EDITTEXT        IDC_ED_BEFORE8,78,77,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,99,80,8,8
+    EDITTEXT        IDC_ED_AFTER8,109,77,17,14
+    EDITTEXT        IDC_ED_BEFORE9,139,77,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,160,80,8,8
+    EDITTEXT        IDC_ED_AFTER9,171,77,17,14
+    EDITTEXT        IDC_ED_BEFORE10,15,96,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,36,99,8,8
+    EDITTEXT        IDC_ED_AFTER10,46,96,17,14
+    EDITTEXT        IDC_ED_BEFORE11,78,96,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,99,99,8,8
+    EDITTEXT        IDC_ED_AFTER11,109,96,17,14
+    EDITTEXT        IDC_ED_BEFORE12,139,96,17,14,ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "=>",IDC_STATIC,160,99,8,8
+    EDITTEXT        IDC_ED_AFTER12,171,96,17,14
+    LTEXT           "(↑半角スペース)",IDC_STATIC,138,112,52,8
+    GROUPBOX        "ユーザ置換文字設定",IDC_STATIC,7,133,189,55
+    EDITTEXT        IDC_ED_USER_BEFORE1,14,147,17,14
+    LTEXT           "=>",IDC_STATIC,35,149,8,8
+    EDITTEXT        IDC_ED_USER_AFTER1,46,147,17,14
+    EDITTEXT        IDC_ED_USER_BEFORE2,78,147,17,14
+    LTEXT           "=>",IDC_STATIC,98,149,8,8
+    EDITTEXT        IDC_ED_USER_AFTER2,109,147,17,14
+    EDITTEXT        IDC_ED_USER_BEFORE3,138,147,17,14
+    LTEXT           "=>",IDC_STATIC,159,149,8,8
+    EDITTEXT        IDC_ED_USER_AFTER3,170,147,17,14
+    EDITTEXT        IDC_ED_USER_BEFORE4,14,167,17,14
+    LTEXT           "=>",IDC_STATIC,35,169,8,8
+    EDITTEXT        IDC_ED_USER_AFTER4,46,167,17,14
+    EDITTEXT        IDC_ED_USER_BEFORE5,78,167,17,14
+    LTEXT           "=>",IDC_STATIC,98,169,8,8
+    EDITTEXT        IDC_ED_USER_AFTER5,109,167,17,14
+    EDITTEXT        IDC_ED_USER_BEFORE6,138,167,17,14
+    LTEXT           "=>",IDC_STATIC,159,169,8,8
+    EDITTEXT        IDC_ED_USER_AFTER6,170,167,17,14
+    LTEXT           "拡張子の統一",IDC_STATIC,7,196,42,8
+    CONTROL         "そのまま",IDC_RADIO_EXT_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,53,195,42,10
+    CONTROL         "小文字",IDC_RADIO_EXT_LOWER,"Button",BS_AUTORADIOBUTTON,95,195,37,10
+    CONTROL         "大文字",IDC_RADIO_EXT_UPPER,"Button",BS_AUTORADIOBUTTON,131,195,37,10
+    PUSHBUTTON      "文字種の統一...",IDC_BT_FILENAME_UNIFY,7,213,50,14
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,234,50,14
+END
+
+IDD_DLG_FIXED_STRING DIALOG  0, 0, 125, 53
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "固定文字列入力ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,34,7,84,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,17,32,37,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,69,32,37,14
+    LTEXT           "文字列",IDC_STATIC,7,10,22,8
+END
+
+IDD_DLG_SETUP_GENRE DIALOG  0, 0, 199, 213
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ジャンル設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "List1",IDC_LIST_GENRE,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,7,117,199
+    PUSHBUTTON      "全てチェックする",IDC_BT_CHECK_ALL,130,7,62,14
+    PUSHBUTTON      "全てチェックを外す",IDC_BT_UNCHECK_ALL,130,27,62,14
+    PUSHBUTTON      "ID3 v1.1 互換",IDC_BT_CHECK_ID3,130,57,62,14
+    PUSHBUTTON      "Winamp 互換",IDC_BT_CHECK_WINAMP,130,78,62,14
+    PUSHBUTTON      "SCMPX 互換",IDC_BT_CHECK_SCMPX,130,99,62,14
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,130,125,62,14
+    GROUPBOX        "ユーザ指定",IDC_STATIC,132,147,60,59
+    PUSHBUTTON      "追加",IDC_BT_ADD_USER,140,162,46,14
+    PUSHBUTTON      "削除",IDC_BT_DEL_USER,140,183,46,14
+END
+
+IDD_DLG_FOLDER_SYNC DIALOG  0, 0, 203, 137
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "フォルダの同期"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "フォルダの同期機能を有効にする",IDC_CH_ENABLE_FOLDER_SYNC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,113,10
+    EDITTEXT        IDC_ED_ROOT_FOLDER,13,34,150,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_ROOT,165,34,24,14
+    CONTROL         "実行時に、毎回フォルダ指定ダイアログを開く",IDC_CH_SELECT_ALWAYS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,51,146,10
+    GROUPBOX        "ツリーの""Root""に対応するフォルダ",IDC_ST_ROOT_FOLDER,7,22,189,44
+    GROUPBOX        "動作設定",IDC_ST_OPTION,7,72,189,41
+    CONTROL         "ファイルの移動により空になったフォルダは削除する",IDC_CH_DELETE_FOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,84,166,10
+    CONTROL         "同じフォルダにある歌詞ファイルも対象にする",IDC_CH_MOVE_LYRICS_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,98,146,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,116,50,14
+END
+
+IDD_DLG_ENV_PLAYER DIALOG  0, 0, 203, 115
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プレイヤー"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "プレイヤーの種類",IDC_STATIC,7,7,189,65
+    CONTROL         "Winamp",IDC_RA_PLAYER_WINAMP,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,18,38,10
+    CONTROL         "SCMPX(*1)",IDC_RA_PLAYER_SCMPX,"Button",BS_AUTORADIOBUTTON,95,18,49,10
+    CONTROL         "KbMedia Player",IDC_RA_PLAYER_KBMEDIA,"Button",BS_AUTORADIOBUTTON,15,32,61,10
+    CONTROL         "その他のプレイヤー(*1)",IDC_RA_PLAYER_EXT2,"Button",BS_AUTORADIOBUTTON,95,32,86,10
+    CONTROL         "Lilith",IDC_RA_PLAYER_LILITH,"Button",BS_AUTORADIOBUTTON,15,45,30,10
+    LTEXT           "(*1) 再生以外(停止／前の曲／次の曲)の制御は出来ません",IDC_STATIC,13,59,176,8
+    GROUPBOX        "プレイヤーのパス",IDC_STATIC,7,77,189,31
+    EDITTEXT        IDC_ED_WINAMP_PATH,11,90,152,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_WINAMP,165,90,24,14
+END
+
+IDD_DLG_WRITE_FORM DIALOG  0, 0, 191, 143
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "リスト出力"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,9,15,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,24,7,126,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,154,7,30,14
+    LTEXT           "書式ファイル",IDC_STATIC,12,43,40,8
+    EDITTEXT        IDC_EDIT_FILENAME,57,39,111,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BT_REF_FILE,169,39,9,14
+    LTEXT           "拡張子",IDC_STATIC,12,61,22,8
+    EDITTEXT        IDC_EDIT_EXT_NAME,57,57,34,14,ES_AUTOHSCROLL
+    LTEXT           "※ピリオドを含めて指定",IDC_STATIC,95,60,69,8
+    CONTROL         "空の項目の場合は全角スペースを出力(HTML等)",IDC_CH_IS_HTML,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,78,158,10
+    CONTROL         "選択されているファイルのみを出力する",IDC_CH_WRITE_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,93,129,10
+    GROUPBOX        "設定",IDC_STATIC,7,27,177,95
+    LTEXT           "【注意】 %FILE_NAME% には拡張子が含まれます",IDC_STATIC,7,128,140,8
+    CONTROL         "HTMLとして出力する",IDC_CH_WRITE_HTML,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,108,76,10
+END
+
+IDD_CUSTOM_FILE_OPEN DIALOG  0, 0, 162, 14
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "上書きの場合はファイルの最後に追加出力する",IDC_CH_FILE_ADDPEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,2,153,10
+END
+
+IDD_DLG_ENVIRONMENT DIALOG  0, 0, 211, 287
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "一般"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "ユーザーインターフェース",IDC_STATIC,7,7,197,64
+    CONTROL         "項目変更後の[Enter]でカーソルを下に移動させる",IDC_CH_EDIT_OK_DOWN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,18,179,10
+    CONTROL         "[Enter]で項目編集開始(非チェック時は下移動)",IDC_CH_ENTER_BEGIN_EDIT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,31,179,10
+    CONTROL         "ESC キー１回でセルの編集をキャンセルする",IDC_CH_ESC_EDIT_CANCEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,44,179,10
+    CONTROL         "直接編集時はカーソルキーでセルの移動を行う",IDC_CH_ENABLE_EDIT_CURSOR_EXIT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,57,179,10
+    GROUPBOX        "動作設定",IDC_STATIC,7,73,197,188
+    CONTROL         "タグ情報を更新してもタイムスタンプは変更しない",IDC_CH_KEEP_TIME_STAMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,84,179,10
+    CONTROL         "ファイルの作成日時を更新日時に同期させる",IDC_CH_SYNC_CREATE_TIME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,97,179,10
+    CONTROL         "最後に開いていたフォルダを起動時に自動で開く",IDC_CH_AUTO_OPEN_FOLDER,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,11,110,179,10
+    CONTROL         "カラム幅をリアルタイムに調整する",IDC_CH_LOAD_FILE_ADJUST_COLUMN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,123,179,10
+    CONTROL         "ファイル読み込み時にチェック状態にする",IDC_CH_LOAD_FILE_CHECKED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,136,179,10
+    CONTROL         "Audio List 部分にはファイル名を表示しない",IDC_CH_HIDE_MP3_LIST_FILE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,149,179,10
+    CONTROL         "フォルダがドロップされたときはサブフォルダも検索する",IDC_CH_DROP_SEARCH_SUBFOLDER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,163,179,10
+    CONTROL         "ソート時に英大文字小文字を同一視する",IDC_CH_SORT_IGNORE_CASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,177,179,10
+    CONTROL         "ソート時に全角半角を同一視する",IDC_CH_SORT_IGNORE_ZENHAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,191,179,10
+    CONTROL         "各階層にTrack数/演奏時間合計/サイズ合計を表示する",IDC_CH_SHOW_TOTAL_PARENT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,219,179,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,266,50,14
+    CONTROL         "ソート時にひらがなカタカナを同一視する",IDC_CH_SORT_IGNORE_KATAHIRA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,205,179,10
+    CONTROL         "全角スペース/改行などを表示する",IDC_CH_SHOW_ZEN_SPACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,233,179,10
+    CONTROL         "Tipsを表示する",IDC_CH_SHOW_TIPS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,247,179,10
+END
+
+IDD_DLG_LYRIC DIALOG  0, 0, 203, 105
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "歌詞"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,84,50,14
+    CONTROL         "歌詞ファイルのファイル名も自動で変更する",IDC_CH_CHANGE_TEXT_FILENAME,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,11,18,179,10
+    CONTROL         "歌詞ファイルのフォルダを指定する",IDC_CH_SET_LYRICS_DIR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,31,179,10
+    EDITTEXT        IDC_ED_LYRICS_PATH,11,44,152,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_LYRICS,165,44,24,14
+    CONTROL         "サブディレクトリも検索する",IDC_CH_SEARCH_LYRICS_SUB_DIR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,61,179,10
+    GROUPBOX        "歌詞ファイル",-1,7,7,189,69
+END
+
+IDD_DLG_DELETE_CHAR DIALOG  0, 0, 103, 63
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "先頭/末尾からｎ文字を削除"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "削除する文字数",IDC_STATIC,7,10,48,8
+    EDITTEXT        IDC_EDIT_DELETE_CHAR,59,7,22,14,ES_AUTOHSCROLL
+    CONTROL         "先頭",IDC_RADIO_ADD_START,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,28,30,10
+    CONTROL         "末尾",IDC_RADIO_ADD_END,"Button",BS_AUTORADIOBUTTON,55,28,30,10
+    DEFPUSHBUTTON   "OK",IDOK,10,42,34,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,58,42,34,14
+END
+
+IDD_DLG_ADD_NUMBER DIALOG  0, 0, 183, 117
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "連番を追加"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "桁数",IDC_STATIC,109,10,15,8
+    EDITTEXT        IDC_EDIT_NUMBER_WIDTH,127,7,22,14,ES_AUTOHSCROLL
+    LTEXT           "位置",IDC_STATIC,7,28,15,8
+    CONTROL         "先頭",IDC_RADIO_ADD_START,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,26,27,30,10
+    CONTROL         "末尾",IDC_RADIO_ADD_END,"Button",BS_AUTORADIOBUTTON,57,27,30,10
+    CONTROL         "置き換え",IDC_RADIO_REPLACE,"Button",BS_AUTORADIOBUTTON,88,27,42,10
+    LTEXT           "セパレータ",IDC_STATIC,7,44,32,8
+    EDITTEXT        IDC_EDIT_NUMBER_SEPARATOR,43,42,22,14,ES_AUTOHSCROLL
+    LTEXT           "前に",IDC_STATIC,7,65,14,8
+    EDITTEXT        IDC_EDIT_ADD_BEFORE,24,62,40,14,ES_AUTOHSCROLL
+    LTEXT           "後に",IDC_STATIC,74,65,14,8
+    EDITTEXT        IDC_EDIT_ADD_AFTER,91,62,40,14,ES_AUTOHSCROLL
+    LTEXT           "を追加",IDC_STATIC,136,65,20,8
+    CONTROL         "書き込みできるセルが途切れたら連番を初期値に戻す",IDC_CH_SPACE_INIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,83,173,10
+    DEFPUSHBUTTON   "OK",IDOK,50,98,34,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,98,98,34,14
+    LTEXT           "初期値",IDC_STATIC,7,10,22,8
+    EDITTEXT        IDC_ED_INIT_NUMBER,32,7,22,14,ES_AUTOHSCROLL
+    LTEXT           "増分",IDC_STATIC,63,10,15,8
+    EDITTEXT        IDC_ED_ADD_NUMBER,81,7,22,14,ES_AUTOHSCROLL
+END
+
+IDD_DLG_MOVE_FOLDER DIALOG  0, 0, 215, 237
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "移動先フォルダ書式"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,9,15,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,24,7,126,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,155,7,30,14
+    LTEXT           "書式",IDC_STATIC,7,26,15,8
+    EDITTEXT        IDC_EDIT_FORMAT,24,23,160,14,ES_AUTOHSCROLL
+    CONTROL         "初期値を コピー とする",IDC_CHECK_COPY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,41,83,10
+    GROUPBOX        "使用可能変数一覧(var_list2.txt参照)",IDC_STATIC,7,56,178,136
+    PUSHBUTTON      "ファイル名(拡張子なし)  - %FILE_NAME%",IDC_BT_FILE_NAME,13,67,165,12,BS_LEFT
+    PUSHBUTTON      "アーティスト名 - %ARTIST_NAME%",IDC_BT_ARTIST_NAME,13,79,165,12,BS_LEFT
+    PUSHBUTTON      "アルバム名 - %ALBUM_NAME%",IDC_BT_ALBUM_NAME,13,91,165,12,BS_LEFT
+    PUSHBUTTON      "トラック名 - %TRACK_NAME%",IDC_BT_TRACK_NAME,13,103,165,12,BS_LEFT
+    PUSHBUTTON      "リリース年号 - %RELEASE_YEAR%",IDC_BT_RELEASE_YEAR,13,115,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号 - %TRACK_NUMBER%",IDC_BT_TRACK_NUMBER,13,127,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(２桁で出力) - %TRACK_NUMBER2%",IDC_BT_TRACK_NUMBER2,13,139,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(３桁で出力) - %TRACK_NUMBER3%",IDC_BT_TRACK_NUMBER3,13,151,165,12,BS_LEFT
+    PUSHBUTTON      "コメント - %COMMENT%",IDC_BT_COMMENT,13,163,165,12,BS_LEFT
+    PUSHBUTTON      "実行時入力型固定文字列 - %STRING%",IDC_BT_FIX_STRING,13,175,165,12,BS_LEFT
+    LTEXT           "初期フォルダ",IDC_STATIC,7,202,39,8
+    EDITTEXT        IDC_EDIT_INIT_PATH,48,199,134,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF,185,199,24,14
+    LTEXT           "※書式が未入力の場合は実行時に選択したフォルダに移動／コピー",IDC_STATIC,7,222,198,8
+END
+
+IDD_DLG_SETUP_USER_GENRE DIALOG  0, 0, 187, 191
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ユーザジャンル設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,13,15,8
+    EDITTEXT        IDC_EDIT_NAME,36,11,87,14,ES_AUTOHSCROLL
+    CONTROL         "List1",IDC_LIST_GENRE,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,29,117,155
+    PUSHBUTTON      "追加",IDC_BT_ADD,130,7,50,14,WS_DISABLED
+    PUSHBUTTON      "キャンセル",IDCANCEL,130,27,50,14
+END
+
+IDD_DLG_FILENAME_MAX_CHECK DIALOG  0, 0, 210, 71
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイル名最大文字数"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "ファイル名の最大文字数をチェックする",IDC_CH_FILENAME_MAX_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,128,10
+    LTEXT           "最大文字数",IDC_STATIC,22,27,35,8
+    EDITTEXT        IDC_ED_MAX_CHAR,62,24,17,14
+    LTEXT           "拡張子("".mp3""など)を含む",IDC_STATIC,89,27,78,8
+    CONTROL         "最大文字数を超えている場合は色を変える",IDC_CH_FILENAME_MAX_CELL_COLOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,41,139,10
+END
+
+IDD_DLG_FILENAME_CHANGE DIALOG  0, 0, 290, 81
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイル名変更"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "",IDC_STATIC_MSG,7,7,276,8
+    EDITTEXT        IDC_EDIT_NAME,7,42,276,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,100,60,37,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,152,60,37,14
+    EDITTEXT        IDC_EDIT_NAME_ORG,7,23,276,14,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_DIALOG_TEIKEI DIALOG  0, 0, 219, 223
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "定型文貼り付け"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,11,15,8
+    EDITTEXT        IDC_EDIT_TEIKEI_GROUP_NAME,26,9,143,14,ES_AUTOHSCROLL
+    LTEXT           "01",IDC_STATIC,10,31,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_01,19,28,173,14,ES_AUTOHSCROLL
+    LTEXT           "02",IDC_STATIC,10,50,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_2,19,47,173,14,ES_AUTOHSCROLL
+    LTEXT           "03",IDC_STATIC,10,68,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_3,19,66,173,14,ES_AUTOHSCROLL
+    LTEXT           "04",IDC_STATIC,10,88,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_4,19,85,173,14,ES_AUTOHSCROLL
+    LTEXT           "05",IDC_STATIC,10,107,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_5,19,104,173,14,ES_AUTOHSCROLL
+    LTEXT           "06",IDC_STATIC,10,127,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_6,19,123,173,14,ES_AUTOHSCROLL
+    LTEXT           "07",IDC_STATIC,10,146,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_7,19,142,173,14,ES_AUTOHSCROLL
+    LTEXT           "08",IDC_STATIC,10,165,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_8,19,161,173,14,ES_AUTOHSCROLL
+    LTEXT           "09",IDC_STATIC,10,183,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_9,19,180,173,14,ES_AUTOHSCROLL
+    LTEXT           "10",IDC_STATIC,10,202,8,8
+    EDITTEXT        IDC_EDIT_TEIKEI_10,19,199,173,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_01,193,28,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_02,193,47,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_03,193,66,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_04,193,85,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_05,193,104,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_06,193,123,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_07,193,142,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_08,193,161,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_09,193,180,19,14
+    PUSHBUTTON      "詳細",IDC_BT_DETAIL_10,193,199,19,14
+END
+
+IDD_DLG_DEFAUT_VALUE DIALOG  0, 0, 203, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "上級者向け"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "「リストから削除」「ファイルを削除」「編集前の状態に戻す」を単一フォルダでも有効にする",IDC_CHECK_VALID_FOLDER_SELECT,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,7,10,189,17
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,31,189,1
+    CONTROL         "多重起動を許可する",IDC_CHECK_DUP_EXEC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,38,75,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,54,189,1
+    LTEXT           "最近使ったフォルダに表示する数(1-16)",IDC_STATIC,7,62,116,8
+    EDITTEXT        IDC_EDIT_RECENT_FOLDER,124,59,12,14,ES_AUTOHSCROLL
+    LTEXT           "※要再起動",IDC_STATIC,143,62,35,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,77,189,1
+    CONTROL         "「検索」「置換」ダイアログの位置を記憶する",IDC_SAVE_REP_DLG_POS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,84,140,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,100,189,1
+    CONTROL         "Audio Listに表示する分類をカラムの幅を超えて表示する",IDC_CHECK_AUDIO_LIST_SHOW,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,109,176,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,137,50,14
+END
+
+IDD_DIALOG_TEIKEI_PASTE DIALOG  0, 0, 135, 129
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "定型文貼り付け"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "置き換え(&R)",IDC_RADIO_REPLACE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,11,51,10
+    CONTROL         "前に追加(&F)",IDC_RADIO_FRONT,"Button",BS_AUTORADIOBUTTON,7,26,51,10
+    CONTROL         "後ろに追加(&B)",IDC_RADIO_BACK,"Button",BS_AUTORADIOBUTTON,7,40,58,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,54,121,1
+    CONTROL         "追加のときにスペースを付加する(&S)",IDC_CHECK_ADD_SPACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,60,120,10
+    CONTROL         "以下の文字を付加する(&A)",IDC_CHECK_ADD_CHAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,75,91,10
+    LTEXT           "前に",IDC_STATIC,17,91,14,8
+    EDITTEXT        IDC_EDIT_ADD_FRONT,34,88,21,14,ES_AUTOHSCROLL
+    LTEXT           "後に",IDC_STATIC,70,91,14,8
+    EDITTEXT        IDC_EDIT_ADD_BACK,87,88,21,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,90,7,38,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,90,24,38,14
+    CONTROL         "貼り付け時にこのダイアログを表示",IDC_CH_SHOW_DIALOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,112,117,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,106,120,1
+END
+
+IDD_DIALOG_UNIFY_CHAR DIALOG  0, 0, 253, 141
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "文字種の統一"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "指定したパターンで変換します。",IDC_STATIC,7,7,94,8
+    LTEXT           "記号",IDC_STATIC,16,24,15,8
+    CONTROL         "そのまま",IDC_CONV_KIGOU_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,23,42,10
+    CONTROL         "全角",IDC_CONV_KIGOU_ZEN,"Button",BS_AUTORADIOBUTTON,122,23,30,10
+    CONTROL         "半角",IDC_CONV_KIGOU_HAN,"Button",BS_AUTORADIOBUTTON,162,23,30,10
+    LTEXT           "数字",IDC_STATIC,16,38,15,8
+    CONTROL         "そのまま",IDC_CONV_SUJI_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,37,42,10
+    CONTROL         "全角",IDC_CONV_SUJI_ZEN,"Button",BS_AUTORADIOBUTTON,122,37,30,10
+    CONTROL         "半角",IDC_CONV_SUJI_HAN,"Button",BS_AUTORADIOBUTTON,162,37,30,10
+    LTEXT           "カタカナ",IDC_STATIC,16,52,24,8
+    CONTROL         "そのまま",IDC_CONV_KATA_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,51,42,10
+    CONTROL         "全角",IDC_CONV_KATA_ZEN,"Button",BS_AUTORADIOBUTTON,122,51,30,10
+    CONTROL         "半角",IDC_CONV_KATA_HAN,"Button",BS_AUTORADIOBUTTON,162,51,30,10
+    LTEXT           "アルファベット",IDC_STATIC,16,65,41,8
+    CONTROL         "そのまま",IDC_CONV_ALPHA_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,64,42,10
+    CONTROL         "全角",IDC_CONV_ALPHA_ZEN,"Button",BS_AUTORADIOBUTTON,122,64,30,10
+    CONTROL         "半角",IDC_CONV_ALPHA_HAN,"Button",BS_AUTORADIOBUTTON,162,64,30,10
+    LTEXT           "大文字小文字",IDC_STATIC,16,79,42,8
+    CONTROL         "そのまま",IDC_CONV_UPLOW_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,78,42,10
+    CONTROL         "大文字",IDC_CONV_UPLOW_UPPER,"Button",BS_AUTORADIOBUTTON,122,78,31,10
+    CONTROL         "小文字",IDC_CONV_UPLOW_LOWER,"Button",BS_AUTORADIOBUTTON,162,78,37,10
+    CONTROL         "単語の１文字目のみ大文字",IDC_CONV_FIRST_UPPER,"Button",BS_AUTORADIOBUTTON,89,91,96,10
+    LTEXT           "平仮名片仮名",IDC_STATIC,16,106,42,8
+    CONTROL         "そのまま",IDC_CONV_HIRAKATA_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,105,42,10
+    CONTROL         "ひらがな",IDC_CONV_HIRAKATA_HIRA,"Button",BS_AUTORADIOBUTTON,122,105,37,10
+    CONTROL         "カタカナ",IDC_CONV_HIRAKATA_KATA,"Button",BS_AUTORADIOBUTTON,162,105,39,10
+    LTEXT           "大文字小文字固定",IDC_STATIC,16,122,56,8
+    CONTROL         "しない",IDC_CONV_FIXED_UPPER_LOWER_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,120,34,10
+    CONTROL         "する",IDC_CONV_FIXED_UPPER_LOWER,"Button",BS_AUTORADIOBUTTON,122,120,29,10
+    DEFPUSHBUTTON   "OK",IDOK,196,7,50,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,196,24,50,14
+END
+
+IDD_CUSTOM_FILE_OPEN_PLAYLIST DIALOG  0, 0, 143, 12
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "プレイリスト入力設定ダイアログを表示する",IDC_CH_SHOW_LOAD_PLAYLIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,2,2,139,8
+END
+
+IDD_DIALOG_FAVORITES DIALOG  0, 0, 207, 223
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "お気に入りのフォルダ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "01",IDC_STATIC,10,12,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES1,19,9,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES1,175,9,24,14
+    LTEXT           "02",IDC_STATIC,10,31,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES2,19,29,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES2,175,29,24,14
+    LTEXT           "03",IDC_STATIC,10,49,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES3,19,47,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES3,175,47,24,14
+    LTEXT           "04",IDC_STATIC,10,69,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES4,19,67,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES4,175,67,24,14
+    LTEXT           "05",IDC_STATIC,10,88,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES5,19,86,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES5,175,86,24,14
+    LTEXT           "06",IDC_STATIC,10,108,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES6,19,106,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES6,175,106,24,14
+    LTEXT           "07",IDC_STATIC,10,127,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES7,19,125,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES7,175,125,24,14
+    LTEXT           "08",IDC_STATIC,10,146,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES8,19,143,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES8,175,143,24,14
+    LTEXT           "09",IDC_STATIC,10,164,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES9,19,162,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES9,175,162,24,14
+    LTEXT           "10",IDC_STATIC,10,183,8,8
+    EDITTEXT        IDC_EDIT_FAVORITES10,19,181,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照...",IDC_BT_REF_FAVORITES10,175,181,24,14
+    PUSHBUTTON      "OK",IDOK,49,203,42,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,115,203,42,14
+END
+
+IDD_DLG_COPY_FORMAT DIALOG  0, 0, 203, 191
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "書式コピー"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,9,15,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,24,7,126,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,155,7,30,14
+    LTEXT           "書式",IDC_STATIC,7,26,15,8
+    EDITTEXT        IDC_EDIT_FORMAT,24,23,160,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "ファイル名(拡張子なし)  - %FILE_NAME%",IDC_BT_FILE_NAME,13,54,165,12,BS_LEFT
+    PUSHBUTTON      "アーティスト名 - %ARTIST_NAME%",IDC_BT_ARTIST_NAME,13,66,165,12,BS_LEFT
+    PUSHBUTTON      "アルバム名 - %ALBUM_NAME%",IDC_BT_ALBUM_NAME,13,78,165,12,BS_LEFT
+    PUSHBUTTON      "トラック名 - %TRACK_NAME%",IDC_BT_TRACK_NAME,13,90,165,12,BS_LEFT
+    PUSHBUTTON      "リリース年号 - %RELEASE_YEAR%",IDC_BT_RELEASE_YEAR,13,102,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号 - %TRACK_NUMBER%",IDC_BT_TRACK_NUMBER,13,114,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(２桁で出力) - %TRACK_NUMBER2%",IDC_BT_TRACK_NUMBER2,13,126,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(３桁で出力) - %TRACK_NUMBER3%",IDC_BT_TRACK_NUMBER3,13,138,165,12,BS_LEFT
+    PUSHBUTTON      "コメント - %COMMENT%",IDC_BT_COMMENT,13,150,165,12,BS_LEFT
+    PUSHBUTTON      "実行時入力型固定文字列 - %STRING%",IDC_BT_FIX_STRING,13,162,165,12,BS_LEFT
+    GROUPBOX        "使用可能変数一覧(var_list2.txt参照)",IDC_STATIC,7,43,178,136
+END
+
+IDD_DLG_SETUP_PLUGIN DIALOG  0, 0, 199, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プラグイン設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "List1",IDC_LIST_PLUGIN,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,117,125
+    PUSHBUTTON      "OK",IDOK,130,7,62,14
+    PUSHBUTTON      "上へ(&U)",IDC_BT_UP,130,30,62,14,WS_DISABLED
+    PUSHBUTTON      "下へ(&D)",IDC_BT_DOWN,130,51,62,14,WS_DISABLED
+    PUSHBUTTON      "設定(&S)",IDC_BT_SETUP,130,74,62,14,WS_DISABLED
+    PUSHBUTTON      "インストール(&I)",IDC_BT_INSTALL,130,99,62,14
+    EDITTEXT        IDC_EDIT_INFO,7,142,185,52,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "※プラグインの読み込み順は再起動後に有効となります",IDC_STATIC,7,200,163,8
+    PUSHBUTTON      "アンインストール(&U)",IDC_BT_UNINSTALL,130,120,62,14,WS_DISABLED
+END
+
+IDD_DIALOG_CONV DIALOG  0, 0, 215, 159
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "変換"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "「単語の１文字目のみ大文字」で以下の単語は除外する",IDC_CHECK_FIRST_UPPER_IGNORE_WORD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,177,10
+    EDITTEXT        IDC_EDIT_FIRST_UPPER_IGNORE_WORD,27,20,161,14,ES_AUTOHSCROLL
+    LTEXT           "※ 半角英小文字で単語と単語はカンマで区切る",IDC_STATIC,27,37,140,8
+    LTEXT           "※ 単語が文頭の場合は除外されません",IDC_STATIC,27,48,118,8
+    LTEXT           "以下の文字に続く単語は文頭とする",IDC_STATIC,19,61,104,8
+    EDITTEXT        IDC_EDIT_FIRST_UPPER_SENTENCE_SEPARATOR,27,71,161,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,138,50,14
+    CONTROL         "ユーザー指定変換を書式切替をせずに実行できるようにする",IDC_CHECK_USER_CONV_MENU,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,7,100,190,10
+    CONTROL         "全角・半角変換で 、。「」 をカタカナとして扱う",IDC_CH_ZENHAN_KIGOU_KANA,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,119,144,10
+END
+
+IDD_DLG_USER_CONV_FORMAT_TAG2TAG DIALOG  0, 0, 191, 175
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "タグ情報変換書式"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名称",IDC_STATIC,7,9,19,8
+    COMBOBOX        IDC_LIST_FORMAT_TYPE,25,7,126,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "名称変更",IDC_BT_NAME_CHANGE,154,7,30,14
+    EDITTEXT        IDC_ED_FORMAT,25,30,153,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "アーティスト名 - %ARTIST_NAME%",IDC_BT_ARTIST_NAME,13,65,165,12,BS_LEFT
+    PUSHBUTTON      "アルバム名 - %ALBUM_NAME%",IDC_BT_ALBUM_NAME,13,77,165,12,BS_LEFT
+    PUSHBUTTON      "トラック名 - %TRACK_NAME%",IDC_BT_TRACK_NAME,13,89,165,12,BS_LEFT
+    PUSHBUTTON      "リリース年号 - %RELEASE_YEAR%",IDC_BT_RELEASE_YEAR,13,101,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号 - %TRACK_NUMBER%",IDC_BT_TRACK_NUMBER,13,113,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(２桁で出力) - %TRACK_NUMBER2%",IDC_BT_TRACK_NUMBER2,13,125,165,12,BS_LEFT
+    PUSHBUTTON      "トラック番号(３桁で出力) - %TRACK_NUMBER3%",IDC_BT_TRACK_NUMBER3,13,137,165,12,BS_LEFT
+    PUSHBUTTON      "コメント - %COMMENT%",IDC_BT_COMMENT,13,149,165,12,BS_LEFT
+    GROUPBOX        "使用可能変数一覧(var_list2.txt参照)",IDC_STATIC,7,53,177,112
+    LTEXT           "書式",IDC_STATIC,7,32,15,8
+END
+
+IDD_DLG_FILE_OVERWRITE2 DIALOG  0, 0, 315, 107
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイル上書き確認ダイアログ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "ファイルが存在していますが、上書きしてもよろしいですか？",IDC_STATIC,7,7,174,8
+    LTEXT           "ファイル名",IDC_STATIC,7,27,31,8
+    EDITTEXT        IDC_ED_FILENAME,45,24,263,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "更新日",IDC_STATIC,7,46,33,8
+    EDITTEXT        IDC_ED_TIME_STAMP,45,43,81,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "サイズ",IDC_STATIC,7,65,33,8
+    EDITTEXT        IDC_ED_SIZE,45,62,81,14,ES_AUTOHSCROLL | ES_READONLY
+    DEFPUSHBUTTON   "このファイルを上書き(&O)",IDC_BT_OVERWRITE,7,86,75,14
+    PUSHBUTTON      "以降全て上書き(&A)",IDC_BT_ALL_OVERWRITE,88,86,60,14
+    PUSHBUTTON      "スキップ(&S)",IDC_BT_SKIP,216,86,43,14
+    PUSHBUTTON      "中止",IDCANCEL,265,86,43,14
+    PUSHBUTTON      "別名で保存(&R)",IDC_BT_RENAME,154,86,56,14
+END
+
+IDD_DLG_FIXED_UPPER_LOWER DIALOG  0, 0, 187, 217
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "大文字小文字固定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    EDITTEXT        IDC_EDIT_FIXED_WORD,43,11,78,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "追加",IDC_BT_ADD,130,11,50,14
+    PUSHBUTTON      "削除",IDC_BT_DELETE,130,32,50,14
+    CONTROL         "List3",IDC_LIST_UPPER_LOWER,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,32,114,178
+    LTEXT           "固定単語",IDC_STATIC,10,14,28,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "Comments", "オリジナルはMERCURYさん、hasetaさん。"
+            VALUE "CompanyName", "Mimura"
+            VALUE "FileDescription", "SuperTagEditor (MERCURYさん) -> STEP (hasetaさん) -> STEP_M"
+            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "InternalName", "STEP_M"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2010 Mimura"
+            VALUE "OriginalFilename", "SuperTagEditor.exe"
+            VALUE "ProductName", "STEP改造版 STEP_M"
+            VALUE "ProductVersion", "1, 0, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 212
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 311
+    END
+
+    CG_IDD_PROGRESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_DLG_LIST_SORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 187
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_DLG_SET_CLASSIFICATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 206
+    END
+
+    IDD_DLG_FILE_OVERWRITE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_DLG_USER_CONV_FORMAT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_DLG_NAME_CHANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 118
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 42
+    END
+
+    IDD_DLG_SAVE_PLAYLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_DLG_LOAD_PLAYLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 164
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+
+    IDD_DLG_SEARCH_STATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 155
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_DLG_CHECK_WORD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 156
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 156
+    END
+
+    IDD_DLG_KEY_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 204
+    END
+
+    IDD_DLG_CONV_FORMAT_EX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 232
+    END
+
+    IDD_DLG_EDIT_SHOW_COLUMN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_ENV_CONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 192
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_DLG_REPLACE_WORD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_DLG_REPLACE_FILENAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_DLG_FIXED_STRING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 118
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
+    END
+
+    IDD_DLG_SETUP_GENRE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 192
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 206
+    END
+
+    IDD_DLG_FOLDER_SYNC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 130
+    END
+
+    IDD_DLG_ENV_PLAYER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 108
+    END
+
+    IDD_DLG_WRITE_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+    END
+
+    IDD_CUSTOM_FILE_OPEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 160
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 12
+    END
+
+    IDD_DLG_ENVIRONMENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 280
+    END
+
+    IDD_DLG_LYRIC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_DLG_DELETE_CHAR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 96
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_DLG_ADD_NUMBER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_DLG_MOVE_FOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 230
+    END
+
+    IDD_DLG_SETUP_USER_GENRE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+    END
+
+    IDD_DLG_FILENAME_MAX_CHECK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_DLG_FILENAME_CHANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_DIALOG_TEIKEI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 212
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_DLG_DEFAUT_VALUE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_DIALOG_TEIKEI_PASTE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 128
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 122
+    END
+
+    IDD_DIALOG_UNIFY_CHAR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+
+    IDD_CUSTOM_FILE_OPEN_PLAYLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 141
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 10
+    END
+
+    IDD_DIALOG_FAVORITES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_DLG_COPY_FORMAT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+    END
+
+    IDD_DLG_SETUP_PLUGIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 192
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DIALOG_CONV, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 152
+    END
+
+    IDD_DLG_USER_CONV_FORMAT_TAG2TAG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 168
+    END
+
+    IDD_DLG_FILE_OVERWRITE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 308
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_DLG_FIXED_UPPER_LOWER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 210
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_USER_CONV_FORMAT DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+IDD_DLG_SEARCH_STATE DLGINIT
+BEGIN
+    IDC_LIST_SEARCH_DIR, 0x403, 27, 0
+0x8d5b, 0x8173, 0x3d40, 0x203e, 0xf197, 0x205d, 0xcc82, 0x878f, 0xc982, 
+0x9f8c, 0xf58d, 0xb782, 0xe982, "\000" 
+    IDC_LIST_SEARCH_DIR, 0x403, 27, 0
+0x975b, 0x81f1, 0x3d40, 0x203e, 0x738d, 0x205d, 0xcc82, 0x878f, 0xc982, 
+0x9f8c, 0xf58d, 0xb782, 0xe982, "\000" 
+    0
+END
+
+IDD_DLG_CONV_FORMAT_EX DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+IDD_DLG_WRITE_FORM DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+IDD_DLG_MOVE_FOLDER DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+IDD_DLG_COPY_FORMAT DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+IDD_DLG_USER_CONV_FORMAT_TAG2TAG DLGINIT
+BEGIN
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5082, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5182, "\000" 
+    IDC_LIST_FORMAT_TYPE, 0x403, 13, 0
+0x5690, 0xb582, 0xa282, 0x918f, 0xae8e, 0x5282, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "SuperTagEditor\n\nTagEdit\nSuperTagEditorファイル (*.ste)\n.ste\nSuperTagEditor.Document\nSuperTagEditor Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "SuperTagEditor"
+    AFX_IDS_IDLEMESSAGE     "レディ"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "上書"
+    ID_INDICATOR_REC        "記録"
+    ID_INDICATOR_KANA       "ｶﾅ"
+    ID_INDICATOR_LOCATION   "99：99"
+    ID_INDICATOR_SIZE       " "
+    ID_INDICATOR_INPUT_MODE " "
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "読み込まれているファイルのリストをクリアします\nリストをクリア"
+    ID_FILE_OPEN            "既存のファイルを開く\n開く"
+    ID_FILE_CLOSE           "作業中のファイルを閉じる\n閉じる"
+    ID_FILE_SAVE            "変更されたタグ情報を更新します\nタグ情報を更新"
+    ID_FILE_SAVE_AS         "作業中のファイルを新しい名前で保存\n名前をつけて保存"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "プログラムの情報、バージョンそして著作権を表示\nバージョン情報"
+    ID_APP_EXIT             "終了します\n終了"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE2       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE3       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE4       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE5       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE6       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE7       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE8       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE9       "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE10      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE11      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE12      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE13      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE14      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE15      "指定のﾌｨﾙﾀﾞを開く"
+    ID_FILE_MRU_FILE16      "指定のﾌｨﾙﾀﾞを開く"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "次のウィンドウに切り替える\n次のペイン"
+    ID_PREV_PANE            "前のウィンドウに切り替える\n前のペイン"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "作業中のウィンドウを分割\n分割"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "選択範囲を消去\n消去"
+    ID_EDIT_CLEAR_ALL       "すべて消去\nすべて消去"
+    ID_EDIT_COPY            "選択範囲をコピーしてクリップボードに保存\nコピー"
+    ID_EDIT_CUT             "選択範囲を切り取ってクリップボードに保存\n切り取り"
+    ID_EDIT_FIND            "指定した文字列を検索する\n検索"
+    ID_EDIT_PASTE           "クリップボードの内容を貼り付け\n貼り付け"
+    ID_EDIT_REPEAT          "直前に行った動作を繰り返す\n繰り返し"
+    ID_EDIT_REPLACE         "指定した文字列を他の文字列で置換する\n置換"
+    ID_EDIT_SELECT_ALL      "ファイル内のすべてを選択\nすべて選択"
+    ID_EDIT_UNDO            "直前に行った動作を元に戻す\n元に戻す"
+    ID_EDIT_REDO            "直前に行った動作を繰り返す\n繰り返す"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "ツールバーの表示/非表示\nツールバーの表示切り替え"
+    ID_VIEW_STATUS_BAR      "ステータスバーの表示/非表示\nステータスバーの表示切り替え"
+    ID_VIEW_AUTOARRANGE     "アイコンを自動的に整列します。"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "ウィンドウのサイズを変更"
+    AFX_IDS_SCMOVE          "ウィンドウの位置を変更"
+    AFX_IDS_SCMINIMIZE      "ウィンドウを最小化する"
+    AFX_IDS_SCMAXIMIZE      "ウィンドウを最大化する"
+    AFX_IDS_SCNEXTWINDOW    "次のウィンドウに切り替える"
+    AFX_IDS_SCPREVWINDOW    "前のウィンドウに切り替える"
+    AFX_IDS_SCCLOSE         "作業中のウィンドウを閉じ、変更したファイルの保存を指示"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "ウィンドウを通常のサイズに戻す"
+    AFX_IDS_SCTASKLIST      "アプリケーションの切り替え"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_SMALLICON       "オブジェクトを小さいアイコンで表示します。\n小さいアイコン"
+    ID_VIEW_LARGEICON       "オブジェクトを大きいアイコンで表示します。\n大きいアイコン"
+    ID_VIEW_LIST            "オブジェクトを一覧表示します。\n一覧"
+    ID_VIEW_DETAILS         "ウィンドウ内の各オブジェクトの詳細情報を表示します。\n詳細"
+    ID_VIEW_LINEUP          "アイコンを整列します。"
+    ID_VIEW_BYNAME          "アイコンを名前順に並べ替えます。"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OPEN_FOLDER          "フォルダを開く\nフォルダを開く"
+    ID_CELL_COPY_DOWN       "項目の内容を下方向へコピーします\n下方向へコピー"
+    ID_SAVE_ALL_TAG         "変更されたタグ情報を更新します\nタグ情報を更新"
+    ID_CONV_FILENAME_TO_TRACKNAME "ファイル名 => トラック名 に変換\nファイル名 => トラック名"
+    ID_CONV_TRACKNAME_TO_FILENAME "トラック名 => ファイル名 に変換\nトラック名 => ファイル名"
+    ID_CONV_TAG2FILE_USER   "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FILE2TAG_USER   "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_DLG_ENVIRONMENT      "オプション設定ダイアログを開く\nオプション設定"
+    ID_SET_NUMBER           "選択されているセルに下方向に１からの連番をセットする\n下方向へ連番"
+    ID_DLG_KEY_CUSTOMIZE    "キーカスタマイズダイアログを開く\nキーカスタマイズダイアログ"
+    ID_WINAMP_PLAY          "現在選択されている曲をプレイヤーで再生する\n再生"
+    ID_WINAMP_STOP          "プレイヤーの再生を停止します\n停止"
+    ID_WINAMP_EXIT          "プレイヤーを終了します\nプレイヤー終了"
+END
+
+STRINGTABLE 
+BEGIN
+    CG_IDS_PROGRESS_CAPTION "\\xffi\\xffs\\xffx"
+    IDS_PROPSHT_CAPTION     "プロパティシート"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_FIELD_SI        "SI/ID3v2フィールドを表示／編集する\nSI/ID3v2フィールドを表示／編集"
+    ID_EDIT_TD3_TAG         "ID3 tagを表示／編集する\nID3 tagを表示／編集"
+    ID_EDIT_CHANGE_FIELD    "[ID3 tag]<=>[SI/ID3v2フィールド]の表示を切り替えます\n[ID3 tag]<=>[SI/ID3v2フィールド]切替"
+    ID_CONV_SI_FIELD_TO_ID3TAG 
+                            "SI/ID3v2フィールドからID3tagフィールドに変換します\nSI/ID3v2フィールドからID3tagに変換"
+    ID_SORT_LIST            "最大３つのキーを指定して並び替えを行います\n並べ替え"
+    ID_SET_CLASS            "ファイルの分類方法を設定します\n分類設定ダイアログ"
+    ID_VIEW_DIALOG_BAR      "ファイル情報バーの表示／非表示\nファイル情報バーの表示切り替え"
+    ID_WRITE_PLAYLIST       "チェックされているファイルをプレイリストに出力します\nプレイリストを出力"
+    ID_DLG_USER_FORMAT      "ユーザー変換書式設定ダイアログを開く\nユーザー変換書式設定ダイアログ"
+    ID_WINAMP_PLAY_NEXT     "プレイヤーのプレイリストの次の曲を再生します\n次の曲へ"
+    ID_WINAMP_PLAY_PREV     "プレイヤーのプレイリストの前の曲を再生します\n前の曲へ"
+    ID_LOAD_PLAYLIST        "プレイリストを読み込みます\nプレイリストの読み込み"
+    ID_CHECK_WORD           "条件を指定してチェックマークを付けます\n条件を指定してチェック"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_SELECT_FILES_CHECK   "選択されている全てのファイルをチェックします\n選択ファイルをチェックする"
+    ID_SELECT_FILES_UNCHECK "選択されている全てのファイルのチェックを外します\n選択ファイルのチェックを外す"
+    ID_SELECT_DELETE_LIST   "選択されているファイルをリストから削除します\nリストから削除"
+    ID_SELECT_DELETE_FILE   "選択されているファイルを削除します\nファイルを移動"
+    ID_SELECT_EDIT_DESTORY  "選択されているファイルを編集前の状態に戻します\n編集前の状態に戻す"
+    ID_DLG_KEY_CONFIG       "キーカスタマイズダイアログを開く\nキーカスタマイズダイアログ"
+    ID_DLG_EDIT_SHOW_COLUMN "表示項目設定ダイアログを開く\n表示項目設定ダイアログ"
+    ID_ALL_FILES_CHECK      "全てのファイルをチェックします\n全てのファイルをチェックする"
+    ID_REVERSE_CHECK        "全てのファイルのチェック状態を反転します\nチェック状態を反転する"
+    ID_ALL_FILES_UNCHECK    "全てのファイルのチェックを外します\n全てのファイルのチェックを外す"
+    ID_CHECK_FILES_SELECT   "チェックされているファイルを選択状態にします\nチェックされているファイルを選択する"
+    ID_EXEC_CLASSIFICATION  "分類表示を最新の状態に更新します\n分類表示を更新"
+    ID_ADJUST_COLUMN_WIDTH  "各項目のカラム幅を一番長いものに調整します\n全てのカラム幅を調整"
+    ID_CONV_FORMAT_EX_01    "拡張変換書式１で変換する\n書式１"
+    ID_CONV_FORMAT_EX_02    "ユーザ指定変換で使う書式\n書式２"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_CONV_FORMAT_EX_03    "拡張変換書式３で変換する\n書式３"
+    ID_CONV_FORMAT_EX_04    "拡張変換書式４で変換する\n書式４"
+    ID_CONV_FORMAT_EX_05    "拡張変換書式５で変換する\n書式５"
+    ID_CONV_FORMAT_EX_06    "拡張変換書式６で変換する\n書式6"
+    ID_CONV_FORMAT_EX_07    "拡張変換書式７で変換する\n書式7"
+    ID_CONV_FORMAT_EX_08    "拡張変換書式８で変換する\n書式8"
+    ID_CONV_FORMAT_EX_09    "拡張変換書式９で変換する\n書式9"
+    ID_CONV_FORMAT_EX_10    "拡張変換書式10で変換する\n書式10"
+    ID_CONV_STR_LOWER       "選択されているセルの内容を小文字に変換します\n小文字に変換"
+    ID_CONV_STR_UPPER       "選択されているセルの内容を大文字に変換します\n大文字に変換"
+    ID_CONV_STR_HANKAKU     "選択されているセルの内容を半角に変換します\n半角に変換"
+    ID_CONV_STR_KANA        "全角かなに変換\n全角かなに変換"
+    ID_CONV_STR_KATA        "選択されているセルの内容を全角カナに変換します\n全角カナに変換"
+    ID_CONV_STR_HIRA        "選択されているセルの内容を全角かなに変換します\n全角かなに変換"
+    ID_CONV_STR_ZEN_SUJI    "数字を半角から全角に変換します\n数字のみ"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_CONV_STR_ZEN_KATA    "カタカナを半角から全角に変換します\nカタカナのみ"
+    ID_CONV_STR_ZEN_ALPHA   "アルファベットを半角から全角に変換します\nアルファベットのみ"
+    ID_CONV_STR_HAN_ALL     "文字を全角から半角に変換します\n全て"
+    ID_CONV_STR_HAN_SUJI    "数字を全角から半角に変換します\n数字のみ"
+    ID_CONV_STR_HAN_KATA    "カタカナを全角から半角に変換します\nカタカナのみ"
+    ID_CONV_STR_HAN_ALPHA   "アルファベットを全角から半角に変換します\nアルファベットのみ"
+    ID_MENUITEM32838        "\n小文字 => 大文字"
+    ID_CONV_STR_TO_UPPER    "文字を小文字から大文字に変換します\n小文字 => 大文字"
+    ID_CONV_STR_TO_LOWER    "文字を大文字から小文字に変換します\n大文字 => 小文字"
+    ID_CONV_STR_FIRST_UPPER "単語の先頭の文字のみ大文字であとは小文字に変換します\n単語の１文字目のみ大文字"
+    ID_CONV_STR_HIRA2KATA   "全角ひらがなを全角カタカナに変換します\nひらがな => カタカナ"
+    ID_CONV_STR_KATA2HIRA   "全角カタカナを全角ひらがなに変換します\nカタカナ => ひらがな"
+    ID_CONV_STR_ZEN_ALL     "文字を半角から全角に変換します\n全て"
+    ID_FOLDER_TREE_SYNC     "STEのツリー表示に合わせて実際のフォルダ構成を同期させます\nフォルダ構成の同期"
+    ID_CHECK_FILE_SYNC      "チェックされているファイルのみ[フォルダ構成を同期]を行います\nフォルダ構成の同期(チェックのみ)"
+    ID_DLG_ENVIRONMENT_NORMAL "オプション設定ダイアログを開く\nオプション設定"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_DLG_ENVIRONMENT_CONV "変換に関する設定を行うオプション設定ダイアログを開く\n変換"
+    ID_DLG_ENVIRONMENT_ADVANCED "上級者向けの高度な設定を行うオプション設定ダイアログを開く\n上級者向け"
+    ID_CONV_STR_ZEN_KIGOU   "記号を半角から全角に変換します\n記号のみ"
+    ID_CONV_STR_HAN_KIGOU   "記号を全角から半角に変換します\n記号のみ"
+    ID_SORT_LIST_DIRECT     "前回と同じ設定で並べ替えを再度行います\n並べ替えを再実行"
+    ID_WRITE_LIST1          "01: リスト\n01: リスト"
+    ID_WRITE_LIST2          "02: リスト\n02: リスト"
+    ID_WRITE_LIST3          "03: リスト\n03: リスト"
+    ID_WRITE_LIST4          "04: リスト\n04: リスト"
+    ID_WRITE_LIST5          "05: リスト\n05: リスト"
+    ID_WRITE_TREE_PLAYLIST  "ツリー構成で分類したプレイリストファイルを出力します\nツリー分類のプレイリスト出力"
+    ID_SET_LIST_FONT        "フォント設定ダイアログを開く\nフォント設定"
+    ID_DELETE_CHAR          "選択されているセルの先頭/末尾からｎ文字を削除する\n先頭/末尾からｎ文字を削除"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_SET_NUMBER_ADD       "選択されているセルに下方向に１からの連番を先頭または末尾に追加する\n下方向へ連番を追加"
+    ID_MOVE_FOLDER_01       "移動先フォルダ書式１でコピー／移動する\nコピー／移動１"
+    ID_MOVE_FOLDER_02       "移動先フォルダ書式２でコピー／移動する\nコピー／移動２"
+    ID_MOVE_FOLDER_03       "移動先フォルダ書式３でコピー／移動する\nコピー／移動３"
+    ID_MOVE_FOLDER_04       "移動先フォルダ書式４でコピー／移動する\nコピー／移動４"
+    ID_MOVE_FOLDER_05       "移動先フォルダ書式５でコピー／移動する\nコピー／移動５"
+    ID_SELECT_TREE_COLUM    "ツリー配下のファイルのセルを一括で選択状態にします\nツリーのセルを一括選択"
+    ID_CONV_FORMAT_USER_01  "ユーザ指定変換で使う書式\n書式1"
+    ID_CONV_FORMAT_USER_02  "ユーザ指定変換で使う書式\n書式2"
+    ID_CONV_FORMAT_USER_03  "ユーザ指定変換で使う書式\n書式3"
+    ID_TEIKEI_01            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_02            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_03            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_04            "定型文を貼り付ける\n定型文"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TEIKEI_05            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_06            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_07            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_08            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_09            "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_10            "定型文を貼り付ける\n定型文"
+    ID_CHECK_FILENAME_MAX   "選択されているファイルのファイル名長をチェックし最大文字数を超えている場合は変更を促します\nファイル名の長さをチェック"
+    ID_CONV_FORMAT_USER     "ユーザ指定変換で使う書式を切替\nユーザ書式切替"
+    ID_TEIKEI               "定型文を貼り付ける\n定型文貼り付け"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_POPUP_CUSTOMIZE      "ツールバーのカスタマイズ\nツールバーのカスタマイズ"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_DLG_TEIKEI           "定型文貼り付けで使用する定型文設定ダイアログを開く\n定型文"
+    ID_TEIKEI_2_01          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_02          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_03          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_04          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_05          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_06          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_07          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_08          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_09          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_2_10          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_01          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_02          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_03          "定型文を貼り付ける\n定型文"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TEIKEI_3_04          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_05          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_06          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_07          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_08          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_09          "定型文を貼り付ける\n定型文"
+    ID_TEIKEI_3_10          "定型文を貼り付ける\n定型文"
+    ID_UNIFY_CHAR           "文字種を統一します\n文字種の統一"
+    ID_CONV_FORMAT_USER_04  "ユーザ指定変換で使う書式\n書式4"
+    ID_CONV_FORMAT_USER_05  "ユーザ指定変換で使う書式\n書式5"
+    ID_END_EDIT_RIGHT       "項目変更後の[Enter]でカーソルを右に移動させる\n項目変更後にカーソルを右に移動"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_DLG_FAVORITES        "お気に入りのフォルダ設定ダイアログを開く\nお気に入りのフォルダ"
+    ID_FAVORITE_FOLDER_01   "お気に入りのフォルダを開く1\nお気に入りのフォルダ1"
+    ID_FAVORITE_FOLDER_02   "お気に入りのフォルダを開く2\nお気に入りのフォルダ2"
+    ID_FAVORITE_FOLDER_03   "お気に入りのフォルダを開く3\nお気に入りのフォルダ3"
+    ID_FAVORITE_FOLDER_04   "お気に入りのフォルダを開く4\nお気に入りのフォルダ4"
+    ID_FAVORITE_FOLDER_05   "お気に入りのフォルダを開く5\nお気に入りのフォルダ5"
+    ID_FAVORITE_FOLDER_06   "お気に入りのフォルダを開く6\nお気に入りのフォルダ6"
+    ID_FAVORITE_FOLDER_07   "お気に入りのフォルダを開く7\nお気に入りのフォルダ7"
+    ID_FAVORITE_FOLDER_08   "お気に入りのフォルダを開く8\nお気に入りのフォルダ8"
+    ID_FAVORITE_FOLDER_09   "お気に入りのフォルダを開く9\nお気に入りのフォルダ9"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FAVORITE_FOLDER_10   "お気に入りのフォルダを開く10\nお気に入りのフォルダ10"
+    ID_FAVORITES_FOLDER     "お気に入りのフォルダを開く\nお気に入りのフォルダ"
+    ID_CALC_FOLDER_TOTAL    "Track数/演奏時間合計/サイズ合計を算出\n合計を算出"
+    ID_EDIT_PASTE_ADD       "クリップボードの内容をセルの内容に追加で貼り付け\n追加で貼り付け"
+    ID_EDIT_COPY_FORMAT_01  "選択ファイルを書式に従ってコピーしてクリップボードに保存\n書式コピー"
+    ID_EDIT_COPY_FORMAT_02  "選択ファイルを書式に従ってコピーしてクリップボードに保存\n書式コピー"
+    ID_EDIT_COPY_FORMAT_03  "選択ファイルを書式に従ってコピーしてクリップボードに保存\n書式コピー"
+    ID_EDIT_COPY_FORMAT_04  "選択ファイルを書式に従ってコピーしてクリップボードに保存\n書式コピー"
+    ID_EDIT_COPY_FORMAT_05  "選択ファイルを書式に従ってコピーしてクリップボードに保存\n書式コピー"
+    ID_DELETE_CHAR_SPACE    "選択されているセルの先頭/末尾にある空白文字(半角全角ｽﾍﾟｰｽ/ﾀﾌﾞ)を削除する\n先頭/末尾の空白文字を削除"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_DLG_SETUP_PLUGIN     "プラグインの設定を行います\nプラグイン設定"
+    ID_CONV_STR_KAN2HIRA    "漢字を全角ひらがなに変換します\n漢字 => ひらがな"
+    ID_CONV_STR_ROMAJI      "ローマ字に変換します\nローマ字"
+    ID_CONV_DEFAULT         "書式設定\nデフォルト書式を設定"
+    ID_CONV_DEFAULT_SETUP   "書式設定\nデフォルト変換の書式を設定"
+    ID_CONV_USER_SETUP      "ﾕｰｻﾞｰ指定変換の書式を設定\n書式設定"
+    ID_CONV_EX_SETUP        "拡張書式変換の書式を設定\n書式設定"
+    ID_SELECT_TREE_FILE     "ツリー配下のファイルを一括で選択状態にします\nツリーのファイルを一括選択"
+    ID_MOVE_TO_PARENT       "カーソル位置を親ツリーへ移動します\nカーソルを親ツリーへ移動"
+    ID_MOVE_TO_PREVIOUS     "カーソル位置を一つ上のツリーへ移動します\nカーソル位置を一つ上のツリーへ移動"
+    ID_MOVE_TO_NEXT         "カーソル位置を一つ下のツリーへ移動します\nカーソル位置を一つ下のツリーへ移動"
+    ID_CONV_FORMAT_USER_EXEC_01 "タグ情報 => ファイル名を書式１で実行\\書式１で実行"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_CONV_FORMAT_USER_T2F_01 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_T2F_02 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_T2F_03 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_T2F_04 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_T2F_05 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_T2F_SELECTED 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_FORMAT_USER_F2T_01 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_FORMAT_USER_F2T_02 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_FORMAT_USER_F2T_03 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_FORMAT_USER_F2T_04 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_FORMAT_USER_F2T_05 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_FILE2TAG_USER_SUB 
+                            "ユーザー指定のフォーマットで[ファイル名]から[タグ情報]に変換する\nファイル名 => タグ情報"
+    ID_CONV_TAG2FILE_USER_SUB 
+                            "ユーザー指定のフォーマットで[タグ情報]から[ファイル名]に変換する\nタグ情報 => ファイル名"
+    ID_CONV_TAG_TO_TAG_01   "タグ情報変換書式１で変換する\n書式１"
+    ID_CONV_TAG_TO_TAG_02   "タグ情報変換書式２で変換する\n書式２"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_CONV_TAG_TO_TAG_03   "タグ情報変換書式３で変換する\n書式３"
+    ID_CONV_TAG_TO_TAG_04   "タグ情報変換書式４で変換する\n書式４"
+    ID_CONV_TAG_TO_TAG_05   "タグ情報変換書式５で変換する\n書式５"
+    ID_CONV_TAG2TAG_SETUP   "タグ情報変換の書式を設定\n書式設定"
+    ID_CONV_STR_FIXED_UPPER_LOWER "定義済み単語の大文字小文字を指定された通りに変換します\n大文字小文字固定"
+    ID_TEIKEI_TOOL          "定型文を貼り付ける\n定型文貼り付け"
+END
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif //_WIN32
+#include "res\SuperTagEditor.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

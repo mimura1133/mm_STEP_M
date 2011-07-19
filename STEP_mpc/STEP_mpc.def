@@ -1,0 +1,7 @@
+; STEP_mpc.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_mpc"
+DESCRIPTION  'STEP_mpc Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

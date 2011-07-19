@@ -1,0 +1,7 @@
+; STEP_ogg.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "STEP_ogg"
+DESCRIPTION  'STEP_ogg Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます

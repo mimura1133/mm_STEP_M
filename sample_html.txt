@@ -1,0 +1,62 @@
+<HTML>
+
+<HEAD>
+<TITLE>MP3 List HTML 出力サンプル</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=shift_jis">
+</HEAD>
+
+<BODY bgcolor="#000000" text="#ffffff" link="#00ff00" alink="#00ff00" vlink="#00ff00
+">
+<BASEFONT size="2" face="ＭＳ ゴシック">
+
+<CENTER>
+<TABLE border="1">
+	<TR>
+		<TD><NOBR>番号</TD>
+		<TD><NOBR>曲名</TD>
+		<TD><NOBR>演奏時間</TD>
+		<TD><NOBR>アーティスト名</TD>
+		<TD><NOBR>アルバム名</TD>
+		<TD><NOBR>No.</TD>
+		<TD><NOBR>リリース</TD>
+	</TR>
+[LOOP_START]
+	<TR>
+		<TD><NOBR>%FILE_NUMBER%</TD>
+		<TD><NOBR><A href="%PLAY_PATH%">%TRACK_NAME%</A></TD>
+		<TD><NOBR>%TOTAL_SEC%</TD>
+		<TD><NOBR>%ARTIST_NAME%</TD>
+		<TD><NOBR>%ALBUM_NAME%</TD>
+		<TD><NOBR>%TRACK_NUMBER2%</TD>
+		<TD><NOBR>%RELEASE_YEAR%</TD>
+		<TD><NOBR>%TRACK_NUMBER%</TD>
+		<TD><NOBR>%TRACK_NUMBER2%</TD>
+		<TD><NOBR>%TRACK_NUMBER3%</TD>
+		<TD><NOBR>%FILE_SIZE%</TD>
+		<TD><NOBR>%FILE_SIZE_BYTE%</TD>
+		<TD><NOBR>%EXIST_LYRIC_FILE%</TD>
+		<TD><NOBR>%LYRIC_FILE_NAME%</TD>
+	</TR>
+[LOOP_END]
+</TABLE>
+</CENTER>
+<P>
+
+<TABLE border="1">
+	<TR>
+		<TD>合計ファイル数</TD>
+		<TD>%FILE_COUNT%</TD>
+	</TR>
+	<TR>
+		<TD>総合演奏時間</TD>
+		<TD>%TOTAL_TIME2%</TD>
+	</TR>
+	<TR>
+		<TD>合計サイズ</TD>
+		<TD>%TOTAL_SIZE%</TD>
+	</TR>
+</TABLE>
+
+</BASEFONT>
+</BODY>
+</HTML>

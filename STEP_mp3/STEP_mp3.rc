@@ -1,0 +1,233 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\STEP_mp3.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_MP3          BITMAP  DISCARDABLE     "bitmap1.bmp"
+IDB_BITMAP_ID3V2        BITMAP  DISCARDABLE     "bmp00001.bmp"
+IDB_BITMAP_RMP          BITMAP  DISCARDABLE     "bmp00002.bmp"
+IDB_FILE_CONV_AUTO_ID3  BITMAP  DISCARDABLE     "file_con.bmp"
+IDB_FILE_CONV_MP3       BITMAP  DISCARDABLE     "bmp00003.bmp"
+IDB_FILE_CONV_RMP       BITMAP  DISCARDABLE     "bmp00004.bmp"
+IDB_FILE_CONV_ID3V2     BITMAP  DISCARDABLE     "bmp00005.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DLG_FILE_RMP_ID3V2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_DLG_DEFAUT_VALUE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 212
+    END
+
+    IDD_DLG_CONV_ID3V2_VERSION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_FILE_RMP_ID3V2 DIALOG DISCARDABLE  0, 0, 203, 223
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "RIFF MP3/ID3v2"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "共通の設定",IDC_STATIC,7,7,189,46
+    GROUPBOX        "ID3v1 への変換時の対象項目",IDC_STATIC,12,19,178,28
+    CONTROL         "全ての項目",IDC_RA_SIF_CONV_ALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,19,31,50,10
+    CONTROL         "ID3 の文字数に収まる項目のみ",IDC_RA_SIF_CONV_LENGTH,
+                    "Button",BS_AUTORADIOBUTTON,76,31,108,10
+    GROUPBOX        "RIFF MP3",IDC_STATIC,7,57,189,63
+    CONTROL         "ID3tag の制限を超えたファイルを自動的に変換する",
+                    IDC_CH_AUTO_CONV_RMP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,69,179,10
+    CONTROL         "RIFF MP3 の ID3tag を毎回自動で更新する",
+                    IDC_CH_RMP_ID3TAG_AUTO_WRITE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,81,179,10
+    CONTROL         "ジャンル名はリストから選択する(※再起動後有効)",
+                    IDC_CH_RMP_GENRE_LIST_SELECT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,93,179,10
+    CONTROL         "ファイル形式変換時に拡張子を .rmp/.mp3 に変更する",
+                    IDC_CH_CHANGE_FILE_EXT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,105,179,10
+    GROUPBOX        "ID3v2",IDC_STATIC,7,124,189,74
+    CONTROL         "ID3tag の制限を超えたファイルを自動的に変換する",
+                    IDC_CH_AUTO_CONV_ID3V2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,135,179,10
+    CONTROL         "ID3v2 の ID3tag を毎回自動で更新する",
+                    IDC_CH_ID3V2_ID3TAG_AUTO_WRITE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,147,179,10
+    CONTROL         "ID3v2 の場合 ID3tag を作成しない(更新時に削除する)",
+                    IDC_CH_ID3V2_ID3TAG_AUTO_DELETE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,159,179,10
+    CONTROL         "ジャンル名はリストから選択する(※再起動後有効)",
+                    IDC_CH_ID3V2_GENRE_LIST_SELECT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,171,179,10
+    CONTROL         "ジャンル名にジャンル番号を付加する",
+                    IDC_CH_ID3V2_GENRE_ADD_NUMBER,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,12,184,179,10
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,7,202,50,14
+END
+
+IDD_DLG_DEFAUT_VALUE DIALOG DISCARDABLE  0, 0, 239, 219
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "その他"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "ソフトウェアのデフォルト",IDC_STATIC,7,7,41,15
+    EDITTEXT        IDC_SOFTWARE_TAG,88,7,144,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,28,225,1
+    PUSHBUTTON      "初期値に戻す",IDC_BT_RESET_PAGE,182,198,50,14
+    CONTROL         "ID3v2の非同期化を常に行わない(オフの場合は更新元ファイルの状態に従います)",
+                    IDC_CHECK_UNSYNC,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
+                    WS_TABSTOP,7,107,225,16
+    CONTROL         "ID3v2を作成するときに非同期化を行わない(オフの場合は非同期化します）",
+                    IDC_CHECK_UNSYNC_NEW,"Button",BS_AUTOCHECKBOX | 
+                    BS_MULTILINE | WS_TABSTOP,7,130,225,16
+    LTEXT           "ID3v2の保存形式",IDC_STATIC,7,38,52,8
+    COMBOBOX        IDC_COMBO_ID3V2_VERSION,59,49,49,62,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_ID3V2_ENCODE,168,49,64,57,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "",IDC_STATIC_INFO,7,179,225,12
+    LTEXT           "バージョン",IDC_STATIC,23,51,31,8
+    LTEXT           "文字エンコード",IDC_STATIC,118,51,44,8
+    LTEXT           "ID3v2の保存形式(新規作成時)",IDC_STATIC,8,69,91,8
+    COMBOBOX        IDC_COMBO_ID3V2_VERSION_NEW,60,81,49,62,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_ID3V2_ENCODE_NEW,169,81,64,57,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "バージョン",IDC_STATIC,24,83,31,8
+    LTEXT           "文字エンコード",IDC_STATIC,119,83,44,8
+END
+
+IDD_DLG_CONV_ID3V2_VERSION DIALOG DISCARDABLE  0, 0, 215, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ID3v2のバージョン/文字コードの変換"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "選択されているID3v2 形式のバージョンと文字エンコードを変換します\n変換を実行してもよろしいですか？",
+                    IDC_STATIC,7,7,201,15
+    LTEXT           "バージョン",IDC_STATIC,39,35,31,8
+    COMBOBOX        IDC_COMBO_ID3V2_VERSION,91,32,49,62,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "文字エンコード",IDC_STATIC,39,54,44,8
+    COMBOBOX        IDC_COMBO_ID3V2_ENCODE,91,51,64,57,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "はい",IDOK,44,72,50,14
+    PUSHBUTTON      "いいえ",IDCANCEL,120,72,50,14
+END
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif //_WIN32
+#include "res\STEP_mp3.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
