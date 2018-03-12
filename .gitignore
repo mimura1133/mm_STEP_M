@@ -1,2 +1,6 @@
 .vs
 Debug
+/SuperTagEditor/DebugPlugin
+/SuperTagEditor/Plugin
+
+!.gitkeep
