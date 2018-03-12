@@ -273,7 +273,7 @@ void CMainFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 	CFrameWnd::OnUpdateFrameTitle(bAddToTitle);
 
 	CString	strTitle;
-	strTitle.Format(PROG_NAME" Ver "PROG_VERSION);
+	strTitle.Format(PROG_NAME " Ver " PROG_VERSION);
 	/*strTitle += "‰ü";*/
 	SetWindowText(strTitle);
 }
