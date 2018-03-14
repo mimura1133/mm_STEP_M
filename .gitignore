@@ -5,3 +5,4 @@ Release
 /SuperTagEditor/Plugin
 
 !.gitkeep
+*.vcxproj.user
