@@ -62,6 +62,7 @@ typedef unsigned short in_port_t;
 typedef int socklen_t;
 typedef int ssize_t;
 typedef unsigned int uint;
+#if false
 static inline int snprintf(char *buffer, size_t count,
 			  const char *format, ...) {
   va_list ap;
@@ -75,6 +76,7 @@ static inline int snprintf(char *buffer, size_t count,
   }
   return ret;
 }
+#endif
 #define strncasecmp _strnicmp
 #define strcasecmp _stricmp
 #define localtime_r(a,b) localtime_s(b,a)
