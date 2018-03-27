@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbis_static", "libvorbis\vorbis.vcxproj", "{320BA50B-AD52-4E18-8485-E29A267244C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DE732EDA-1D02-4275-9992-65105F9C43FC} = {DE732EDA-1D02-4275-9992-65105F9C43FC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "migrate_sln", "migrate_sln\migrate_sln.vcxproj", "{DE732EDA-1D02-4275-9992-65105F9C43FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libvorbisfile", "libvorbisfile\libvorbisfile.vcxproj", "{7A43133D-4279-4166-AB58-49067EDCA778}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DE732EDA-1D02-4275-9992-65105F9C43FC} = {DE732EDA-1D02-4275-9992-65105F9C43FC}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migrate", "migrate", "{ADA05A13-9EFB-47BB-AC97-870FFC0A715B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Debug|x64.ActiveCfg = Debug|x64
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Debug|x64.Build.0 = Debug|x64
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Debug|x86.ActiveCfg = Debug|Win32
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Debug|x86.Build.0 = Debug|Win32
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Release|x64.ActiveCfg = Release|x64
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Release|x64.Build.0 = Release|x64
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Release|x86.ActiveCfg = Release|Win32
+		{320BA50B-AD52-4E18-8485-E29A267244C1}.Release|x86.Build.0 = Release|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Debug|x64.ActiveCfg = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Debug|x64.Build.0 = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Debug|x86.ActiveCfg = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Debug|x86.Build.0 = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Release|x64.ActiveCfg = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Release|x64.Build.0 = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Release|x86.ActiveCfg = Migrate|Win32
+		{DE732EDA-1D02-4275-9992-65105F9C43FC}.Release|x86.Build.0 = Migrate|Win32
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Debug|x64.ActiveCfg = Debug|x64
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Debug|x64.Build.0 = Debug|x64
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Debug|x86.ActiveCfg = Debug|Win32
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Debug|x86.Build.0 = Debug|Win32
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Release|x64.ActiveCfg = Release|x64
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Release|x64.Build.0 = Release|x64
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Release|x86.ActiveCfg = Release|Win32
+		{7A43133D-4279-4166-AB58-49067EDCA778}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE732EDA-1D02-4275-9992-65105F9C43FC} = {ADA05A13-9EFB-47BB-AC97-870FFC0A715B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45B1356E-03CB-4478-91B1-607E7AC122E6}
+	EndGlobalSection
+EndGlobal

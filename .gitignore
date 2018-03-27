@@ -1,0 +1,9 @@
+.vs
+obj
+Debug
+Release
+/SuperTagEditor/DebugPlugin
+/SuperTagEditor/Plugin
+
+!.gitkeep
+*.vcxproj.user
