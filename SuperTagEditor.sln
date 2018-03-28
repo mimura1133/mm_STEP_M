@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SuperTagEditor", "SuperTagEditor\SuperTagEditor.vcxproj", "{E18DA30E-6AC6-4BD5-A16A-32420644345F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{BB6253E1-35EC-41A9-94E7-EE9904C7F05A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STEP_ape", "STEP_ape\STEP_ape.vcxproj", "{48D37897-3BFD-4B9A-8C7C-B69346FA893F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -24,9 +28,22 @@ Global
 		{E18DA30E-6AC6-4BD5-A16A-32420644345F}.Release|x86.Build.0 = Release|Win32
 		{E18DA30E-6AC6-4BD5-A16A-32420644345F}.Template|x86.ActiveCfg = Template|Win32
 		{E18DA30E-6AC6-4BD5-A16A-32420644345F}.Template|x86.Build.0 = Template|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Debug|x86.ActiveCfg = Debug|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Debug|x86.Build.0 = Debug|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.PublicDebug|x86.ActiveCfg = Debug|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.PublicDebug|x86.Build.0 = Debug|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.PublicRelease|x86.ActiveCfg = Release|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.PublicRelease|x86.Build.0 = Release|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Release|x86.ActiveCfg = Release|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Release|x86.Build.0 = Release|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Template|x86.ActiveCfg = Release|Win32
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F}.Template|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48D37897-3BFD-4B9A-8C7C-B69346FA893F} = {BB6253E1-35EC-41A9-94E7-EE9904C7F05A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C85AEDC9-5CB2-4ED6-A34B-7C84342AD318}
