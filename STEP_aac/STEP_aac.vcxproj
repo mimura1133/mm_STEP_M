@@ -102,7 +102,7 @@
     </Bscmake>
     <PostBuildEvent>
       <Command>copy Debug\STEP_aac.dll ..\SuperTagEditor\DebugPlugin\STEP_aac.ste
-copy Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
+copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -160,7 +160,7 @@ copy Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
     </Bscmake>
     <PostBuildEvent>
       <Command>copy Release\STEP_aac.dll ..\SuperTagEditor\Plugin\STEP_aac.ste
-copy Release\mp4v2.dll ..\SuperTagEditor\Plugin\mp4v2.dll
+copy mp4v2\Release\mp4v2.dll ..\SuperTagEditor\Plugin\mp4v2.dll
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
