@@ -794,7 +794,8 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 
 	// ƒo[ƒWƒ‡ƒ“î•ñ‚Ìİ’è
 	//m_strVersion.Format(PROG_NAME" Ver "PROG_VERSION"(Build:%d) ‰ü", BUILDCOUNT_NUM);
-	m_strVersion.Format(PROG_NAME_ORG2" (" PROG_NAME_ORG " Ver " PROG_VERSION_ORG "‰ü) Ver " PROG_VERSION_ORG2 " ‰ü\n\n" PROG_NAME " Version " PROG_VERSION);
+	m_strVersion.Format(PROG_NAME " Version " PROG_VERSION);
+	m_strVersion.Append("\nforked from " PROG_NAME_ORG " Version " PROG_VERSION_ORG);
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)

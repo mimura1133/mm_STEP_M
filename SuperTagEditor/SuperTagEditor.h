@@ -14,12 +14,10 @@
 
 #include "resource.h"       // メイン シンボル
 
-#define PROG_NAME		"STEP_M"/*"SuperTagEditor"*/	// プログラム名
-#define PROG_VERSION	"1.054 f"/*"2.00β7"*/			// バージョン
-#define PROG_NAME_ORG		"SuperTagEditor"	// プログラム名
-#define PROG_VERSION_ORG	"2.00β"			// バージョン
-#define PROG_NAME_ORG2		"STEP"				// プログラム名
-#define PROG_VERSION_ORG2	"1.02"				// バージョン
+#define PROG_NAME		"STEP_O"				// プログラム名
+#define PROG_VERSION	"1.0.0.0"				// バージョン
+#define PROG_NAME_ORG		"STEP_M"			// プログラム名
+#define PROG_VERSION_ORG	"1.054 f"			// バージョン
 
 #define WM_USER_SET_STATUS_POS		WM_USER+1
 #define WM_USER_SET_STATUS_SIZE		WM_USER+2
