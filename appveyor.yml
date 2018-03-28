@@ -10,3 +10,9 @@ configuration: Release
 build:
   project: SuperTagEditor.sln
   verbosity: minimal
+
+artifacts:
+- path: SuperTagEditor\Plugin\*.*
+  name: Plugin
+- path: SuperTagEditor\Release\*.exe
+  name: STEP
