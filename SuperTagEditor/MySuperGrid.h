@@ -197,7 +197,7 @@ public:
 			bool	GetItemModifyFlag(const CTreeItem *);
 			int		GetItemFormat(const CTreeItem *);
 			void	MakeStrListGenre(void);
-			CSuperGridCtrl::CTreeItem *AddDirectory(const char *, CTreeItem * = NULL, int = 2);
+			CSuperGridCtrl::CTreeItem *AddDirectory(LPCTSTR, CTreeItem * = NULL, int = 2);
 			bool	AddFile(const FILE_MP3 *, CTreeItem * = NULL, LPARAM = 0, bool = true);
 			CSuperGridCtrl::CTreeItem *SearchChildrenItem(const CString &, CTreeItem *);
 			bool	AddFile2(const FILE_MP3 *, CTreeItem * = NULL, LPARAM = 0, bool = true);
