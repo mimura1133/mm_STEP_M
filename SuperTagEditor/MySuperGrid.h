@@ -206,7 +206,7 @@ public:
 			bool	ClipboardCopy(void);
 			bool	ClipboardCut(void);
 			bool	ClipboardPaste(void);
-			void	PasteString(char *);
+			void	PasteString(LPTSTR);
 			bool	CellCopyDown(void);
 			bool	CellClear(int, int);
 			bool	CellClearSelected(void);
@@ -221,20 +221,20 @@ public:
 
 			// •ÏŠ·
 			bool	ConvTagInfo(int, int, const char * = NULL);
-			bool	ConvTagInfoSelected(int, const char * = NULL);
+			bool	ConvTagInfoSelected(int, LPCTSTR = NULL);
 			bool	ConvTagInfo(CTreeItem *, int, const char * = NULL, const char * = NULL /* STEP 034 */);
 			bool	ConvUserFormatEx(USER_CONV_FORMAT_EX *);
 			bool	ConvString(int);
 			CString	ReplaceFileName(const FILE_MP3 *, CString);
 
-			bool	WritePlayList(const char *);
-			bool	WritePlayList(const char *, POSITION);
+			bool	WritePlayList(LPCTSTR);
+			bool	WritePlayList(LPCTSTR, POSITION);
 			bool	WritePlayList(CFile &, CTreeItem *, CString &);
 
-			bool	WriteTreePlayList(const char *);
-			bool	WriteTreePlayList(const char *, CTreeItem *, CString &);
+			bool	WriteTreePlayList(LPCTSTR);
+			bool	WriteTreePlayList(LPCTSTR, CTreeItem *, CString &);
 
-			bool	WriteFormatFile(const char *, const CString &, const CString &, const CString &, bool, bool, bool, bool/* BeachMonster5 120 */);
+			bool	WriteFormatFile(LPCTSTR, const CString &, const CString &, const CString &, bool, bool, bool, bool/* BeachMonster5 120 */);
 			bool	WriteFormatFileBody(CFile &, CTreeItem *, const CString &, bool, LIST_WRITE_STATUS *, bool/* BeachMonster5 120 */);
 			bool	WriteFormatFileFoot(CFile &, const CString &, bool, LIST_WRITE_STATUS *, bool/* BeachMonster5 120 */);
 			CString	WriteFormatFileHeader(CFile &file, CTreeItem *pItem, const CString &strHead, bool bIsHtml, LIST_WRITE_STATUS *pStatus, bool bWriteHtml); /* Rumble 190 */
@@ -262,8 +262,8 @@ public:
 			void	SelectAndVisibleColumn(int, int);
 			bool	GetSelectedRange(int &, int &, int &, int &);
 
-			void	ExecFolderTreeSync(const char *, bool);
-			void	ExecFolderTreeSync(const char *, CTreeItem *, bool, bool = false);
+			void	ExecFolderTreeSync(LPCTSTR, bool);
+			void	ExecFolderTreeSync(LPCTSTR, CTreeItem *, bool, bool = false);
 			bool	DirectoryRemove(CString &);
 			bool	DirectoryMake(CString &);
 			bool	FileDelete(const char *);
@@ -325,7 +325,7 @@ public:
 	bool DeleteCharSpace(int nPos=0);
 	void ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm);
 	void ChangeSubItemText(int iItem, int iSubItem, const char *sUpdateText, int nPos, bool bAddSpace, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */, bool bUpdateInternal = FALSE/* STEP 037 */);
-	void PasteString(char *sBuffer, int nPastePos, bool bText/* RockDance 124 */, bool bAddSpace/* Baja 171 */, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */);
+	void PasteString(LPTSTR sBuffer, int nPastePos, bool bText/* RockDance 124 */, bool bAddSpace/* Baja 171 */, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */);
 	bool ClipboardPaste(int nPastePos, bool bAddSpace, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */);
 	void OnUpdateTotal();
 	void OnRefreshTreeItem(CTreeItem* pOldItem, CTreeItem* pNewItem);
@@ -336,7 +336,7 @@ public:
 	CString quoteForComment(CString& str);
 	int GetSelectedItem();
 	void ChangeSubItemText(int iItem, int iSubItem, const char *sText, int nPos);
-	void PasteString(char *sBuffer, int nPos, bool bText = true);
+	void PasteString(LPTSTR sBuffer, int nPos, bool bText = true);
 	void CheckFileNameMax();
 	void SelectTreeColumn();
 	void SetHeaderFont(LOGFONT logFont);

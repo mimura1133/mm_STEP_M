@@ -47,7 +47,7 @@ public:
     bool __fastcall Execute(LPCSTR cszFileName, LPCSTR cszCommand);
     bool __fastcall Execute2(LPCSTR cszFileName, LPCSTR cszCommand); /* WildCherry 070 */
 	bool __fastcall Execute(LPCSTR cszCommand, DWORD dwWait); /* RockDance2 138 */
-    KbDDEClient(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService);
+    KbDDEClient(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService);
     ~KbDDEClient(void);
 };
 ///////////////////////////////////////////////////////////////////////////////

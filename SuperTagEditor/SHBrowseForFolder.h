@@ -90,7 +90,7 @@ public:		// ======================================
 	inline	static	bool	GetEnableSubDirButton(void) {return(m_bEnableSubDirButton);}
 	inline	static	void	SetSearchSubDirState(bool bFlag) {m_bSearchSubDirState = bFlag;}
 	inline	static	bool	GetSearchSubDirState(void) {return(GetEnableSubDirButton() ? m_bSearchSubDirState : false);}
-			bool		Exec(char *);
+			bool		Exec(LPTSTR);
 	inline	static	void	SetCheckBoxTitle(const char* title) {pCheckBoxTitle = title;}
 	inline	static	const char* GetCheckBoxTitle(void) {return (pCheckBoxTitle);}
 

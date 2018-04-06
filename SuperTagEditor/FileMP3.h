@@ -149,7 +149,7 @@ extern	const char *GetGenreNameSIF(BYTE byGenre);
 extern	int		GetGenreCode(const char *);
 extern bool IsUserGenre(const char *sGenre);
 extern	void	StringCopyN(char *, const char *, int, BOOL = TRUE);
-extern	bool	IsFolderName(const char *);
+extern	bool	IsFolderName(LPCTSTR);
 
 
 
@@ -174,7 +174,7 @@ public:		// ======================================
 	static	void	InitData(FILE_MP3 *);
 	static	void	InitDataSIF(FILE_MP3 *);
 	static	void	InitDataID3(FILE_MP3 *); /* STEP 029 */
-			bool	Attach(const char *);
+			bool	Attach(LPCTSTR);
 			void	Detach(void);
 			bool	LoadFile(const char *, const char *);
 	static	bool	CopyFile(FILE_MP3 *, const char *, bool = false);

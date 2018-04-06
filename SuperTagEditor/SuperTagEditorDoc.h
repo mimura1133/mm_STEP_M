@@ -67,15 +67,15 @@ public:		// ======================================
 
 	inline	void SaveAllTag(void) {OnSaveAllTag();}
 
-	bool	LoadPlayList(const char *);
+	bool	LoadPlayList(LPCTSTR);
 	bool	FoundFile(const char *, CSuperGridCtrl::CTreeItem * = NULL, bool = true);
 	bool	SearchFileReent(const char *, CSuperGridCtrl::CTreeItem * = NULL);
-	int		AddRequestFile(const char *, CSuperGridCtrl::CTreeItem * = NULL);
+	int		AddRequestFile(LPCTSTR, CSuperGridCtrl::CTreeItem * = NULL);
 	void	ExecRequestFiles(bool = true, bool = true);
 	void	StartLoadFile(const char *);
 	void	EndLoadFile(void);
 	void	ClearRequestFiles(void);
-	void	OpenFolder(const char *);
+	void	OpenFolder(LPCTSTR);
 	bool	CheckFileAttribute(FILE_MP3 *);
 	//追加 by Kobarin
 	//タグを更新中かどうか
