@@ -9,6 +9,8 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include <vector>
+
 class CDoubleZeroString  
 {
 public:
@@ -47,7 +49,7 @@ protected:
 		// AddDoubleZero() and Add()
 	CStringArray m_ar;
 		// returned by operator const char*()
-	LPTSTR		m_buf;
+	std::vector<TCHAR>	m_buf;
 };
 
 #endif // !defined(AFX_DOUBLEZEROSTRING_H__0E067530_2B7A_11D2_A0F2_0000832CDDC7__INCLUDED_)
