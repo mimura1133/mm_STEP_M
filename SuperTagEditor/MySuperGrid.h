@@ -159,7 +159,7 @@ public:
 					if (iItem >= 0 && pInfo != NULL) {
 						CString	strName;
 						if (g_bEnableFolderSync) {
-							strName.Format("Root[%s]", g_strRootFolder);
+							strName.Format(TEXT("Root[%s]"), g_strRootFolder);
 						} else {
 							strName = _T("Root");
 						}

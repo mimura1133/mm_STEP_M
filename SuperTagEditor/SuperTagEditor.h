@@ -14,10 +14,10 @@
 
 #include "resource.h"       // メイン シンボル
 
-#define PROG_NAME		"STEP_O"				// プログラム名
-#define PROG_VERSION	"1.0.0.0"				// バージョン
-#define PROG_NAME_ORG		"STEP_M"			// プログラム名
-#define PROG_VERSION_ORG	"1.054 f"			// バージョン
+#define PROG_NAME			TEXT("STEP_O")		// プログラム名
+#define PROG_VERSION		TEXT("1.0.0.0")		// バージョン
+#define PROG_NAME_ORG		TEXT("STEP_M")		// プログラム名
+#define PROG_VERSION_ORG	TEXT("1.054 f")		// バージョン
 
 #define WM_USER_SET_STATUS_POS		WM_USER+1
 #define WM_USER_SET_STATUS_SIZE		WM_USER+2
@@ -71,7 +71,7 @@ struct	KEY_CONFIG	{				// キー割り当て
 	DWORD	dwKeyCode;				// ホットキー
 	int		nGroupID;				// グループ名
 	char	*sName;					// 項目名
-	char	*sRegName;				// レジストリ名
+	LPTSTR	sRegName;				// レジストリ名
 };
 extern	KEY_CONFIG	g_listKeyConfig[];
 
@@ -81,7 +81,7 @@ struct	FILENAME_REPLACE {			// ファイル名置換
 	CString	strBefore;				// 置換前の文字
 	CString	strAfter;				// 置換後の文字
 };
-extern	const char *g_sRepTable[FILENAME_REPLACE_MAX][2];
+extern const LPCTSTR g_sRepTable[FILENAME_REPLACE_MAX][2];
 
 #define USER_CONV_FORMAT_MAX		5 /*3 LastTrain 057 */
 struct	USER_CONV_FORMAT	{		// ユーザー変換書式
@@ -322,8 +322,8 @@ public:
 	void AddToRecentFileList(LPCTSTR lpszPathName);
 	inline	HACCEL	GetAccelHandle(void) {return(m_hAccel);}
 	TCHAR	*MakeFileName(TCHAR *);
-	void	ReadWindowStatus(char *, RECT *);
-	void	WriteWindowStatus(char *, RECT *);
+	void	ReadWindowStatus(LPCTSTR, RECT *);
+	void	WriteWindowStatus(LPCTSTR, RECT *);
 	void	ReadRegistry(void);
 	void	WriteRegistry(void);
 	void	ReadKeyConfig(bool = false);
