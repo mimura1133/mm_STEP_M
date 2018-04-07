@@ -140,7 +140,7 @@ void CDkToolBar::SaveState()
 	for (i=0;i<pluginToolBarInfo.GetSize();i++) {
 		CPluginToolBarInfo* button = (CPluginToolBarInfo*)pluginToolBarInfo.GetAt(i);
 		int nPos = GetToolBarCtrl().CommandToIndex(button->tbButton.idCommand);
-		MyWriteProfileInt("STEP\\ToolbarPosition", button->strRegName, nPos);
+		MyWriteProfileInt(TEXT("STEP\\ToolbarPosition"), button->strRegName, nPos);
 	}
 	for (i=0;i<pluginToolBarInfo.GetSize();i++) {
 		CPluginToolBarInfo* button = (CPluginToolBarInfo*)pluginToolBarInfo.GetAt(i);
@@ -152,15 +152,15 @@ void CDkToolBar::SaveState()
 	for (i=0;i<GetToolBarCtrl().GetButtonCount();i++) {
 		TBBUTTON tbButton;
 		CString strRegName;
-		strRegName.Format("Pos%02d", i);
+		strRegName.Format(TEXT("Pos%02d"), i);
 		if (GetToolBarCtrl().GetButton(i, &tbButton)) {
-			MyWriteProfileInt("STEP\\DefaultToolbarPosition", strRegName, tbButton.idCommand);
+			MyWriteProfileInt(TEXT("STEP\\DefaultToolbarPosition"), strRegName, tbButton.idCommand);
 		}
 	}
 	{
 		CString strRegName;
-		strRegName.Format("Pos%02d", i);
-		MyWriteProfileInt("STEP\\DefaultToolbarPosition", strRegName, -1);
+		strRegName.Format(TEXT("Pos%02d"), i);
+		MyWriteProfileInt(TEXT("STEP\\DefaultToolbarPosition"), strRegName, -1);
 	}
 	SaveProfile();
 	FreeProfile();
@@ -179,7 +179,7 @@ void CDkToolBar::RestoreState()
 	CString strINI = AfxGetApp()->m_pszProfileName;
 	InitProfile();
 	// １つも登録されていない場合はデフォルト表示
-	if (MyGetProfileInt("STEP\\DefaultToolbarPosition", "Pos00", -1) == -1) return;
+	if (MyGetProfileInt(TEXT("STEP\\DefaultToolbarPosition"), TEXT("Pos00"), -1) == -1) return;
 	// プラグインボタンを削除
 	int i;
 	for (i=0;i<pluginToolBarInfo.GetSize();i++) {
@@ -195,8 +195,8 @@ void CDkToolBar::RestoreState()
 	// 標準ボタンのリストア
 	for (i=0;;i++) {
 		CString strRegName;
-		strRegName.Format("Pos%02d", i);
-		int nID = MyGetProfileInt("STEP\\DefaultToolbarPosition", strRegName, -1);
+		strRegName.Format(TEXT("Pos%02d"), i);
+		int nID = MyGetProfileInt(TEXT("STEP\\DefaultToolbarPosition"), strRegName, -1);
 		if(nID == ID_TEIKEI) nID = ID_TEIKEI_TOOL;
 		if (nID == -1)	break;
 		if (nID == 0) {
@@ -305,8 +305,8 @@ void CDkToolBar::OnToolBarGetButtonInfo(NMHDR *notify, LRESULT *result)
 		tbStruct->tbButton = toolBarInfo[tbStruct->iItem].tbButton;
 
 		// copy the text for the button label in the dialog
-		strcpy(tbStruct->pszText, toolBarInfo[tbStruct->iItem].btnText);
-		TRACE0(toolBarInfo[tbStruct->iItem].btnText);
+		lstrcpy(tbStruct->pszText, toolBarInfo[tbStruct->iItem].btnText);
+		TRACE(TEXT("%Ts"), toolBarInfo[tbStruct->iItem].btnText);
 
 		// indicate valid data was sent
 		*result = TRUE;
@@ -321,7 +321,7 @@ void CDkToolBar::OnToolBarGetButtonInfo(NMHDR *notify, LRESULT *result)
 			extern bool OnToolTipNotify(UINT nID, LPTSTR& szText);
 			LPTSTR szText = NULL;
 			if (OnToolTipNotify(lpButton->tbButton.idCommand, szText)) {
-				strcpy(tbStruct->pszText, szText);
+				lstrcpy(tbStruct->pszText, szText);
 				*result = TRUE;
 			} else {
 				*result = FALSE;
@@ -527,7 +527,7 @@ void CDkToolBar::Customize() /* WildCherry4 084 */
 	OnPopupCustomize();
 }
 
-BOOL CDkToolBar::InsertButton(int nIndex, LPTBBUTTON lpButton, char *lpszRegName)
+BOOL CDkToolBar::InsertButton(int nIndex, LPTBBUTTON lpButton, LPCTSTR lpszRegName)
 {
 	CPluginToolBarInfo* button = new CPluginToolBarInfo();
 	button->tbButton = *lpButton;
@@ -536,7 +536,7 @@ BOOL CDkToolBar::InsertButton(int nIndex, LPTBBUTTON lpButton, char *lpszRegName
 //	GetToolBarCtrl().InsertButton(nIndex, lpButton);
 	CString strINI = AfxGetApp()->m_pszProfileName;
 	Profile_Initialize(strINI, TRUE);
-	button->nPos = MyGetProfileInt("STEP\\ToolbarPosition", lpszRegName, -1);
+	button->nPos = MyGetProfileInt(TEXT("STEP\\ToolbarPosition"), lpszRegName, -1);
 //	if (nPos != -1) {
 //		GetToolBarCtrl().MoveButton(nIndex, nPos);
 //	}
