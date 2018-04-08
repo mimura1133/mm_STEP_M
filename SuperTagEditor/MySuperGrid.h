@@ -211,7 +211,7 @@ public:
 			bool	CellClear(int, int);
 			bool	CellClearSelected(void);
 			bool	SetFillNumber(int, int, bool = false/* Conspiracy 194 */);
-			void	ChangeSubItemText(int, int, const char *);
+			void	ChangeSubItemText(int, int, LPCTSTR);
 			void	CellStateControl(int);
 
 			int		CompFunc(CString &, CString &, int, bool);
@@ -220,9 +220,9 @@ public:
 			void	MultiColumnSort(SORT_STATE *, int);
 
 			// •ÏŠ·
-			bool	ConvTagInfo(int, int, const char * = NULL);
+			bool	ConvTagInfo(int, int, LPCTSTR = NULL);
 			bool	ConvTagInfoSelected(int, LPCTSTR = NULL);
-			bool	ConvTagInfo(CTreeItem *, int, const char * = NULL, const char * = NULL /* STEP 034 */);
+			bool	ConvTagInfo(CTreeItem *, int, LPCTSTR = NULL, LPCTSTR = NULL /* STEP 034 */);
 			bool	ConvUserFormatEx(USER_CONV_FORMAT_EX *);
 			bool	ConvString(int);
 			CString	ReplaceFileName(const FILE_MP3 *, CString);
@@ -241,7 +241,7 @@ public:
 
 			CString	GetFileColumnText(const FILE_MP3 *, int);
 
-			const char *GetSelectFileName(void);
+			LPCTSTR GetSelectFileName(void);
 
 			int		MakeSelectFileArray(CArray <int, const int &> &);
 			int		MakeSelectFileArray(int nIndex, CArray <int, const int &> &);
@@ -268,9 +268,9 @@ public:
 			bool	DirectoryMake(CString &);
 			bool	FileDelete(const char *);
 			bool	FileCopy(const char *, const char *);
-			void	ChangeFileAttr(const char *, DWORD);
-			bool	CheckFileName(const char *);
-			bool	CheckExist(const char *);
+			void	ChangeFileAttr(LPCTSTR, DWORD);
+			bool	CheckFileName(LPCTSTR);
+			bool	CheckExist(LPCTSTR);
 			void	UpdateCellInfo();
 
 // Attributes
@@ -324,7 +324,7 @@ public:
 	bool ProcessSelectedFilesForUpdate(LPCTSTR szProgressBarTitle, STEPProcessSelectedFilesCB* callback);
 	bool DeleteCharSpace(int nPos=0);
 	void ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm);
-	void ChangeSubItemText(int iItem, int iSubItem, const char *sUpdateText, int nPos, bool bAddSpace, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */, bool bUpdateInternal = FALSE/* STEP 037 */);
+	void ChangeSubItemText(int iItem, int iSubItem, LPCTSTR sUpdateText, int nPos, bool bAddSpace, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */, bool bUpdateInternal = FALSE/* STEP 037 */);
 	void PasteString(LPTSTR sBuffer, int nPastePos, bool bText/* RockDance 124 */, bool bAddSpace/* Baja 171 */, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */);
 	bool ClipboardPaste(int nPastePos, bool bAddSpace, const CString& strAddFront, const CString& strAddBack/* FunnyCorn 187 */);
 	void OnUpdateTotal();
@@ -335,7 +335,7 @@ public:
 	void CalcSum(int nIndex);
 	CString quoteForComment(CString& str);
 	int GetSelectedItem();
-	void ChangeSubItemText(int iItem, int iSubItem, const char *sText, int nPos);
+	void ChangeSubItemText(int iItem, int iSubItem, LPCTSTR sText, int nPos);
 	void PasteString(LPTSTR sBuffer, int nPos, bool bText = true);
 	void CheckFileNameMax();
 	void SelectTreeColumn();

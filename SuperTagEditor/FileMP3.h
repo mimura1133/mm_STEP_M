@@ -146,9 +146,9 @@ extern	USER_GENRE_LIST*	g_genreListUSER;
 // ======================================
 extern	const char *GetGenreName(BYTE);
 extern	const char *GetGenreNameSIF(BYTE byGenre);
-extern	int		GetGenreCode(const char *);
-extern bool IsUserGenre(const char *sGenre);
-extern	void	StringCopyN(char *, const char *, int, BOOL = TRUE);
+extern	int		GetGenreCode(LPCTSTR);
+extern bool IsUserGenre(LPCTSTR sGenre);
+extern	void	StringCopyN(LPTSTR, LPCTSTR, int, BOOL = TRUE);
 extern	bool	IsFolderName(LPCTSTR);
 
 
@@ -177,7 +177,7 @@ public:		// ======================================
 			bool	Attach(LPCTSTR);
 			void	Detach(void);
 			bool	LoadFile(const char *, const char *);
-	static	bool	CopyFile(FILE_MP3 *, const char *, bool = false);
+	static	bool	CopyFile(FILE_MP3 *, LPCTSTR, bool = false);
 	static	bool	WriteTag(FILE_MP3 *, bool = true);
 	static	bool	WriteFileTag(FILE_MP3 *fileMP3);
 	static	bool	ConvFileFormat(FILE_MP3 *, int);

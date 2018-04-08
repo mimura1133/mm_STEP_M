@@ -401,7 +401,7 @@ bool IsUserGenre(const char *sGenre)
 #ifndef iskanji
 #define iskanji(c)		((unsigned char)(c) >= 0x81 && (unsigned char)(c) <= 0x9f || (unsigned char)(c) >= 0xe0 && (unsigned char)(c) <= 0xfc)
 #endif
-void StringCopyN(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
+void StringCopyN(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 {
 	if (strlen(sSrc) < (unsigned int)nLen) {
 		if (bTerm) strcpy(sDest, sSrc);
