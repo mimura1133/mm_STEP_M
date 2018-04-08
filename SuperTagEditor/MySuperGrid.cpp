@@ -19,6 +19,8 @@
 
 #include "Registry.h"
 
+#include <string_view>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -156,6 +158,19 @@ UINT STEClipbordFormat; /* Misirlou 146 */
 // CMySuperGrid
 namespace
 {
+	using tstring_view = std::basic_string_view<TCHAR>;
+
+	template<class T>
+	auto string_view_cast(const T& v) -> decltype(tstring_view(v))
+	{
+		return v;
+	}
+
+	tstring_view string_view_cast(const CString& v)
+	{
+		return tstring_view(v, v.GetLength());
+	}
+
 	static char *GetToken(char *buffer, char *sToken)
 	{
 		static char *pBuffer = NULL;
@@ -210,19 +225,19 @@ namespace
 		return(pNow);
 	}
 
-	static CString StrReplace(CString &strOrg, const char *sKey, const char *sRep)
+	template<class T1, class T2>
+	CString StrReplace(CString& strOrg, T1&& sKey, T2&& sRep)
 	{
-		CString	strWork;
-		int		nPos;
-
-		strWork = strOrg;
-		while ((nPos = strWork.Find(sKey)) != -1) {
-			int		nLenOrg = strWork.GetLength();
-			int		nLenKey = strlen(sKey);
-			strWork.Format("%s%s%s", strWork.Left(nPos), sRep, strWork.Right(nLenOrg - (nPos + nLenKey)));
+		return StrReplace(strOrg, string_view_cast(sKey), string_view_cast(sRep));
+	}
+	CString StrReplace(CString &strOrg, tstring_view sKey, tstring_view sRep)
+	{
+		std::size_t nPos;
+		tstring strWork = strOrg;
+		while ((nPos = strWork.find(sKey)) != std::string::npos) {
+			strWork.replace(nPos, sKey.length(), sRep);
 		}
-		// 制御コードをスペースに置き換えない /* SeaKnows2 040 */
-		return(strWork);
+		return strWork.c_str();
 	}
 	static CString StrReplaceEx(CString &strOrg, const char *sKey, const char *sRep, bool bIsHtml)
 	{
