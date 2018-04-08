@@ -95,7 +95,7 @@ END_MESSAGE_MAP()
 void CDlgCommonProgress::OnCancel()
 {
 	//’Ç‰Á by Kobarin
-	if (MessageBox("’†’f‚µ‚Ä‚à‚æ‚ë‚µ‚¢‚Å‚·‚©H", "ˆ—‚Ì’†’f", MB_ICONQUESTION|MB_YESNOCANCEL|MB_DEFBUTTON2|MB_TOPMOST) == IDYES) {
+	if (MessageBox(TEXT("’†’f‚µ‚Ä‚à‚æ‚ë‚µ‚¢‚Å‚·‚©H"), TEXT("ˆ—‚Ì’†’f"), MB_ICONQUESTION|MB_YESNOCANCEL|MB_DEFBUTTON2|MB_TOPMOST) == IDYES) {
 		m_bCanceled = TRUE;
 	}
 }

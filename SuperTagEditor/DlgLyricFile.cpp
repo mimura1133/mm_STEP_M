@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // 引数  : sLocal			= パス(入出力)
 // 戻り値: BOOL
 // =============================================
-BOOL SelectDirectory(char *sLocal)
+BOOL SelectDirectory(LPTSTR sLocal)
 {
 	CSHBrowseForFolder	browse;
 	browse.SetEnableSubDirButton(false);
@@ -99,8 +99,8 @@ void CDlgLyricFile::OnBtRefLyrics()
 	GetDlgItemText(IDC_ED_LYRICS_PATH, strFileName);
 
 	// フォルダ選択ダイアログを開く
-	char	sFolderName[_MAX_PATH] = {'\0'};
-	strcpy(sFolderName, strFileName);
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
+	lstrcpy(sFolderName, strFileName);
 	if (SelectDirectory(sFolderName) == TRUE) {
 		SetDlgItemText(IDC_ED_LYRICS_PATH, sFolderName);
 	}
@@ -123,7 +123,7 @@ void CDlgLyricFile::OnBtResetPage()
 	((CButton *)GetDlgItem(IDC_CH_CHANGE_TEXT_FILENAME))->SetCheck(TRUE);
 	((CButton *)GetDlgItem(IDC_CH_SET_LYRICS_DIR))->SetCheck(FALSE);
 	((CButton *)GetDlgItem(IDC_CH_SEARCH_LYRICS_SUB_DIR))->SetCheck(FALSE);
-	((CWnd *)GetDlgItem(IDC_ED_LYRICS_PATH))->SetWindowText("");
+	((CWnd *)GetDlgItem(IDC_ED_LYRICS_PATH))->SetWindowText(TEXT(""));
 
 	UpdateStatus();
 }

@@ -83,7 +83,7 @@ BOOL CDlgReplaceWord::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO: この位置に初期化の補足処理を追加してください
-	extern	const char	***g_sNameList;
+	extern	const TCHAR	***g_sNameList;
 	// m_listTargetColumn.AddString("全ての項目");
 	for (int i = 2; g_sNameList[0][i] != NULL; i++) {
 		m_listTargetColumn.AddString(g_sNameList[0][i]);
@@ -91,7 +91,7 @@ BOOL CDlgReplaceWord::OnInitDialog()
 	/*m_listTargetColumn.AddString("(全項目)");*/
 	m_listTargetColumn.SetCurSel(m_nTargetColumn);
 
-	SetWindowText(m_bModeReplace ? "置換" : "検索");
+	SetWindowText(m_bModeReplace ? TEXT("置換") : TEXT("検索"));
 
 	UpdateStatus();
 
@@ -105,8 +105,8 @@ BOOL CDlgReplaceWord::OnInitDialog()
 		m_strSearchWord = "";
 		m_strReplaceWord = "";
 		UpdateData(FALSE);
-		m_listSearchWord.LoadHistory("haseta\\history", "SearchWord");
-		m_listReplaceWord.LoadHistory("haseta\\history", "ReplaceWord");
+		m_listSearchWord.LoadHistory(TEXT("haseta\\history"), TEXT("SearchWord"));
+		m_listReplaceWord.LoadHistory(TEXT("haseta\\history"), TEXT("ReplaceWord"));
 		m_bAddCurrentItemtoHistory = false;
 	}
 	return TRUE;  // コントロールにフォーカスを設定しないとき、戻り値は TRUE となります
@@ -196,7 +196,7 @@ void CDlgReplaceWord::ExecSearch(bool bNext)
 			m_pList->SetRedraw(TRUE);
 #endif
 		} else {
-			MessageBox("見つかりませんでした", "検索失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(TEXT("見つかりませんでした"), TEXT("検索失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		}
 	}
 }

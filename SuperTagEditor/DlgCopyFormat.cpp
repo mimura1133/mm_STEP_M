@@ -66,7 +66,7 @@ void CDlgCopyFormat::OnSelChangeListFormatType()
 	m_editFormat.SetWindowText(m_userFormatEx[m_nFormatType].strFormat);
 }
 
-void CDlgCopyFormat::OutputFormatString(const char *sText)
+void CDlgCopyFormat::OutputFormatString(LPCTSTR sText)
 {
 	m_editFormat.ReplaceSel(sText, FALSE);
 	m_editFormat.SetFocus();
@@ -74,57 +74,57 @@ void CDlgCopyFormat::OutputFormatString(const char *sText)
 
 void CDlgCopyFormat::OnBtAlbumName() 
 {
-	OutputFormatString("%ALBUM_NAME%");
+	OutputFormatString(TEXT("%ALBUM_NAME%"));
 }
 
 void CDlgCopyFormat::OnBtArtistName() 
 {
-	OutputFormatString("%ARTIST_NAME%");
+	OutputFormatString(TEXT("%ARTIST_NAME%"));
 }
 
 void CDlgCopyFormat::OnBtComment() 
 {
-	OutputFormatString("%COMMENT%");
+	OutputFormatString(TEXT("%COMMENT%"));
 }
 
 void CDlgCopyFormat::OnBtFileName() 
 {
-	OutputFormatString("%FILE_NAME%");
+	OutputFormatString(TEXT("%FILE_NAME%"));
 }
 
 void CDlgCopyFormat::OnBtFixString() 
 {
-	OutputFormatString("%STRING%");
+	OutputFormatString(TEXT("%STRING%"));
 }
 
 void CDlgCopyFormat::OnBtNumber() 
 {
-	OutputFormatString("%NUMBER%");
+	OutputFormatString(TEXT("%NUMBER%"));
 }
 
 void CDlgCopyFormat::OnBtReleaseYear() 
 {
-	OutputFormatString("%RELEASE_YEAR%");
+	OutputFormatString(TEXT("%RELEASE_YEAR%"));
 }
 
 void CDlgCopyFormat::OnBtTrackName() 
 {
-	OutputFormatString("%TRACK_NAME%");
+	OutputFormatString(TEXT("%TRACK_NAME%"));
 }
 
 void CDlgCopyFormat::OnBtTrackNumber() 
 {
-	OutputFormatString("%TRACK_NUMBER%");
+	OutputFormatString(TEXT("%TRACK_NUMBER%"));
 }
 
 void CDlgCopyFormat::OnBtTrackNumber2() 
 {
-	OutputFormatString("%TRACK_NUMBER2%");
+	OutputFormatString(TEXT("%TRACK_NUMBER2%"));
 }
 
 void CDlgCopyFormat::OnBtTrackNumber3() 
 {
-	OutputFormatString("%TRACK_NUMBER3%");
+	OutputFormatString(TEXT("%TRACK_NUMBER3%"));
 }
 
 void CDlgCopyFormat::OnBtNameChange() 
@@ -141,7 +141,7 @@ void CDlgCopyFormat::OnBtNameChange()
 		m_listFormatType.ResetContent();
 		int i; for (i = 0; i < USER_MOVE_FODLER_FORMAT_MAX; i++) {
 			CString	strName;
-			strName.Format("%d: %s", i+1, m_userFormatEx[i].strName);
+			strName.Format(TEXT("%d: %s"), i+1, m_userFormatEx[i].strName);
 			m_listFormatType.AddString(strName);
 		}
 		// ‘I‘ð‚µ‚È‚¨‚·
@@ -158,7 +158,7 @@ BOOL CDlgCopyFormat::OnInitDialog()
 	m_listFormatType.ResetContent();
 	for (i = 0; i < USER_COPY_FORMAT_FORMAT_MAX; i++) {
 		CString	strName;
-		strName.Format("%d: %s", i+1, m_userFormatEx[i].strName);
+		strName.Format(TEXT("%d: %s"), i+1, m_userFormatEx[i].strName);
 		m_listFormatType.AddString(strName);
 	}
 

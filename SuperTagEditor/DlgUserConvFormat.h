@@ -33,7 +33,7 @@ public:
 	USER_CONV_FORMAT	m_userFormat[USER_CONV_FORMAT_MAX];
 
 	int		m_nOutputFormatType;
-	void	OutputFormatString(const char *);
+	void	OutputFormatString(LPCTSTR);
 
 // オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
