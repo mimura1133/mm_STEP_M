@@ -19,6 +19,8 @@
 
 #include "Registry.h"
 
+#include <string_view>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -154,187 +156,263 @@ UINT STEClipbordFormat; /* Misirlou 146 */
 
 /////////////////////////////////////////////////////////////////////////////
 // CMySuperGrid
-static char *GetToken(char *buffer, char *sToken)
+namespace
 {
-	static char *pBuffer = NULL;
+	using tstring_view = std::basic_string_view<TCHAR>;
 
-	if (buffer != NULL) pBuffer = buffer;
-	if (pBuffer == NULL) return(NULL);
-	if (*pBuffer == '\0') return(NULL);
-
-	// 文字列を検索
-	char *pNow = pBuffer;
-	pBuffer = strstr(pBuffer, sToken);
-	if (pBuffer != NULL) {
-		*pBuffer = '\0';
-		pBuffer++;
+	template<class T>
+	auto string_view_cast(const T& v) -> decltype(tstring_view(v))
+	{
+		return v;
 	}
-	return(pNow);
-}
 
-static char *GetTokenQuote(char *buffer, char *sToken)
-{
-	static char *pBuffer = NULL;
+	tstring_view string_view_cast(const CString& v)
+	{
+		return tstring_view(v, v.GetLength());
+	}
 
-	if (buffer != NULL) pBuffer = buffer;
-	if (pBuffer == NULL) return(NULL);
-	if (*pBuffer == '\0') return(NULL);
+	static char *GetToken(char *buffer, char *sToken)
+	{
+		static char *pBuffer = NULL;
 
-	// 文字列を検索
-	char *pNow = pBuffer;
-	if (*pNow == '"') {
-		int nPos = 1;
-		while (1) {
-			// 次の行も同じセルのデータなので、終わりの " を探す
-			while(pBuffer[nPos] != '\t' && pBuffer[nPos] != '\r' && pBuffer[nPos] != '\0') {
-				nPos++;
-			}
-			if (pBuffer[nPos-1] == '"') {
-				break;
-			}
-			nPos++;
-		}
-		nPos--;
-		pBuffer += nPos;
-		*pBuffer = '\0';
-		pBuffer++;
-	} else {
+		if (buffer != NULL) pBuffer = buffer;
+		if (pBuffer == NULL) return(NULL);
+		if (*pBuffer == '\0') return(NULL);
+
+		// 文字列を検索
+		char *pNow = pBuffer;
 		pBuffer = strstr(pBuffer, sToken);
 		if (pBuffer != NULL) {
 			*pBuffer = '\0';
 			pBuffer++;
 		}
+		return(pNow);
 	}
-	return(pNow);
-}
 
-static CString StrReplace(CString &strOrg, const char *sKey, const char *sRep)
-{
-	CString	strWork;
-	int		nPos;
+	static char *GetTokenQuote(char *buffer, char *sToken)
+	{
+		static char *pBuffer = NULL;
 
-	strWork = strOrg;
-	while((nPos = strWork.Find(sKey)) != -1) {
-		int		nLenOrg = strWork.GetLength();
-		int		nLenKey = strlen(sKey);
-		strWork.Format("%s%s%s", strWork.Left(nPos), sRep, strWork.Right(nLenOrg-(nPos+nLenKey)));
-	}
-	// 制御コードをスペースに置き換えない /* SeaKnows2 040 */
-	return(strWork);
-}
-static CString StrReplaceEx(CString &strOrg, const char *sKey, const char *sRep, bool bIsHtml)
-{
-	if (bIsHtml && strlen(sRep) == 0) sRep = "　";
-	/* BeachMonster 119 *///if (bIsHtml)  return(StrReplace(StrReplace(strOrg, sKey, sRep), "\r\n", "<BR>")); /* BeachMonster 089 */
-	return(StrReplace(strOrg, sKey, sRep));
-}
+		if (buffer != NULL) pBuffer = buffer;
+		if (pBuffer == NULL) return(NULL);
+		if (*pBuffer == '\0') return(NULL);
 
-static	CString	ConvFileName(CString strFullPath, CString strBaseDir)
-{
-	CString	strBuffer;
-	if (_strnicmp(strFullPath, strBaseDir, strBaseDir.GetLength()) == 0) {
-		// 相対パスに変換可能(パスが一致)
-		strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength()-strBaseDir.GetLength()));
-	} else if (strFullPath[1] == ':' && _strnicmp(strFullPath, strBaseDir, 1) == 0) {
-		// 相対パスに変換可能(ドライブ名だけ一緒)
-		strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength()-2));
-	} else {
-		// 相対パスに変換不可能
-		strBuffer.Format("%s", strFullPath);
-	}
-	return(strBuffer);
-}
-
-
-// =============================================
-//  CharComp
-//  概要  : １文字比較関数
-//  引数  : sSrc		= 比較元文字列
-//        : sDest		= 比較先文字列
-//        : bDiffFlag	= 大文字／小文字区別フラグ
-//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
-// =============================================
-static	BOOL CharComp(LPCSTR sSrc, LPCSTR sDest, BOOL bDiffFlag)
-{
-	BOOL	bIsKanjiSrc = iskanji(*sSrc) ? TRUE : FALSE;
-	BOOL	bIsKanjiDest = iskanji(*sDest) ? TRUE : FALSE;
-	if (bIsKanjiSrc == bIsKanjiDest) {
-		if (bIsKanjiSrc) {			// 漢字
-			if (sSrc[0] == sDest[0]
-			&&  sSrc[1] == sDest[1]) {
-				return(TRUE);
+		// 文字列を検索
+		char *pNow = pBuffer;
+		if (*pNow == '"') {
+			int nPos = 1;
+			while (1) {
+				// 次の行も同じセルのデータなので、終わりの " を探す
+				while (pBuffer[nPos] != '\t' && pBuffer[nPos] != '\r' && pBuffer[nPos] != '\0') {
+					nPos++;
+				}
+				if (pBuffer[nPos - 1] == '"') {
+					break;
+				}
+				nPos++;
 			}
-		} else {					// ASCII
-			if (bDiffFlag) {
-				// 大文字／小文字を区別
-				if (*sSrc == *sDest) return(TRUE);
-			} else {
-				// 大文字／小文字を同一視
-				if (toupper(*sSrc) == toupper(*sDest)) return(TRUE);
+			nPos--;
+			pBuffer += nPos;
+			*pBuffer = '\0';
+			pBuffer++;
+		} else {
+			pBuffer = strstr(pBuffer, sToken);
+			if (pBuffer != NULL) {
+				*pBuffer = '\0';
+				pBuffer++;
 			}
 		}
+		return(pNow);
 	}
-	return(FALSE);
-}
 
-// =============================================
-//  StringComp
-//  概要  : 文字列比較関数(２バイト文字対応)
-//  引数  : sSrc		= 比較元文字列
-//        : sDest		= 比較先文字列
-//        : nDestLen	= 長さ
-//        : bDiffFlag	= 大文字／小文字区別フラグ
-//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
-// =============================================
-static	BOOL StringComp(LPCSTR sSrc, LPCSTR sDest, int nDestLen, BOOL bDiffFlag)
-{
-	int		nSrcLen = strlen(sSrc);
-	if (nSrcLen >= nDestLen) {
-		while(*sDest != '\0') {
-			if (CharComp(sSrc, sDest, bDiffFlag) == FALSE) break;
-			if (iskanji(*sDest)) {
-				sSrc += 2;
-				sDest += 2;
-			} else {
-				sSrc++;
-				sDest++;
+	template<class T1, class T2, class T3>
+	auto StrReplace(T1& strOrg, T2&& sKey, T3&& sRep) -> decltype(StrReplace(strOrg, tstring_view{}, tstring_view{}))
+	{
+		return StrReplace(strOrg, string_view_cast(sKey), string_view_cast(sRep));
+	}
+	CString StrReplace(CString &strOrg, tstring_view sKey, tstring_view sRep)
+	{
+		std::size_t nPos;
+		tstring strWork = strOrg;
+		while ((nPos = strWork.find(sKey)) != std::string::npos) {
+			strWork.replace(nPos, sKey.length(), sRep);
+		}
+		return strWork.c_str();
+	}
+	tstring& StrReplace(tstring& strOrg, tstring_view sKey, tstring_view sRep)
+	{
+		std::size_t nPos;
+		auto& strWork = strOrg;
+		while ((nPos = strWork.find(sKey)) != std::string::npos) {
+			strWork.replace(nPos, sKey.length(), sRep);
+		}
+		return strWork;
+	}
+	static CString StrReplaceEx(CString &strOrg, const char *sKey, const char *sRep, bool bIsHtml)
+	{
+		if (bIsHtml && strlen(sRep) == 0) sRep = "　";
+		/* BeachMonster 119 *///if (bIsHtml)  return(StrReplace(StrReplace(strOrg, sKey, sRep), "\r\n", "<BR>")); /* BeachMonster 089 */
+		return(StrReplace(strOrg, sKey, sRep));
+	}
+
+	static	CString	ConvFileName(CString strFullPath, CString strBaseDir)
+	{
+		CString	strBuffer;
+		if (_strnicmp(strFullPath, strBaseDir, strBaseDir.GetLength()) == 0) {
+			// 相対パスに変換可能(パスが一致)
+			strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength() - strBaseDir.GetLength()));
+		} else if (strFullPath[1] == ':' && _strnicmp(strFullPath, strBaseDir, 1) == 0) {
+			// 相対パスに変換可能(ドライブ名だけ一緒)
+			strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength() - 2));
+		} else {
+			// 相対パスに変換不可能
+			strBuffer.Format("%s", strFullPath);
+		}
+		return(strBuffer);
+	}
+
+
+	// =============================================
+	//  CharComp
+	//  概要  : １文字比較関数
+	//  引数  : sSrc		= 比較元文字列
+	//        : sDest		= 比較先文字列
+	//        : bDiffFlag	= 大文字／小文字区別フラグ
+	//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
+	// =============================================
+	static	BOOL CharComp(LPCSTR sSrc, LPCSTR sDest, BOOL bDiffFlag)
+	{
+		BOOL	bIsKanjiSrc = iskanji(*sSrc) ? TRUE : FALSE;
+		BOOL	bIsKanjiDest = iskanji(*sDest) ? TRUE : FALSE;
+		if (bIsKanjiSrc == bIsKanjiDest) {
+			if (bIsKanjiSrc) {			// 漢字
+				if (sSrc[0] == sDest[0]
+					&& sSrc[1] == sDest[1]) {
+					return(TRUE);
+				}
+			} else {					// ASCII
+				if (bDiffFlag) {
+					// 大文字／小文字を区別
+					if (*sSrc == *sDest) return(TRUE);
+				} else {
+					// 大文字／小文字を同一視
+					if (toupper(*sSrc) == toupper(*sDest)) return(TRUE);
+				}
 			}
 		}
-		if (*sDest == '\0') return(TRUE);
+		return(FALSE);
 	}
-	return(FALSE);
-}
 
-// =============================================
-//  ConvNumber
-//  概要  : 数字を３桁のカンマ区切りに変換する
-//  引数  : strNum		= 数字(文字列)
-//  戻り値: 			= 変換後の文字列
-// =============================================
-CString	ConvNumber(CString strNum)
-{
-	int		nCount = 1;
-	while(strNum.GetLength() >= nCount * 4) {
-		strNum = strNum.Left(strNum.GetLength() - (nCount * 4 - 1))
-		       + CString(',')
-		       + strNum.Right(nCount * 4 - 1);
-		nCount++;
+	// =============================================
+	//  StringComp
+	//  概要  : 文字列比較関数(２バイト文字対応)
+	//  引数  : sSrc		= 比較元文字列
+	//        : sDest		= 比較先文字列
+	//        : nDestLen	= 長さ
+	//        : bDiffFlag	= 大文字／小文字区別フラグ
+	//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
+	// =============================================
+	static	BOOL StringComp(LPCSTR sSrc, LPCSTR sDest, int nDestLen, BOOL bDiffFlag)
+	{
+		int		nSrcLen = strlen(sSrc);
+		if (nSrcLen >= nDestLen) {
+			while (*sDest != '\0') {
+				if (CharComp(sSrc, sDest, bDiffFlag) == FALSE) break;
+				if (iskanji(*sDest)) {
+					sSrc += 2;
+					sDest += 2;
+				} else {
+					sSrc++;
+					sDest++;
+				}
+			}
+			if (*sDest == '\0') return(TRUE);
+		}
+		return(FALSE);
 	}
-	return(strNum);
-}
 
-// =============================================
-//  GetFileType
-//  概要  : ファイルタイプ文字列を取得する
-//  引数  : fileMP3		= ファイル情報
-//  戻り値: CString		= ファイルタイプ文字列
-// =============================================
-static CString GetFileType(const FILE_MP3 *fileMP3)
-{
-	if ( fileMP3->strFileTypeName.IsEmpty()) {
-		return("Unknown");
+	// =============================================
+	//  ConvNumber
+	//  概要  : 数字を３桁のカンマ区切りに変換する
+	//  引数  : strNum		= 数字(文字列)
+	//  戻り値: 			= 変換後の文字列
+	// =============================================
+	CString	ConvNumber(CString strNum)
+	{
+		int		nCount = 1;
+		while (strNum.GetLength() >= nCount * 4) {
+			strNum = strNum.Left(strNum.GetLength() - (nCount * 4 - 1))
+				+ CString(',')
+				+ strNum.Right(nCount * 4 - 1);
+			nCount++;
+		}
+		return(strNum);
 	}
-	return fileMP3->strFileTypeName;
+
+	// =============================================
+	//  GetFileType
+	//  概要  : ファイルタイプ文字列を取得する
+	//  引数  : fileMP3		= ファイル情報
+	//  戻り値: CString		= ファイルタイプ文字列
+	// =============================================
+	static CString GetFileType(const FILE_MP3 *fileMP3)
+	{
+		if (fileMP3->strFileTypeName.IsEmpty()) {
+			return("Unknown");
+		}
+		return fileMP3->strFileTypeName;
+	}
+
+	/// <summary>
+	/// SIF の項目
+	/// </summary>
+	CString StrReplaceSIF(const CString& strOrg, const FILE_MP3* fileMP3)
+	{
+		tstring strText = strOrg;
+		StrReplace(strText, TEXT("%COPYRIGHT%"), fileMP3->strCopyrightSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%ENGINEER%"), fileMP3->strEngineerSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%SOURCE%"), fileMP3->strSourceSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%SOFTWARE%"), fileMP3->strSoftwareSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%KEYWORD%"), fileMP3->strKeywordSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%TECHNICIAN%"), fileMP3->strTechnicianSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%LYRIC%"), fileMP3->strLyricSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%COMMISSION%"), fileMP3->strCommissionSI.SpanExcluding("\r"));
+		StrReplace(strText, TEXT("%WRITER%"), fileMP3->strWriterSI.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%COMPOSER%"), fileMP3->strComposerSI.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%ALBM_ARTIST%"), fileMP3->strAlbmArtistSI.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%ORIG_ARTIST%"), fileMP3->strOrigArtistSI.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%URL%"), fileMP3->strURLSI.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%ENCODEST%"), fileMP3->strEncodest.SpanExcluding("\r")); /* Baja 154 */
+		StrReplace(strText, TEXT("%OTHER%"), fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
+		return strText.c_str();
+	}
+
+	template<class Func>
+	std::tuple<CString, CString, CString> GetIntNumber(const CString& no, Func func)
+	{
+		CString	number1, number2, number3;
+		if (const auto nTrackNumber = atoi(func(no))) {
+			number1.Format(TEXT("%d"), nTrackNumber);
+			number2.Format(TEXT("%02d"), nTrackNumber);
+			number3.Format(TEXT("%03d"), nTrackNumber);
+		}
+
+		return {
+			number1,
+			number2,
+			number3,
+		};
+	}
+
+	std::tuple<CString, CString, CString> GetIntTrackNo(const CString& no)
+	{
+		return GetIntNumber(no, CFileMP3::GetIntTrackNo);
+	}
+
+	std::tuple<CString, CString, CString> GetIntDiskNo(const CString& no)
+	{
+		return GetIntNumber(no, CFileMP3::GetIntDiskNo);
+	}
 }
 
 // =============================================
@@ -2797,13 +2875,8 @@ bool CMySuperGrid::ConvTagInfo(CTreeItem *pItem, int nType, const char *sFormat,
 	case 3:		// ユーザー指定の[タグ情報] => [ファイル名]変換
 		{
 			CString	strFileName = sFormat;
-			CString	strTrackNumber,strTrackNumber2,strTrackNumber3,strDiskNumber,strDiskNumber2,strDiskNumber3;
-			strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
+			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+			auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 			strFileName = StrReplace(strFileName, "%TRACK_NAME%"   , GetFileColumnText(fileMP3, COLUMN_TRACK_NAME).SpanExcluding("\r"));
 			strFileName = StrReplace(strFileName, "%ALBUM_NAME%"   , GetFileColumnText(fileMP3, COLUMN_ALBUM_NAME).SpanExcluding("\r"));
 			strFileName = StrReplace(strFileName, "%ARTIST_NAME%"  , GetFileColumnText(fileMP3, COLUMN_ARTIST_NAME).SpanExcluding("\r"));
@@ -2817,21 +2890,8 @@ bool CMySuperGrid::ConvTagInfo(CTreeItem *pItem, int nType, const char *sFormat,
 			strFileName = StrReplace(strFileName, "%COMMENT%"      , GetFileColumnText(fileMP3, COLUMN_COMMENT).SpanExcluding("\r")/* BeachMonster 089 */);
 			strFileName = StrReplace(strFileName, "%GENRE%"        , GetFileColumnText(fileMP3, COLUMN_GENRE).SpanExcluding("\r"));
 			// SIF の項目
-			strFileName = StrReplace(strFileName, "%COPYRIGHT%" , fileMP3->strCopyrightSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%ENGINEER%"  , fileMP3->strEngineerSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%SOURCE%"    , fileMP3->strSourceSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%SOFTWARE%"  , fileMP3->strSoftwareSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%KEYWORD%"   , fileMP3->strKeywordSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%TECHNICIAN%", fileMP3->strTechnicianSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%LYRIC%"     , fileMP3->strLyricSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%COMMISSION%", fileMP3->strCommissionSI.SpanExcluding("\r"));
-			strFileName = StrReplace(strFileName, "%WRITER%"	, fileMP3->strWriterSI.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%COMPOSER%"	, fileMP3->strComposerSI.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%ALBM_ARTIST%", fileMP3->strAlbmArtistSI.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%ORIG_ARTIST%", fileMP3->strOrigArtistSI.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%URL%"		, fileMP3->strURLSI.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%ENCODEST%"	, fileMP3->strEncodest.SpanExcluding("\r")); /* Baja 154 */
-			strFileName = StrReplace(strFileName, "%OTHER%"	    , fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
+			strFileName = StrReplaceSIF(strFileName, fileMP3);
+
 			ChangeSubItemText(nIndex, g_nColumnNumberList[COLUMN_FILE_NAME], strFileName);
 			InvalidateItemRect(nIndex);
 		}
@@ -3790,22 +3850,12 @@ bool CMySuperGrid::ConvUserFormatEx(USER_CONV_FORMAT_EX *pForm)
 			_tsplitpath(strFileName, NULL, NULL, sFileName, NULL);
 
 			CString	strText = pForm->strFormat;
-			CString	strNumber, strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
+			CString	strNumber;
+			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+			auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
+
 			// 連番
 			strNumber.Format(sNumFormat, nNumber);
-			// １桁のトラック番号
-			strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			// ２桁のトラック番号
-			strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			// ３桁のトラック番号
-			strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-
-			// １桁のディスク番号
-			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			// ２桁のディスク番号
-			strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			// ３桁のディスク番号
-			strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
 
 			// 書式を使って文字列を作成
 			strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -3824,22 +3874,7 @@ bool CMySuperGrid::ConvUserFormatEx(USER_CONV_FORMAT_EX *pForm)
 			strText = StrReplace(strText, "%NUMBER%"       , strNumber);
 			strText = StrReplace(strText, "%STRING%"       , pForm->strFixString);
 			// SIF の項目
-			strText = StrReplace(strText, "%COPYRIGHT%" , fileMP3->strCopyrightSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%ENGINEER%"  , fileMP3->strEngineerSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%SOURCE%"    , fileMP3->strSourceSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%SOFTWARE%"  , fileMP3->strSoftwareSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%KEYWORD%"   , fileMP3->strKeywordSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%TECHNICIAN%", fileMP3->strTechnicianSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%LYRIC%"     , fileMP3->strLyricSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%COMMISSION%", fileMP3->strCommissionSI.SpanExcluding("\r"));
-			strText = StrReplace(strText, "%WRITER%"	, fileMP3->strWriterSI.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%COMPOSER%"	, fileMP3->strComposerSI.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%ALBM_ARTIST%", fileMP3->strAlbmArtistSI.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%ORIG_ARTIST%", fileMP3->strOrigArtistSI.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%URL%"		, fileMP3->strURLSI.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%ENCODEST%"	, fileMP3->strEncodest.SpanExcluding("\r")); /* Baja 154 */
-			strText = StrReplace(strText, "%OTHER%"  	, fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
-
+			StrReplaceSIF(strText, fileMP3);
 			/* STEP 007 */
 			if (fileCount == 0) {
 				fileCount = GetFolderFileCount(NodeToIndex(GetParentItem(pItem)));
@@ -4834,22 +4869,8 @@ bool CMySuperGrid::MoveFolderFormat(USER_MOVE_FODLER_FORMAT *pForm, CString strF
 		_tsplitpath_s(strFileName, NULL,NULL, NULL,NULL, sFileName,_MAX_FNAME, NULL,NULL);
 
 		CString	strText = pForm->strFormat;
-		CString	strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
-
-		// １桁のトラック番号
-		strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のトラック番号
-		strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のトラック番号
-		strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-
-		// １桁のディスク番号
-		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のディスク番号
-		strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のディスク番号
-		strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-
+		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+		auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// 書式を使って文字列を作成
 		strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -4867,22 +4888,7 @@ bool CMySuperGrid::MoveFolderFormat(USER_MOVE_FODLER_FORMAT *pForm, CString strF
 		strText = StrReplace(strText, "%GENRE%"        , GetFileColumnText(fileMP3, COLUMN_GENRE).SpanExcluding("\r"));
 		strText = StrReplace(strText, "%STRING%"       , pForm->strFixString);
 		// SIF の項目
-		strText = StrReplace(strText, "%COPYRIGHT%" , fileMP3->strCopyrightSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%ENGINEER%"  , fileMP3->strEngineerSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%SOURCE%"    , fileMP3->strSourceSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%SOFTWARE%"  , fileMP3->strSoftwareSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%KEYWORD%"   , fileMP3->strKeywordSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%TECHNICIAN%", fileMP3->strTechnicianSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%LYRIC%"     , fileMP3->strLyricSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%COMMISSION%", fileMP3->strCommissionSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%WRITER%"	, fileMP3->strWriterSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%COMPOSER%"	, fileMP3->strComposerSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ALBM_ARTIST%", fileMP3->strAlbmArtistSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ORIG_ARTIST%", fileMP3->strOrigArtistSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%URL%"		, fileMP3->strURLSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ENCODEST%"	, fileMP3->strEncodest.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%OTHER%"  	, fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
-		
+		strText = StrReplaceSIF(strText, fileMP3);
 
 		// 制御コード（一部）をスペースに置き換え /* SeaKnows2 040 */
 		strText = StrReplace(strText, "\n", " ");
@@ -6611,21 +6617,8 @@ void CMySuperGrid::ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm) /* FunnyC
 		}
 
 		CString	strText = pForm->strFormat;
-		CString	strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
-
-		// １桁のトラック番号
-		strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のトラック番号
-		strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のトラック番号
-		strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-
-		// １桁のディスク番号
-		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のディスク番号
-		strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のディスク番号
-		strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
+		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+		auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// 書式を使って文字列を作成
 		strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -6643,21 +6636,7 @@ void CMySuperGrid::ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm) /* FunnyC
 		strText = StrReplace(strText, "%GENRE%"        , GetFileColumnText(fileMP3, COLUMN_GENRE).SpanExcluding("\r"));
 		strText = StrReplace(strText, "%STRING%"       , pForm->strFixString);
 		// SIF の項目
-		strText = StrReplace(strText, "%COPYRIGHT%" , fileMP3->strCopyrightSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%ENGINEER%"  , fileMP3->strEngineerSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%SOURCE%"    , fileMP3->strSourceSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%SOFTWARE%"  , fileMP3->strSoftwareSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%KEYWORD%"   , fileMP3->strKeywordSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%TECHNICIAN%", fileMP3->strTechnicianSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%LYRIC%"     , fileMP3->strLyricSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%COMMISSION%", fileMP3->strCommissionSI.SpanExcluding("\r"));
-		strText = StrReplace(strText, "%WRITER%"	, fileMP3->strWriterSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%COMPOSER%"	, fileMP3->strComposerSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ALBM_ARTIST%", fileMP3->strAlbmArtistSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ORIG_ARTIST%", fileMP3->strOrigArtistSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%URL%"		, fileMP3->strURLSI.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%ENCODEST%"	, fileMP3->strEncodest.SpanExcluding("\r")); /* Baja 154 */
-		strText = StrReplace(strText, "%OTHER%"  	, fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
+		strText = StrReplaceSIF(strText, fileMP3);
 
 		// 総合演奏時間
 		CString strBuffer;
@@ -6796,25 +6775,9 @@ bool CMySuperGrid::DeleteCharSpace(int /*nPos*/) /* FunnyCorn 177 */
 
 CString CMySuperGrid::MakeFormatFileBody(FILE_MP3	*fileMP3, const CString &strBody, bool bIsHtml, LIST_WRITE_STATUS *pStatus, bool bWriteHtml)
 {
-	int		nTrackNumber;
-	CString	strTrackNumber;
-	CString	strTrackNumber2;
-	CString	strTrackNumber3;
-	if ((nTrackNumber = atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER)))) != 0) {
-		strTrackNumber.Format("%d", nTrackNumber);
-		strTrackNumber2.Format("%02d", nTrackNumber);
-		strTrackNumber3.Format("%03d", nTrackNumber);
-	}
+	auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER));
 
-	int		nDiskNumber;
-	CString	strDiskNumber;
-	CString	strDiskNumber2;
-	CString	strDiskNumber3;
-	if ((nDiskNumber = atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER)))) != 0) {
-		strDiskNumber.Format("%d", nDiskNumber);
-		strDiskNumber2.Format("%02d", nDiskNumber);
-		strDiskNumber3.Format("%03d", nDiskNumber);
-	}
+	auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER));
 
 	CString	strFileSize, strFileSizeByte;
 	strFileSize.Format("%.2fMB", (float)fileMP3->lFileSize / 1024 / 1024);
