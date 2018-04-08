@@ -386,6 +386,25 @@ namespace
 		StrReplace(strText, TEXT("%OTHER%"), fileMP3->strOther.SpanExcluding("\r")); /* Conspiracy 196 */
 		return strText.c_str();
 	}
+
+	std::tuple<CString, CString, CString> GetIntTrackNo(const CString& no)
+	{
+		CString	strTrackNumber, strTrackNumber2, strTrackNumber3;
+		if (const auto nTrackNumber = atoi(CFileMP3::GetIntTrackNo(no))) {
+			// １桁のトラック番号
+			strTrackNumber.Format(TEXT("%d"), nTrackNumber);
+			// ２桁のトラック番号
+			strTrackNumber2.Format(TEXT("%02d"), nTrackNumber);
+			// ３桁のトラック番号
+			strTrackNumber3.Format(TEXT("%03d"), nTrackNumber);
+		}
+
+		return {
+			strTrackNumber,
+			strTrackNumber2,
+			strTrackNumber3,
+		};
+	}
 }
 
 // =============================================
@@ -2848,10 +2867,8 @@ bool CMySuperGrid::ConvTagInfo(CTreeItem *pItem, int nType, const char *sFormat,
 	case 3:		// ユーザー指定の[タグ情報] => [ファイル名]変換
 		{
 			CString	strFileName = sFormat;
-			CString	strTrackNumber,strTrackNumber2,strTrackNumber3,strDiskNumber,strDiskNumber2,strDiskNumber3;
-			strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
+			CString	strDiskNumber,strDiskNumber2,strDiskNumber3;
+			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
 			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
 			strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
 			strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
@@ -3828,15 +3845,11 @@ bool CMySuperGrid::ConvUserFormatEx(USER_CONV_FORMAT_EX *pForm)
 			_tsplitpath(strFileName, NULL, NULL, sFileName, NULL);
 
 			CString	strText = pForm->strFormat;
-			CString	strNumber, strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
+			CString	strNumber, strDiskNumber, strDiskNumber2, strDiskNumber3;
+			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+
 			// 連番
 			strNumber.Format(sNumFormat, nNumber);
-			// １桁のトラック番号
-			strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			// ２桁のトラック番号
-			strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-			// ３桁のトラック番号
-			strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
 
 			// １桁のディスク番号
 			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
@@ -4857,14 +4870,8 @@ bool CMySuperGrid::MoveFolderFormat(USER_MOVE_FODLER_FORMAT *pForm, CString strF
 		_tsplitpath_s(strFileName, NULL,NULL, NULL,NULL, sFileName,_MAX_FNAME, NULL,NULL);
 
 		CString	strText = pForm->strFormat;
-		CString	strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
-
-		// １桁のトラック番号
-		strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のトラック番号
-		strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のトラック番号
-		strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
+		CString	strDiskNumber, strDiskNumber2, strDiskNumber3;
+		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// １桁のディスク番号
 		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
@@ -6619,14 +6626,8 @@ void CMySuperGrid::ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm) /* FunnyC
 		}
 
 		CString	strText = pForm->strFormat;
-		CString	strTrackNumber, strTrackNumber2, strTrackNumber3, strDiskNumber, strDiskNumber2, strDiskNumber3;
-
-		// １桁のトラック番号
-		strTrackNumber.Format("%d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のトラック番号
-		strTrackNumber2.Format("%02d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のトラック番号
-		strTrackNumber3.Format("%03d", atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding("\r"))));
+		CString	strDiskNumber, strDiskNumber2, strDiskNumber3;
+		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// １桁のディスク番号
 		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
@@ -6790,15 +6791,7 @@ bool CMySuperGrid::DeleteCharSpace(int /*nPos*/) /* FunnyCorn 177 */
 
 CString CMySuperGrid::MakeFormatFileBody(FILE_MP3	*fileMP3, const CString &strBody, bool bIsHtml, LIST_WRITE_STATUS *pStatus, bool bWriteHtml)
 {
-	int		nTrackNumber;
-	CString	strTrackNumber;
-	CString	strTrackNumber2;
-	CString	strTrackNumber3;
-	if ((nTrackNumber = atoi(CFileMP3::GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER)))) != 0) {
-		strTrackNumber.Format("%d", nTrackNumber);
-		strTrackNumber2.Format("%02d", nTrackNumber);
-		strTrackNumber3.Format("%03d", nTrackNumber);
-	}
+	auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER));
 
 	int		nDiskNumber;
 	CString	strDiskNumber;
