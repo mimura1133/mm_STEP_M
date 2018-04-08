@@ -2,31 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "strcnv.h"
 
 //#include "imm.h"
 
 #ifndef iskanji
 #define iskanji(c)		((c) >= 0x81 && (c) <= 0x9f || (c) >= 0xe0 && (c) <= 0xfc)
-#endif
-
-enum	{CONV_SUJI=1, CONV_ALPHA=2, CONV_KATA=4, CONV_KIGOU=8, CONV_ALL=15};
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern	int conv_han2zens(unsigned char *, const unsigned char *, int);
-extern	int conv_zen2hans(unsigned char *, const unsigned char *, int);
-extern	void conv_kata2hira(unsigned char *);
-extern	void conv_kata_erase_dakuon(unsigned char *);
-extern	void conv_hira2kata(unsigned char *);
-extern	void conv_upper(unsigned char *);
-extern	void conv_lower(unsigned char *);
-extern	void conv_first_upper(unsigned char *, const char *, const char *, bool);
-//extern	DWORD conv_kan2hira(HWND, unsigned char *, DWORD);
-//extern	void conv_romaji(HWND hwnd, unsigned char *str, unsigned char *sRomaji);
-#ifdef __cplusplus
-}
 #endif
 
 unsigned short han2zen(int c, int flag)
@@ -98,7 +79,7 @@ unsigned short han2zen(int c, int flag)
 	return(c);
 }
 
-int conv_han2zens(unsigned char *zen, const unsigned char *han, int flag)
+int conv_han2zens(LPTSTR zen, LPCTSTR han, int flag)
 {
 	int		i;
 	int		pzen = 0;		// 全角位置
@@ -253,7 +234,7 @@ unsigned short zen2han(unsigned short c, int flag)
 	return(c);
 }
 
-int conv_zen2hans(unsigned char *han, const unsigned char *zen, int flag)
+int conv_zen2hans(LPTSTR han, LPCTSTR zen, int flag)
 {
 	int		i;
 	int		phan = 0;		// 半角位置
@@ -362,41 +343,41 @@ void conv_table(const unsigned char *before, const unsigned char *after, unsigne
 	}
 }
 // [カタカナ]の濁音、半濁音をなくす
-void conv_kata_erase_dakuon(unsigned char *str)
+void conv_kata_erase_dakuon(LPTSTR str)
 {
 	conv_table(kata, kata_dakuon, str);
 }
 // [カタカナ]=>[ひらがな]に変換
-void conv_kata2hira(unsigned char *str)
+void conv_kata2hira(LPTSTR str)
 {
 	conv_table(kata, hira, str);
 }
 
 // [ひらがな]=>[カタカナ]に変換
-void conv_hira2kata(unsigned char *str)
+void conv_hira2kata(LPTSTR str)
 {
 	conv_table(hira, kata, str);
 }
 
 // [小文字]=>[大文字]に変換
-void conv_upper(unsigned char *str)
+void conv_upper(LPTSTR str)
 {
 	_mbsupr(str);
 	conv_table(alphaS, alphaL, str);
 }
 
 // [大文字]=>[小文字]に変換
-void conv_lower(unsigned char *str)
+void conv_lower(LPTSTR str)
 {
 	_mbslwr(str);
 	conv_table(alphaL, alphaS, str);
 }
 
-void lower_suffix_word(unsigned char *str, int len, CString suffixs) /* STEP 026*/
+void lower_suffix_word(LPCTSTR str, int len, CString suffixs) /* STEP 026*/
 {
-	CString strZWord((LPCTSTR)str, len);
+	CString strZWord(str, len);
 	CString strWord;
-	conv_zen2hans((unsigned char *)strWord.GetBuffer(len*2+1), (const unsigned char *)(const char *)strZWord, CONV_ALL);
+	conv_zen2hans(strWord.GetBuffer(len*2+1), strZWord, CONV_ALL);
 	strWord.ReleaseBuffer();
 	strWord.MakeLower();
 	while (1) {
@@ -450,7 +431,7 @@ bool isSentenceSeparate(unsigned char* str, int len, CString separator) /* STEP 
 }
 
 // 単語の１文字目のみ、[小文字]=>[大文字]に変換
-void conv_first_upper(unsigned char *str, const char *suffixs, const char* separator , bool bUseSuffix)
+void conv_first_upper(LPTSTR str, LPCTSTR suffixs, LPCTSTR separator , bool bUseSuffix)
 {
 	bool	bFirst = true;
 	unsigned char*	pFirstPos = NULL; /* STEP 026 */
@@ -585,7 +566,7 @@ unsigned char* fixed_upper_lower(unsigned char *str, CStringArray& fixedWords) /
 	return NULL;
 }
 
-void conv_fixed_upper_lower(unsigned char *str, CStringArray& fixedWords) /* STEP 040 */
+void conv_fixed_upper_lower(LPTSTR str, CStringArray& fixedWords) /* STEP 040 */
 {
 	unsigned char* current = str;
 	bool bConv = false;
