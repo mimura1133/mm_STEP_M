@@ -19,7 +19,7 @@
 //追加 by Kobarin
 #include "dde/kbdde.h"
 
-#define DDE_TOPIC_NAME "SuperTagEditor"
+#define DDE_TOPIC_NAME TEXT("SuperTagEditor")
 #define DDE_SERVICE_NAME  DDE_TOPIC_NAME
 
 static KbDDEServer *g_DdeServer = NULL;
@@ -634,7 +634,7 @@ void CSuperTagEditorView::OnDropFiles(HDROP hDropInfo)
 	}
 
 	// プログレスバー初期化
-	pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+	pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 	// ドロップされたファイルを処理する
 	int i; for (i = 0; i < nFileCount; i++) {
@@ -1077,7 +1077,7 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 
     case CONTROL_WINAMP_QUIT:
 		// KbMedia Player を終了させる 
-		ddeClient.Execute("", "/quit");
+		ddeClient.Execute(TEXT(""), TEXT("/quit"));
 		break;
 
     case CONTROL_WINAMP_PLAYFILE:{
@@ -1085,11 +1085,11 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 	    COPYDATASTRUCT	*cds = (COPYDATASTRUCT *)lParam;
         if(bPlay){
             //リストに追加＋演奏開始
-            ddeClient.Execute((char *)cds->lpData, "/ADD");
+            ddeClient.Execute((LPCTSTR)cds->lpData, TEXT("/ADD"));
         }
         else{
             //リストに追加のみ
-            ddeClient.Execute((char *)cds->lpData, "/ADD /NOPLAY /NP"/* Misirlou 138 */);
+            ddeClient.Execute((LPCTSTR)cds->lpData, TEXT("/ADD /NOPLAY /NP")/* Misirlou 138 */);
         }
         //ちなみに、
         //ddeClient.Execute(szFileName, "/NOPLAY");//ファイルは開くが再生はしない
@@ -1101,30 +1101,30 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
     }
 	case CONTROL_WINAMP_PLAY:
 		// 演奏開始
-        ddeClient.Execute("", "/play");
+        ddeClient.Execute(TEXT(""), TEXT("/play"));
         break;
 
 	case CONTROL_WINAMP_DELETE:
         // リスト破棄
         // KbMedia Player Version 2.07β4 以降でのみ機能します
-        ddeClient.Execute("", "/clear");
+        ddeClient.Execute(TEXT(""), TEXT("/clear"));
         break;
 
     case CONTROL_WINAMP_STOP:
 		// 演奏停止 
-        ddeClient.Execute("", "/stop");
+        ddeClient.Execute(TEXT(""), TEXT("/stop"));
         // すぐに停止するのではなく、フェードアウトさせて停止する場合は
         //ddeClient.Execute("", "/fadeout");
 		break;
 
 	case CONTROL_WINAMP_PLAY_PREV:
 		// 前の曲
-        ddeClient.Execute("", "/prev");
+        ddeClient.Execute(TEXT(""), TEXT("/prev"));
 		break;
 
 	case CONTROL_WINAMP_PLAY_NEXT:
 		// 次の曲
-        ddeClient.Execute("", "/next");
+        ddeClient.Execute(TEXT(""), TEXT("/next"));
 		break;
 	}
 }
@@ -1154,7 +1154,7 @@ void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bP
 
     case CONTROL_WINAMP_QUIT:
 		// KbMedia Player を終了させる 
-		ddeClient.Execute("", "/quit");
+		ddeClient.Execute(TEXT(""), TEXT("/quit"));
 		break;
 
     case CONTROL_WINAMP_PLAYFILE:{
@@ -1162,28 +1162,28 @@ void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bP
 	    COPYDATASTRUCT	*cds = (COPYDATASTRUCT *)lParam;
         if(bPlay){
             //リストに追加＋演奏開始
-            ddeClient.Execute2((char *)cds->lpData, "/add");
-            ddeClient.Execute2("", "/add /play");
+            ddeClient.Execute2((LPCTSTR)cds->lpData, TEXT("/add"));
+            ddeClient.Execute2(TEXT(""), TEXT("/add /play"));
         }
         else{
             //リストに追加のみ
-            ddeClient.Execute2((char *)cds->lpData, "/add");
+            ddeClient.Execute2((LPCTSTR)cds->lpData, TEXT("/add"));
         }
         break;
     }
 	case CONTROL_WINAMP_PLAY:
 		// 演奏開始
-        ddeClient.Execute("", "/play");
+        ddeClient.Execute(TEXT(""), TEXT("/play"));
         break;
 
 	case CONTROL_WINAMP_DELETE:
         // リスト破棄
-        ddeClient.Execute("", "/delete all");
+        ddeClient.Execute(TEXT(""), TEXT("/delete all"));
         break;
 
     case CONTROL_WINAMP_STOP:
 		// 演奏停止 
-        ddeClient.Execute("", "/stop");
+        ddeClient.Execute(TEXT(""), TEXT("/stop"));
 		break;
 
 	case CONTROL_WINAMP_PLAY_PREV:
@@ -1487,7 +1487,7 @@ void CSuperTagEditorView::LoadPlayList(LPCTSTR sFileName)
 		}
 
 		// プレイリスト読みこみ
-		pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+		pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 		pDoc->LoadPlayList(g_strCurrentPlayList);
 		if (g_bPlayListAddList) {
 			// 追加リクエストのあったファイルのタグ情報を読み込む
@@ -2306,15 +2306,15 @@ HDDEDATA CALLBACK CSuperTagEditorView::DdemlCallback(UINT uType, UINT uFmt,
     DWORD dwData1, DWORD dwData2)
 {
     if(!g_DdeServer)return NULL;
-    char szBuffer[512];
+    TCHAR szBuffer[512];
     switch (uType) {
         case XTYP_CONNECT:
             //hszTpc2:サービス名 hszTpc1:トピック名
             g_DdeServer->QueryString(hszTpc2, szBuffer, sizeof(szBuffer));
-            if(strcmp(szBuffer, DDE_SERVICE_NAME) != 0)
+            if(lstrcmp(szBuffer, DDE_SERVICE_NAME) != 0)
                 return NULL;
             g_DdeServer->QueryString(hszTpc1, szBuffer, sizeof(szBuffer));
-            if(strcmp(szBuffer, DDE_TOPIC_NAME) != 0)
+            if(lstrcmp(szBuffer, DDE_TOPIC_NAME) != 0)
                 return NULL;
             return (HDDEDATA)TRUE;
         case XTYP_REQUEST:
@@ -2366,7 +2366,7 @@ void   CSuperTagEditorView::OnDDE(LPTSTR sFileName)
 	}
 
 	// プログレスバー初期化
-	pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+	pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 	// ドロップされたファイルを処理する
 	int i; for (i = 0; i < nFileCount; i++) {
@@ -2515,7 +2515,7 @@ BOOL CSuperTagEditorView::SelectDirectory(LPTSTR sLocal, bool bCopy)
 {
 	bool	bResult;
 	CSHBrowseForFolder	browse(true, /*g_bEnableMoveFolderCopy*/bCopy /* WildCherry 064 */);
-	browse.SetCheckBoxTitle("コピーする");
+	browse.SetCheckBoxTitle(TEXT("コピーする"));
 	bResult = browse.Exec(sLocal);
 	g_bEnableMoveFolderCopy = browse.GetSearchSubDirState();
 	return(bResult);

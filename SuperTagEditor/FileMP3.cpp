@@ -504,7 +504,7 @@ static	void ChangeFileAttr(const char *sFileName, DWORD dwAttr)
 }
 
 // 最後が '\\' になっているかどうかのチェック関数
-bool IsFolderName(const char *sName)
+bool IsFolderName(LPCTSTR sName)
 {
 	bool	bResult = false;
 	while(*sName != NULL) {

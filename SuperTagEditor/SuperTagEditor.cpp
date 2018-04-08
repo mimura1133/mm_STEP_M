@@ -661,8 +661,8 @@ BOOL CSuperTagEditorApp::InitInstance()
 				KbDDEClient ddeClient(NULL, TEXT("SuperTagEditor"), TEXT("SuperTagEditor"));
 				int i;
 				for(i = 1; i < __argc; i++){
-					ddeClient.Execute(__argv[i],//ファイル名
-									  ""        //スイッチ（なし）
+					ddeClient.Execute(__targv[i],//ファイル名
+									  TEXT("")   //スイッチ（なし）
 									  );
 				}
 			}

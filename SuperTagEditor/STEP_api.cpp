@@ -385,7 +385,7 @@ UINT GetFormatTypeIndex(UINT nFormat)
 	return -1;
 }
 
-bool LoadFile(const char *sFileName, LPCTSTR sExt, FILE_MP3* pFileMP3)
+bool LoadFile(LPCTSTR sFileName, LPCTSTR sExt, FILE_MP3* pFileMP3)
 {
 	UINT result = false;
 	FILE_INFO fileInfo;
