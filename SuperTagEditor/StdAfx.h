@@ -27,7 +27,7 @@
 #include <utility>
 
 template<class To>
-auto implicit_cast(typename std::identity<To>::type x)
+auto implicit_cast(typename std::remove_reference<To>::type&& x)
 {
 	return std::forward<To>(x);
 }
