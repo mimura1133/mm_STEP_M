@@ -10,10 +10,10 @@ protected:
     DWORD m_ddeInst;
     HSZ m_hszService;
     HSZ m_hszTopic;
-    char m_szTopicName[256];
-    char m_szServiceName[256];
+    TCHAR m_szTopicName[256];
+    TCHAR m_szServiceName[256];
 public:
-    KbDDE(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService);
+    KbDDE(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService);
     ~KbDDE(void);
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,9 +22,9 @@ class KbDDEServer : public KbDDE
 private:
 
 public:
-    DWORD __fastcall QueryString(HSZ hsz, char *szBuffer, int Size);
+    DWORD __fastcall QueryString(HSZ hsz, LPTSTR szBuffer, int Size);
     HDDEDATA __fastcall CreateDataHandle(LPBYTE pSrc, DWORD cb, HSZ hsz, UINT wFmt);
-    KbDDEServer(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService);
+    KbDDEServer(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService);
     ~KbDDEServer(void);
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,8 +44,8 @@ public:
         DWORD dwTimeout,    // 待ち時間
         LPDWORD pdwResult   // トランザクションの結果へのポインタ
     );
-    bool __fastcall Execute(LPCSTR cszFileName, LPCSTR cszCommand);
-    bool __fastcall Execute2(LPCSTR cszFileName, LPCSTR cszCommand); /* WildCherry 070 */
+    bool __fastcall Execute(LPCTSTR cszFileName, LPCTSTR cszCommand);
+    bool __fastcall Execute2(LPCTSTR cszFileName, LPCTSTR cszCommand); /* WildCherry 070 */
 	bool __fastcall Execute(LPCSTR cszCommand, DWORD dwWait); /* RockDance2 138 */
     KbDDEClient(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService);
     ~KbDDEClient(void);
