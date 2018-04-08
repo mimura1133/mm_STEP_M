@@ -154,187 +154,190 @@ UINT STEClipbordFormat; /* Misirlou 146 */
 
 /////////////////////////////////////////////////////////////////////////////
 // CMySuperGrid
-static char *GetToken(char *buffer, char *sToken)
+namespace
 {
-	static char *pBuffer = NULL;
+	static char *GetToken(char *buffer, char *sToken)
+	{
+		static char *pBuffer = NULL;
 
-	if (buffer != NULL) pBuffer = buffer;
-	if (pBuffer == NULL) return(NULL);
-	if (*pBuffer == '\0') return(NULL);
+		if (buffer != NULL) pBuffer = buffer;
+		if (pBuffer == NULL) return(NULL);
+		if (*pBuffer == '\0') return(NULL);
 
-	// 文字列を検索
-	char *pNow = pBuffer;
-	pBuffer = strstr(pBuffer, sToken);
-	if (pBuffer != NULL) {
-		*pBuffer = '\0';
-		pBuffer++;
-	}
-	return(pNow);
-}
-
-static char *GetTokenQuote(char *buffer, char *sToken)
-{
-	static char *pBuffer = NULL;
-
-	if (buffer != NULL) pBuffer = buffer;
-	if (pBuffer == NULL) return(NULL);
-	if (*pBuffer == '\0') return(NULL);
-
-	// 文字列を検索
-	char *pNow = pBuffer;
-	if (*pNow == '"') {
-		int nPos = 1;
-		while (1) {
-			// 次の行も同じセルのデータなので、終わりの " を探す
-			while(pBuffer[nPos] != '\t' && pBuffer[nPos] != '\r' && pBuffer[nPos] != '\0') {
-				nPos++;
-			}
-			if (pBuffer[nPos-1] == '"') {
-				break;
-			}
-			nPos++;
-		}
-		nPos--;
-		pBuffer += nPos;
-		*pBuffer = '\0';
-		pBuffer++;
-	} else {
+		// 文字列を検索
+		char *pNow = pBuffer;
 		pBuffer = strstr(pBuffer, sToken);
 		if (pBuffer != NULL) {
 			*pBuffer = '\0';
 			pBuffer++;
 		}
+		return(pNow);
 	}
-	return(pNow);
-}
 
-static CString StrReplace(CString &strOrg, const char *sKey, const char *sRep)
-{
-	CString	strWork;
-	int		nPos;
+	static char *GetTokenQuote(char *buffer, char *sToken)
+	{
+		static char *pBuffer = NULL;
 
-	strWork = strOrg;
-	while((nPos = strWork.Find(sKey)) != -1) {
-		int		nLenOrg = strWork.GetLength();
-		int		nLenKey = strlen(sKey);
-		strWork.Format("%s%s%s", strWork.Left(nPos), sRep, strWork.Right(nLenOrg-(nPos+nLenKey)));
-	}
-	// 制御コードをスペースに置き換えない /* SeaKnows2 040 */
-	return(strWork);
-}
-static CString StrReplaceEx(CString &strOrg, const char *sKey, const char *sRep, bool bIsHtml)
-{
-	if (bIsHtml && strlen(sRep) == 0) sRep = "　";
-	/* BeachMonster 119 *///if (bIsHtml)  return(StrReplace(StrReplace(strOrg, sKey, sRep), "\r\n", "<BR>")); /* BeachMonster 089 */
-	return(StrReplace(strOrg, sKey, sRep));
-}
+		if (buffer != NULL) pBuffer = buffer;
+		if (pBuffer == NULL) return(NULL);
+		if (*pBuffer == '\0') return(NULL);
 
-static	CString	ConvFileName(CString strFullPath, CString strBaseDir)
-{
-	CString	strBuffer;
-	if (_strnicmp(strFullPath, strBaseDir, strBaseDir.GetLength()) == 0) {
-		// 相対パスに変換可能(パスが一致)
-		strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength()-strBaseDir.GetLength()));
-	} else if (strFullPath[1] == ':' && _strnicmp(strFullPath, strBaseDir, 1) == 0) {
-		// 相対パスに変換可能(ドライブ名だけ一緒)
-		strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength()-2));
-	} else {
-		// 相対パスに変換不可能
-		strBuffer.Format("%s", strFullPath);
-	}
-	return(strBuffer);
-}
-
-
-// =============================================
-//  CharComp
-//  概要  : １文字比較関数
-//  引数  : sSrc		= 比較元文字列
-//        : sDest		= 比較先文字列
-//        : bDiffFlag	= 大文字／小文字区別フラグ
-//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
-// =============================================
-static	BOOL CharComp(LPCSTR sSrc, LPCSTR sDest, BOOL bDiffFlag)
-{
-	BOOL	bIsKanjiSrc = iskanji(*sSrc) ? TRUE : FALSE;
-	BOOL	bIsKanjiDest = iskanji(*sDest) ? TRUE : FALSE;
-	if (bIsKanjiSrc == bIsKanjiDest) {
-		if (bIsKanjiSrc) {			// 漢字
-			if (sSrc[0] == sDest[0]
-			&&  sSrc[1] == sDest[1]) {
-				return(TRUE);
+		// 文字列を検索
+		char *pNow = pBuffer;
+		if (*pNow == '"') {
+			int nPos = 1;
+			while (1) {
+				// 次の行も同じセルのデータなので、終わりの " を探す
+				while (pBuffer[nPos] != '\t' && pBuffer[nPos] != '\r' && pBuffer[nPos] != '\0') {
+					nPos++;
+				}
+				if (pBuffer[nPos - 1] == '"') {
+					break;
+				}
+				nPos++;
 			}
-		} else {					// ASCII
-			if (bDiffFlag) {
-				// 大文字／小文字を区別
-				if (*sSrc == *sDest) return(TRUE);
-			} else {
-				// 大文字／小文字を同一視
-				if (toupper(*sSrc) == toupper(*sDest)) return(TRUE);
+			nPos--;
+			pBuffer += nPos;
+			*pBuffer = '\0';
+			pBuffer++;
+		} else {
+			pBuffer = strstr(pBuffer, sToken);
+			if (pBuffer != NULL) {
+				*pBuffer = '\0';
+				pBuffer++;
 			}
 		}
+		return(pNow);
 	}
-	return(FALSE);
-}
 
-// =============================================
-//  StringComp
-//  概要  : 文字列比較関数(２バイト文字対応)
-//  引数  : sSrc		= 比較元文字列
-//        : sDest		= 比較先文字列
-//        : nDestLen	= 長さ
-//        : bDiffFlag	= 大文字／小文字区別フラグ
-//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
-// =============================================
-static	BOOL StringComp(LPCSTR sSrc, LPCSTR sDest, int nDestLen, BOOL bDiffFlag)
-{
-	int		nSrcLen = strlen(sSrc);
-	if (nSrcLen >= nDestLen) {
-		while(*sDest != '\0') {
-			if (CharComp(sSrc, sDest, bDiffFlag) == FALSE) break;
-			if (iskanji(*sDest)) {
-				sSrc += 2;
-				sDest += 2;
-			} else {
-				sSrc++;
-				sDest++;
+	static CString StrReplace(CString &strOrg, const char *sKey, const char *sRep)
+	{
+		CString	strWork;
+		int		nPos;
+
+		strWork = strOrg;
+		while ((nPos = strWork.Find(sKey)) != -1) {
+			int		nLenOrg = strWork.GetLength();
+			int		nLenKey = strlen(sKey);
+			strWork.Format("%s%s%s", strWork.Left(nPos), sRep, strWork.Right(nLenOrg - (nPos + nLenKey)));
+		}
+		// 制御コードをスペースに置き換えない /* SeaKnows2 040 */
+		return(strWork);
+	}
+	static CString StrReplaceEx(CString &strOrg, const char *sKey, const char *sRep, bool bIsHtml)
+	{
+		if (bIsHtml && strlen(sRep) == 0) sRep = "　";
+		/* BeachMonster 119 *///if (bIsHtml)  return(StrReplace(StrReplace(strOrg, sKey, sRep), "\r\n", "<BR>")); /* BeachMonster 089 */
+		return(StrReplace(strOrg, sKey, sRep));
+	}
+
+	static	CString	ConvFileName(CString strFullPath, CString strBaseDir)
+	{
+		CString	strBuffer;
+		if (_strnicmp(strFullPath, strBaseDir, strBaseDir.GetLength()) == 0) {
+			// 相対パスに変換可能(パスが一致)
+			strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength() - strBaseDir.GetLength()));
+		} else if (strFullPath[1] == ':' && _strnicmp(strFullPath, strBaseDir, 1) == 0) {
+			// 相対パスに変換可能(ドライブ名だけ一緒)
+			strBuffer.Format("%s", strFullPath.Right(strFullPath.GetLength() - 2));
+		} else {
+			// 相対パスに変換不可能
+			strBuffer.Format("%s", strFullPath);
+		}
+		return(strBuffer);
+	}
+
+
+	// =============================================
+	//  CharComp
+	//  概要  : １文字比較関数
+	//  引数  : sSrc		= 比較元文字列
+	//        : sDest		= 比較先文字列
+	//        : bDiffFlag	= 大文字／小文字区別フラグ
+	//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
+	// =============================================
+	static	BOOL CharComp(LPCSTR sSrc, LPCSTR sDest, BOOL bDiffFlag)
+	{
+		BOOL	bIsKanjiSrc = iskanji(*sSrc) ? TRUE : FALSE;
+		BOOL	bIsKanjiDest = iskanji(*sDest) ? TRUE : FALSE;
+		if (bIsKanjiSrc == bIsKanjiDest) {
+			if (bIsKanjiSrc) {			// 漢字
+				if (sSrc[0] == sDest[0]
+					&& sSrc[1] == sDest[1]) {
+					return(TRUE);
+				}
+			} else {					// ASCII
+				if (bDiffFlag) {
+					// 大文字／小文字を区別
+					if (*sSrc == *sDest) return(TRUE);
+				} else {
+					// 大文字／小文字を同一視
+					if (toupper(*sSrc) == toupper(*sDest)) return(TRUE);
+				}
 			}
 		}
-		if (*sDest == '\0') return(TRUE);
+		return(FALSE);
 	}
-	return(FALSE);
-}
 
-// =============================================
-//  ConvNumber
-//  概要  : 数字を３桁のカンマ区切りに変換する
-//  引数  : strNum		= 数字(文字列)
-//  戻り値: 			= 変換後の文字列
-// =============================================
-CString	ConvNumber(CString strNum)
-{
-	int		nCount = 1;
-	while(strNum.GetLength() >= nCount * 4) {
-		strNum = strNum.Left(strNum.GetLength() - (nCount * 4 - 1))
-		       + CString(',')
-		       + strNum.Right(nCount * 4 - 1);
-		nCount++;
+	// =============================================
+	//  StringComp
+	//  概要  : 文字列比較関数(２バイト文字対応)
+	//  引数  : sSrc		= 比較元文字列
+	//        : sDest		= 比較先文字列
+	//        : nDestLen	= 長さ
+	//        : bDiffFlag	= 大文字／小文字区別フラグ
+	//  戻り値: BOOL		= TRUE:正常終了 / FALSE:エラー
+	// =============================================
+	static	BOOL StringComp(LPCSTR sSrc, LPCSTR sDest, int nDestLen, BOOL bDiffFlag)
+	{
+		int		nSrcLen = strlen(sSrc);
+		if (nSrcLen >= nDestLen) {
+			while (*sDest != '\0') {
+				if (CharComp(sSrc, sDest, bDiffFlag) == FALSE) break;
+				if (iskanji(*sDest)) {
+					sSrc += 2;
+					sDest += 2;
+				} else {
+					sSrc++;
+					sDest++;
+				}
+			}
+			if (*sDest == '\0') return(TRUE);
+		}
+		return(FALSE);
 	}
-	return(strNum);
-}
 
-// =============================================
-//  GetFileType
-//  概要  : ファイルタイプ文字列を取得する
-//  引数  : fileMP3		= ファイル情報
-//  戻り値: CString		= ファイルタイプ文字列
-// =============================================
-static CString GetFileType(const FILE_MP3 *fileMP3)
-{
-	if ( fileMP3->strFileTypeName.IsEmpty()) {
-		return("Unknown");
+	// =============================================
+	//  ConvNumber
+	//  概要  : 数字を３桁のカンマ区切りに変換する
+	//  引数  : strNum		= 数字(文字列)
+	//  戻り値: 			= 変換後の文字列
+	// =============================================
+	CString	ConvNumber(CString strNum)
+	{
+		int		nCount = 1;
+		while (strNum.GetLength() >= nCount * 4) {
+			strNum = strNum.Left(strNum.GetLength() - (nCount * 4 - 1))
+				+ CString(',')
+				+ strNum.Right(nCount * 4 - 1);
+			nCount++;
+		}
+		return(strNum);
 	}
-	return fileMP3->strFileTypeName;
+
+	// =============================================
+	//  GetFileType
+	//  概要  : ファイルタイプ文字列を取得する
+	//  引数  : fileMP3		= ファイル情報
+	//  戻り値: CString		= ファイルタイプ文字列
+	// =============================================
+	static CString GetFileType(const FILE_MP3 *fileMP3)
+	{
+		if (fileMP3->strFileTypeName.IsEmpty()) {
+			return("Unknown");
+		}
+		return fileMP3->strFileTypeName;
+	}
 }
 
 // =============================================
