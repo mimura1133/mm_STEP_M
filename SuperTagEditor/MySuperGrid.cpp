@@ -387,23 +387,31 @@ namespace
 		return strText.c_str();
 	}
 
-	std::tuple<CString, CString, CString> GetIntTrackNo(const CString& no)
+	template<class Func>
+	std::tuple<CString, CString, CString> GetIntNumber(const CString& no, Func func)
 	{
-		CString	strTrackNumber, strTrackNumber2, strTrackNumber3;
-		if (const auto nTrackNumber = atoi(CFileMP3::GetIntTrackNo(no))) {
-			// １桁のトラック番号
-			strTrackNumber.Format(TEXT("%d"), nTrackNumber);
-			// ２桁のトラック番号
-			strTrackNumber2.Format(TEXT("%02d"), nTrackNumber);
-			// ３桁のトラック番号
-			strTrackNumber3.Format(TEXT("%03d"), nTrackNumber);
+		CString	number1, number2, number3;
+		if (const auto nTrackNumber = atoi(func(no))) {
+			number1.Format(TEXT("%d"), nTrackNumber);
+			number2.Format(TEXT("%02d"), nTrackNumber);
+			number3.Format(TEXT("%03d"), nTrackNumber);
 		}
 
 		return {
-			strTrackNumber,
-			strTrackNumber2,
-			strTrackNumber3,
+			number1,
+			number2,
+			number3,
 		};
+	}
+
+	std::tuple<CString, CString, CString> GetIntTrackNo(const CString& no)
+	{
+		return GetIntNumber(no, CFileMP3::GetIntTrackNo);
+	}
+
+	std::tuple<CString, CString, CString> GetIntDiskNo(const CString& no)
+	{
+		return GetIntNumber(no, CFileMP3::GetIntDiskNo);
 	}
 }
 
@@ -2867,11 +2875,8 @@ bool CMySuperGrid::ConvTagInfo(CTreeItem *pItem, int nType, const char *sFormat,
 	case 3:		// ユーザー指定の[タグ情報] => [ファイル名]変換
 		{
 			CString	strFileName = sFormat;
-			CString	strDiskNumber,strDiskNumber2,strDiskNumber3;
 			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
-			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
+			auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 			strFileName = StrReplace(strFileName, "%TRACK_NAME%"   , GetFileColumnText(fileMP3, COLUMN_TRACK_NAME).SpanExcluding("\r"));
 			strFileName = StrReplace(strFileName, "%ALBUM_NAME%"   , GetFileColumnText(fileMP3, COLUMN_ALBUM_NAME).SpanExcluding("\r"));
 			strFileName = StrReplace(strFileName, "%ARTIST_NAME%"  , GetFileColumnText(fileMP3, COLUMN_ARTIST_NAME).SpanExcluding("\r"));
@@ -3845,18 +3850,12 @@ bool CMySuperGrid::ConvUserFormatEx(USER_CONV_FORMAT_EX *pForm)
 			_tsplitpath(strFileName, NULL, NULL, sFileName, NULL);
 
 			CString	strText = pForm->strFormat;
-			CString	strNumber, strDiskNumber, strDiskNumber2, strDiskNumber3;
+			CString	strNumber;
 			auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
+			auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 
 			// 連番
 			strNumber.Format(sNumFormat, nNumber);
-
-			// １桁のディスク番号
-			strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			// ２桁のディスク番号
-			strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-			// ３桁のディスク番号
-			strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
 
 			// 書式を使って文字列を作成
 			strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -4870,16 +4869,8 @@ bool CMySuperGrid::MoveFolderFormat(USER_MOVE_FODLER_FORMAT *pForm, CString strF
 		_tsplitpath_s(strFileName, NULL,NULL, NULL,NULL, sFileName,_MAX_FNAME, NULL,NULL);
 
 		CString	strText = pForm->strFormat;
-		CString	strDiskNumber, strDiskNumber2, strDiskNumber3;
 		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
-
-		// １桁のディスク番号
-		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のディスク番号
-		strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のディスク番号
-		strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-
+		auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// 書式を使って文字列を作成
 		strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -6626,15 +6617,8 @@ void CMySuperGrid::ClipboardCopyFormat(USER_COPY_FORMAT_FORMAT *pForm) /* FunnyC
 		}
 
 		CString	strText = pForm->strFormat;
-		CString	strDiskNumber, strDiskNumber2, strDiskNumber3;
 		auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER).SpanExcluding(TEXT("\r")));
-
-		// １桁のディスク番号
-		strDiskNumber.Format("%d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ２桁のディスク番号
-		strDiskNumber2.Format("%02d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
-		// ３桁のディスク番号
-		strDiskNumber3.Format("%03d", atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding("\r"))));
+		auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER).SpanExcluding(TEXT("\r")));
 
 		// 書式を使って文字列を作成
 		strText = StrReplace(strText, "%FILE_NAME%"    , sFileName);
@@ -6793,15 +6777,7 @@ CString CMySuperGrid::MakeFormatFileBody(FILE_MP3	*fileMP3, const CString &strBo
 {
 	auto[strTrackNumber, strTrackNumber2, strTrackNumber3] = GetIntTrackNo(GetFileColumnText(fileMP3, COLUMN_TRACK_NUMBER));
 
-	int		nDiskNumber;
-	CString	strDiskNumber;
-	CString	strDiskNumber2;
-	CString	strDiskNumber3;
-	if ((nDiskNumber = atoi(CFileMP3::GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER)))) != 0) {
-		strDiskNumber.Format("%d", nDiskNumber);
-		strDiskNumber2.Format("%02d", nDiskNumber);
-		strDiskNumber3.Format("%03d", nDiskNumber);
-	}
+	auto[strDiskNumber, strDiskNumber2, strDiskNumber3] = GetIntDiskNo(GetFileColumnText(fileMP3, COLUMN_DISK_NUMBER));
 
 	CString	strFileSize, strFileSizeByte;
 	strFileSize.Format("%.2fMB", (float)fileMP3->lFileSize / 1024 / 1024);
