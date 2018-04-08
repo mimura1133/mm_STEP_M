@@ -508,7 +508,7 @@ void COptionSheet::SetTitle(UINT nID, UINT nStyle)
 }
 
 
-void COptionSheet::SetFinishText(LPCSTR lpszText)
+void COptionSheet::SetFinishText(LPCTSTR lpszText)
 {
 	ASSERT(NULL != lpszText);
 
@@ -734,7 +734,7 @@ void COptionSheet::CalcTreeRect(CRect &rect)
 
 
 
-void COptionSheet::AddButton(char *txt, int x, int w, UINT id, BOOL showButton)
+void COptionSheet::AddButton(LPCTSTR txt, int x, int w, UINT id, BOOL showButton)
 {
 	CButton *btn;
 	CRect rect;
@@ -813,24 +813,24 @@ int COptionSheet::AddButtons(BOOL addBut)
 
 		// Add the back button
 		if(TRUE == addBut) {
-			AddButton("< Back", x, m_ButtonWidth, ID_WIZBACK);
+			AddButton(TEXT("< Back"), x, m_ButtonWidth, ID_WIZBACK);
 		}
 		x += m_ButtonWidth;
 
 		// Add the next button
 		if(TRUE == addBut) {
-			AddButton("Next >", x, m_ButtonWidth, ID_WIZNEXT);
+			AddButton(TEXT("Next >"), x, m_ButtonWidth, ID_WIZNEXT);
 		}
 
 		// Add in the finish button
 		if(m_psh.dwFlags & OSH_WIZARDHASFINISH) {
 			x += (m_ButtonWidth + BUTTON_SPACING);
 			if(TRUE == addBut) {
-				AddButton("Finish", x, m_ButtonWidth, ID_WIZFINISH);
+				AddButton(TEXT("Finish"), x, m_ButtonWidth, ID_WIZFINISH);
 			}
 		} else {
 			if(TRUE == addBut) {
-				AddButton("Finish", x, m_ButtonWidth, ID_WIZFINISH, FALSE);
+				AddButton(TEXT("Finish"), x, m_ButtonWidth, ID_WIZFINISH, FALSE);
 			}
 		}
 
@@ -841,14 +841,14 @@ int COptionSheet::AddButtons(BOOL addBut)
 
 		// Add the OK button
 		if(TRUE == addBut) {
-			AddButton("OK", x, m_ButtonWidth, IDOK);
+			AddButton(TEXT("OK"), x, m_ButtonWidth, IDOK);
 		}
 		x += m_ButtonWidth;
 
 		// Add the Apply button
 		if(!(m_psh.dwFlags & OSH_NOAPPLYNOW)) {
 			if(TRUE == addBut) {
-				AddButton("Apply", x, m_ButtonWidth, ID_APPLY_NOW);
+				AddButton(TEXT("Apply"), x, m_ButtonWidth, ID_APPLY_NOW);
 			}
 			x += m_ButtonWidth;
 		}
@@ -858,7 +858,7 @@ int COptionSheet::AddButtons(BOOL addBut)
 	// Add the cancel button
 	x += BUTTON_SPACING;
 	if(TRUE == addBut) {
-		AddButton("Cancel", x, m_ButtonWidth, IDCANCEL);
+		AddButton(TEXT("Cancel"), x, m_ButtonWidth, IDCANCEL);
 	}
 	x += m_ButtonWidth;
 
@@ -866,7 +866,7 @@ int COptionSheet::AddButtons(BOOL addBut)
 	if(m_psh.dwFlags & OSH_HASHELP) {
 		x += BUTTON_SPACING;
 		if(TRUE == addBut) {
-			AddButton("Help", x, m_ButtonWidth, IDHELP);
+			AddButton(TEXT("Help"), x, m_ButtonWidth, IDHELP);
 		}
 		x += m_ButtonWidth;
 	}
