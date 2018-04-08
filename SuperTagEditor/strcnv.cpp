@@ -308,25 +308,25 @@ cont:	;
 	return(phan);
 }
 
-static const unsigned char *kata = (const unsigned char *)
+static LPCTSTR kata = TEXT(
 	"ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾ"
 	"タダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポ"
-	"マミムメモャヤュユョヨラリルレロヮワヲン";
-static const unsigned char *hira = (const unsigned char *)
+	"マミムメモャヤュユョヨラリルレロヮワヲン");
+static LPCTSTR hira = TEXT(
 	"ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞ"
 	"ただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽ"
-	"まみむめもゃやゅゆょよらりるれろゎわをん";
-static const unsigned char *alphaS = (const unsigned char *)
-	"ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ’０１２３４５６７８９" /* STEP 026 */;
-static const unsigned char *alphaL = (const unsigned char *)
-	"ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ’０１２３４５６７８９" /* STEP 026 */;
+	"まみむめもゃやゅゆょよらりるれろゎわをん");
+static LPCTSTR alphaS = TEXT(
+	"ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ’０１２３４５６７８９") /* STEP 026 */;
+static LPCTSTR alphaL = TEXT(
+	"ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ’０１２３４５６７８９") /* STEP 026 */;
 
-static const unsigned char *kata_dakuon = (const unsigned char *) /* FunnyCorn 179 */
+static LPCTSTR kata_dakuon = TEXT( /* FunnyCorn 179 */
 	"ァアィイゥウェエォオカカキキククケケココササシシススセセソソ"
 	"タタチチッツツテテトトナニヌネノハハハヒヒヒフフフヘヘヘホホホ"
-	"マミムメモャヤュユョヨラリルレロヮワヲン";
+	"マミムメモャヤュユョヨラリルレロヮワヲン");
 
-void conv_table(const unsigned char *before, const unsigned char *after, unsigned char *str)
+void conv_table(LPCTSTR before, LPCTSTR after, LPTSTR str)
 {
 	while(*str != '\0') {
 		if (iskanji(*str)) {		// 漢字
@@ -362,18 +362,18 @@ void conv_hira2kata(LPTSTR str)
 // [小文字]=>[大文字]に変換
 void conv_upper(LPTSTR str)
 {
-	_mbsupr(str);
+	_tcsupr(str);
 	conv_table(alphaS, alphaL, str);
 }
 
 // [大文字]=>[小文字]に変換
 void conv_lower(LPTSTR str)
 {
-	_mbslwr(str);
+	_tcslwr(str);
 	conv_table(alphaL, alphaS, str);
 }
 
-void lower_suffix_word(LPCTSTR str, int len, CString suffixs) /* STEP 026*/
+void lower_suffix_word(LPTSTR str, int len, CString suffixs) /* STEP 026*/
 {
 	CString strZWord(str, len);
 	CString strWord;
@@ -381,7 +381,7 @@ void lower_suffix_word(LPCTSTR str, int len, CString suffixs) /* STEP 026*/
 	strWord.ReleaseBuffer();
 	strWord.MakeLower();
 	while (1) {
-		CString suffix = suffixs.SpanExcluding(",");
+		CString suffix = suffixs.SpanExcluding(TEXT(","));
 		if (suffix == strWord) {
 			if (iskanji(*str)) {		// 漢字
 				int i; for (i = 0; alphaS[i]; i+=2) {
@@ -405,14 +405,14 @@ void lower_suffix_word(LPCTSTR str, int len, CString suffixs) /* STEP 026*/
 	}
 }
 
-bool isSentenceSeparate(unsigned char* str, int len, CString separator) /* STEP 026 */
+bool isSentenceSeparate(LPTSTR str, int len, CString separator) /* STEP 026 */
 {
 	CString strZWord((LPCTSTR)str, len);
 	CString strChar;
-	conv_zen2hans((unsigned char *)strChar.GetBuffer(2+1), (const unsigned char *)(const char *)strZWord, CONV_ALL);
+	conv_zen2hans(strChar.GetBuffer(2+1), strZWord, CONV_ALL);
 	strChar.ReleaseBuffer();
 	for (int i=0;i<separator.GetLength();i++) {
-		unsigned char c = separator.GetAt(i);
+		const auto c = separator.GetAt(i);
 		if (iskanji(c)) {		// 漢字
 			char	kanji[3];
 			kanji[0] = separator.GetAt(i);
@@ -434,8 +434,8 @@ bool isSentenceSeparate(unsigned char* str, int len, CString separator) /* STEP 
 void conv_first_upper(LPTSTR str, LPCTSTR suffixs, LPCTSTR separator , bool bUseSuffix)
 {
 	bool	bFirst = true;
-	unsigned char*	pFirstPos = NULL; /* STEP 026 */
-	unsigned char*	pEndPos = NULL; /* STEP 026 */
+	LPTSTR pFirstPos = NULL; /* STEP 026 */
+	LPTSTR pEndPos = NULL; /* STEP 026 */
 	bool	bFirstWord = true; /* STEP 026 */
 	while(TRUE) {
 		if (iskanji(*str)) {		// 漢字
@@ -521,24 +521,24 @@ bool isKigou(char ch) {
 	return false;
 }
 
-unsigned char* fixed_upper_lower(unsigned char *str, CStringArray& fixedWords) /* STEP 040*/
+LPTSTR fixed_upper_lower(LPTSTR str, CStringArray& fixedWords) /* STEP 040*/
 {
-	CString strZWord((LPCTSTR)str);
+	CString strZWord(str);
 	CString strWord;
-	conv_zen2hans((unsigned char *)strWord.GetBuffer(strlen((char*)str)+1), (const unsigned char *)(const char *)strZWord, CONV_ALL);
+	conv_zen2hans(strWord.GetBuffer(lstrlen(str)+1), strZWord, CONV_ALL);
 	strWord.ReleaseBuffer();
 	strWord.MakeLower();
 	for (int i=0;i<fixedWords.GetSize();i++) {
 		CString fixed = fixedWords.GetAt(i);
 		CString strFixZWord(fixed);
 		CString strFixWord;
-		conv_zen2hans((unsigned char *)strFixWord.GetBuffer(strFixZWord.GetLength()+1), (const unsigned char *)(const char *)strFixZWord, CONV_ALL);
+		conv_zen2hans(strFixWord.GetBuffer(strFixZWord.GetLength()+1), strFixZWord, CONV_ALL);
 		strFixWord.ReleaseBuffer();
 		fixed = strFixWord;
 		fixed.MakeLower();
 //		if (fixed == strWord) {
-		if (strWord.Find(fixed, 0) == 0 && (strWord == fixed || (strWord.GetLength() >= fixed.GetLength() && isKigou(strWord.GetAt(strlen(fixed)))) )) {
-			unsigned char* pos = str;
+		if (strWord.Find(fixed, 0) == 0 && (strWord == fixed || (strWord.GetLength() >= fixed.GetLength() && isKigou(strWord.GetAt(lstrlen(fixed)))) )) {
+			auto pos = str;
 			for (int j=0;j<fixed.GetLength();j++) {
 				if (iskanji(*pos)) {		// 漢字
 					for (int k = 0; alphaS[k]; k+=2) {
@@ -568,7 +568,7 @@ unsigned char* fixed_upper_lower(unsigned char *str, CStringArray& fixedWords) /
 
 void conv_fixed_upper_lower(LPTSTR str, CStringArray& fixedWords) /* STEP 040 */
 {
-	unsigned char* current = str;
+	auto current = str;
 	bool bConv = false;
 	while (TRUE) {
 		if ((current = fixed_upper_lower(str, fixedWords))) {
