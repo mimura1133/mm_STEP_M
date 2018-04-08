@@ -32,4 +32,7 @@ auto implicit_cast(typename std::identity<To>::type x)
 	return std::forward<To>(x);
 }
 
+#include <string>
+using tstring = std::basic_string<TCHAR>;
+
 #endif // !defined(AFX_STDAFX_H__D67B6446_BFAB_11D3_9459_00402641B29B__INCLUDED_)
