@@ -17,7 +17,7 @@ bool Load_mp3infp() {
 		return true;
 	}
 	//DLLÇÃÉçÅ[Éh
-	hMp3infpDll = LoadLibrary("mp3infp.dll");
+	hMp3infpDll = LoadLibrary(TEXT("mp3infp.dll"));
 	if(hMp3infpDll == NULL) {
 		return false;
 	}

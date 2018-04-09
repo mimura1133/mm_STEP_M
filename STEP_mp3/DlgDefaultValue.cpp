@@ -90,26 +90,26 @@ BOOL CDlgDefaultValue::OnInitDialog()
 	CPropertyPage::OnInitDialog();
 	
 	// TODO: この位置に初期化の補足処理を追加してください
-	m_cbId3v2Encode.AddString("変更しない");
-	m_cbId3v2Encode.AddString("ISO-8859-1");
-	m_cbId3v2Encode.AddString("UTF-16");
-	m_cbId3v2Encode.AddString("UTF-8");
+	m_cbId3v2Encode.AddString(TEXT("変更しない"));
+	m_cbId3v2Encode.AddString(TEXT("ISO-8859-1"));
+	m_cbId3v2Encode.AddString(TEXT("UTF-16"));
+	m_cbId3v2Encode.AddString(TEXT("UTF-8"));
 	m_cbId3v2Encode.SetCurSel(m_nId3v2Encode);
 
-	m_cbId3v2Version.AddString("変更しない");
-	m_cbId3v2Version.AddString("v2.2");
-	m_cbId3v2Version.AddString("v2.3");
-	m_cbId3v2Version.AddString("v2.4");
+	m_cbId3v2Version.AddString(TEXT("変更しない"));
+	m_cbId3v2Version.AddString(TEXT("v2.2"));
+	m_cbId3v2Version.AddString(TEXT("v2.3"));
+	m_cbId3v2Version.AddString(TEXT("v2.4"));
 	m_cbId3v2Version.SetCurSel(m_nId3v2Version);
 
-	m_cbId3v2EncodeNew.AddString("ISO-8859-1");
-	m_cbId3v2EncodeNew.AddString("UTF-16");
-	m_cbId3v2EncodeNew.AddString("UTF-8");
+	m_cbId3v2EncodeNew.AddString(TEXT("ISO-8859-1"));
+	m_cbId3v2EncodeNew.AddString(TEXT("UTF-16"));
+	m_cbId3v2EncodeNew.AddString(TEXT("UTF-8"));
 	m_cbId3v2EncodeNew.SetCurSel(m_nId3v2EncodeNew);
 
-	m_cbId3v2VersionNew.AddString("v2.2");
-	m_cbId3v2VersionNew.AddString("v2.3");
-	m_cbId3v2VersionNew.AddString("v2.4");
+	m_cbId3v2VersionNew.AddString(TEXT("v2.2"));
+	m_cbId3v2VersionNew.AddString(TEXT("v2.3"));
+	m_cbId3v2VersionNew.AddString(TEXT("v2.4"));
 	m_cbId3v2VersionNew.SetCurSel(m_nId3v2VersionNew);
 	
 	return TRUE;  // コントロールにフォーカスを設定しないとき、戻り値は TRUE となります
@@ -123,15 +123,15 @@ void CDlgDefaultValue::OnSelchangeComboId3v2Version()
 	int nVer = m_cbId3v2Version.GetCurSel();
 	int nEnc = m_cbId3v2Encode.GetCurSel();
 	if (nVer != 0 && nVer != 3) {
-		if (m_cbId3v2Encode.FindStringExact(0, "UTF-8") != CB_ERR) {
+		if (m_cbId3v2Encode.FindStringExact(0, TEXT("UTF-8")) != CB_ERR) {
 			m_cbId3v2Encode.DeleteString(3);
 			if (nEnc == 3) {
 				m_cbId3v2Encode.SetCurSel(2);
 			}
 		}
 	} else {
-		if (m_cbId3v2Encode.FindStringExact(0, "UTF-8") == CB_ERR) {
-			m_cbId3v2Encode.AddString("UTF-8");
+		if (m_cbId3v2Encode.FindStringExact(0, TEXT("UTF-8")) == CB_ERR) {
+			m_cbId3v2Encode.AddString(TEXT("UTF-8"));
 		}
 	}
 	UpdateData(FALSE);
@@ -144,15 +144,15 @@ void CDlgDefaultValue::OnSelchangeComboId3v2VersionNew()
 	int nVer = m_cbId3v2VersionNew.GetCurSel();
 	int nEnc = m_cbId3v2EncodeNew.GetCurSel();
 	if (nVer != 2) {
-		if (m_cbId3v2EncodeNew.FindStringExact(0, "UTF-8") != CB_ERR) {
+		if (m_cbId3v2EncodeNew.FindStringExact(0, TEXT("UTF-8")) != CB_ERR) {
 			m_cbId3v2EncodeNew.DeleteString(2);
 			if (nEnc == 2) {
 				m_cbId3v2EncodeNew.SetCurSel(1);
 			}
 		}
 	} else {
-		if (m_cbId3v2EncodeNew.FindStringExact(0, "UTF-8") == CB_ERR) {
-			m_cbId3v2EncodeNew.AddString("UTF-8");
+		if (m_cbId3v2EncodeNew.FindStringExact(0, TEXT("UTF-8")) == CB_ERR) {
+			m_cbId3v2EncodeNew.AddString(TEXT("UTF-8"));
 		}
 	}
 	UpdateData(FALSE);
