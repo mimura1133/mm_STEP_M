@@ -94,7 +94,8 @@ PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile) {
 	PSTEPlugin pPlugin = new STEPlugin;
 	pPlugin->hLib = hLib;
 	pPlugin->sFileName = strPluginFile;
-	pPlugin->sPluginName = STEPGetPluginName();
+	void const* const pluginName = STEPGetPluginName();
+	pPlugin->sPluginName = (LPCTSTR)pluginName;
 	(FARPROC&)pPlugin->STEPGetToolTipText = GetProcAddress(hLib, "_STEPGetToolTipText@4");
 	(FARPROC&)pPlugin->STEPGetStatusMessage = GetProcAddress(hLib, "_STEPGetStatusMessage@4");
 	(FARPROC&)pPlugin->STEPOnUpdateCommand = GetProcAddress(hLib, "_STEPOnUpdateCommand@4");
@@ -120,6 +121,20 @@ PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile) {
 	if ((*STEPInit)(plugins.arPlugins.GetSize(), strPluginFolder) == false) {
 		return NULL;
 	}
+
+	// STEPGetPluginName()がアルファベットのみを返すことを前提として
+	// 2Byte目が 0x00 かどうかで本体とプラグインのUnicode指定が一致しているかを判定する
+#ifdef UNICODE
+	if (static_cast<char const* const>(pluginName)[1] != 0) {
+		pPlugin->sPluginName = static_cast<LPCSTR>(pluginName);
+		return nullptr;
+	}
+#else
+	if (static_cast<char const* const>(pluginName)[1] == 0) {
+		pPlugin->sPluginName = static_cast<LPCWSTR>(pluginName);
+		return nullptr;
+	}
+#endif
 
 	return pPlugin;
 }
