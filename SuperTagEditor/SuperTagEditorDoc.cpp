@@ -14,6 +14,8 @@
 
 #include "INI/Profile.h"
 
+#include <vector>
+
 //#include "NewAPIs.h"
 
 #ifdef _DEBUG
@@ -22,7 +24,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
+#if false
 //////////////////////////////////////////////////////////////////////////////
 //GetLongPathName
 //短いファイル名を長いファイル名に変換
@@ -55,7 +57,7 @@ DWORD GetLongPathName(LPSTR lpszLongFileName, LPSTR lpszShortPathName, DWORD dwS
 	//バッファのサイズを超えたかファイルが見つからなかったときは異常終了
 	return 0;
 }
-
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CSuperTagEditorDoc
@@ -176,7 +178,7 @@ void CSuperTagEditorDoc::Dump(CDumpContext& dc) const
 // 引数  : sFileName	= ファイル名
 // 戻り値: CTime		= タイムスタンプ(CTime(0):エラー)
 // =============================================
-CTime CSuperTagEditorDoc::GetFileTime(const char *sFileName)
+CTime CSuperTagEditorDoc::GetFileTime(LPCTSTR sFileName)
 {
 	CFileStatus	status;
 	if (sFileName == NULL
@@ -195,7 +197,7 @@ CTime CSuperTagEditorDoc::GetFileTime(const char *sFileName)
 //       : pParent			= 親アイテム(NULLも可)
 // 戻り値: int				= インデックス(追加しなかった場合は-1を返す)
 // =============================================
-int CSuperTagEditorDoc::AddRequestFile(const char *sFillPath, CSuperGridCtrl::CTreeItem *pParent)
+int CSuperTagEditorDoc::AddRequestFile(LPCTSTR sFillPath, CSuperGridCtrl::CTreeItem *pParent)
 {
 	//追加 by Kobarin
 	if(IsTagUpdating())//タグを更新中は追加しない
@@ -219,7 +221,7 @@ int CSuperTagEditorDoc::AddRequestFile(const char *sFillPath, CSuperGridCtrl::CT
 	return(m_nArrayRequestFileCount);
 }
 
-void CSuperTagEditorDoc::StartLoadFile(const char *sTitle)
+void CSuperTagEditorDoc::StartLoadFile(LPCTSTR sTitle)
 {
 	if (m_dlgLoadProgress->GetSafeHwnd() == NULL) {
 		// プログレスバーを生成
@@ -228,7 +230,7 @@ void CSuperTagEditorDoc::StartLoadFile(const char *sTitle)
 		m_dlgLoadProgress->SetWindowText(sTitle);
 		UpdateAllViews(NULL);
 	}
-	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, "ファイル検索中...");
+	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, TEXT("ファイル検索中..."));
     m_StartLoadFileCount++;//追加 by Kobarin
 }
 
@@ -252,7 +254,7 @@ void CSuperTagEditorDoc::EndLoadFile(void)
 // =============================================
 void CSuperTagEditorDoc::ExecRequestFiles(bool bListClear, bool bCheck)
 {
-	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, "タグ情報の読み込み中...");
+	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, TEXT("タグ情報の読み込み中..."));
 
 //	CMySuperGrid	&listCtrl = GetListCtrl();
 //	listCtrl.SetRedraw(FALSE);
@@ -328,7 +330,7 @@ void CSuperTagEditorDoc::ClearRequestFiles(void)
 // 引数  : sPlayList	= プレイリストファイル名(絶対パスで指定)
 // 戻り値: bool			= true:正常終了 / false:エラー
 // =============================================
-bool CSuperTagEditorDoc::LoadPlayList(const char *sPlayList)
+bool CSuperTagEditorDoc::LoadPlayList(LPCTSTR sPlayList)
 {
 	TRY {
 		CFile	file;
@@ -353,10 +355,10 @@ bool CSuperTagEditorDoc::LoadPlayList(const char *sPlayList)
 							CString	strName;
 							if (strLine[0] == '\\') {
 								// ドライブ名無しのルート指定
-								strName.Format("%s%s", drive, strLine);
+								strName.Format(TEXT("%s%s"), drive, strLine);
 							} else {
 								// ルート以外
-								strName.Format("%s%s%s", drive, dir, strLine);
+								strName.Format(TEXT("%s%s%s"), drive, dir, strLine);
 							}
 							AddRequestFile(strName, NULL);
 						}
@@ -367,8 +369,8 @@ bool CSuperTagEditorDoc::LoadPlayList(const char *sPlayList)
 	}
 	CATCH( CFileException, e) {
 		CString	str;
-		str.Format("%s の読み込みに失敗しました", sPlayList);
-		MessageBox(NULL, str, "ファイルエラー", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+		str.Format(TEXT("%s の読み込みに失敗しました"), sPlayList);
+		MessageBox(NULL, str, TEXT("ファイルエラー"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 	}
 	END_CATCH
 
@@ -383,7 +385,7 @@ bool CSuperTagEditorDoc::LoadPlayList(const char *sPlayList)
 //       : bCheck		= チェックマークを付けるかどうか
 // 戻り値: bool			= true:正常終了 / false:異常終了
 // =============================================
-bool CSuperTagEditorDoc::FoundFile(const char *sFileName, CSuperGridCtrl::CTreeItem *pItemParent, bool bCheck)
+bool CSuperTagEditorDoc::FoundFile(LPCTSTR sFileName, CSuperGridCtrl::CTreeItem *pItemParent, bool bCheck)
 {
 	// ＭＰ３ファイル情報の取得
 	CFileMP3	fileMP3;
@@ -411,7 +413,7 @@ bool CSuperTagEditorDoc::FoundFile(const char *sFileName, CSuperGridCtrl::CTreeI
 		return(true);
 	} else {
 		CString	strMessage;
-		strMessage.Format("%s の読み込みに失敗しました", sFileName);
+		strMessage.Format(TEXT("%s の読み込みに失敗しました"), sFileName);
 		//MessageBox(NULL, strMessage, "ファイル読み込みエラー", MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		((CMainFrame *)AfxGetMainWnd())->SetStatusBarText(strMessage);	// ステータスバーにエラーを表示
 	}
@@ -426,7 +428,7 @@ bool CSuperTagEditorDoc::FoundFile(const char *sFileName, CSuperGridCtrl::CTreeI
 //       : pItemDir	= ディレクトリアイテム(NULL=ルート)
 // 戻り値: bool		= true:正常終了 / false:異常終了
 // =============================================
-bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTreeItem *pItemDir)
+bool CSuperTagEditorDoc::SearchFileReent(LPCTSTR sDir, CSuperGridCtrl::CTreeItem *pItemDir)
 {
 	//追加 by Kobarin
 	if(m_dlgLoadProgress->IsCanceled()){
@@ -435,9 +437,7 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 
 	HANDLE	hFindFile;
 	WIN32_FIND_DATA	data;
-	char	*sCurFile = new char [MAX_PATH + 1];
-
-	if (sCurFile == NULL) return(false);	// 割り当て失敗
+	std::vector<TCHAR> sCurFile(MAX_PATH + 1);
 
 	// 検索開始ディレクトリの場合の処理
 	if (pItemDir == NULL) {
@@ -460,10 +460,10 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 	GetFileExtList(arExt);
 	for (int nType = 0; nType < arExt.GetSize() ; nType++) {
 		// 検索ファイルのパターンを設定
-		sprintf(sCurFile, "%s%s", sDir, "*." + arExt[nType]);
+		_stprintf(sCurFile.data(), TEXT("%s%s"), sDir, TEXT("*.") + arExt[nType]);
 
 		// ファイル検索
-		if ((hFindFile = FindFirstFile(sCurFile, &data)) != INVALID_HANDLE_VALUE) {
+		if ((hFindFile = FindFirstFile(sCurFile.data(), &data)) != INVALID_HANDLE_VALUE) {
 			do {
 				m_dlgLoadProgress->SetPos(0);//追加 by Kobarin
 				if(m_dlgLoadProgress->IsCanceled()){
@@ -471,11 +471,11 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 				}
 				if ((data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
 					// ディレクトリ付きファイル名作成
-					strcpy(sCurFile, sDir);
-					strcat(sCurFile, data.cFileName);
-					m_sTargetFile = sCurFile;
+					lstrcpy(sCurFile.data(), sDir);
+					lstrcat(sCurFile.data(), data.cFileName);
+					m_sTargetFile = sCurFile.data();
 					// ファイル発見処理
-					AddRequestFile(m_sTargetFile, pItemDir);
+					AddRequestFile(m_sTargetFile.c_str(), pItemDir);
 				}
 			} while(FindNextFile(hFindFile, &data) == TRUE);
 		}
@@ -483,21 +483,21 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 	}
 
 	if (g_bEnableSearchSubDir) {	// サブディレクトリの検索
-		sprintf(sCurFile, "%s*.*", sDir);
-		if ((hFindFile = FindFirstFile(sCurFile, &data)) != INVALID_HANDLE_VALUE) {
+		_stprintf(sCurFile.data(), TEXT("%s*.*"), sDir);
+		if ((hFindFile = FindFirstFile(sCurFile.data(), &data)) != INVALID_HANDLE_VALUE) {
 			do {
 				m_dlgLoadProgress->SetPos(0);//追加 by Kobarin
 				if(m_dlgLoadProgress->IsCanceled()){
 					break;
 				}
 				if ((data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0) {
-					if (strcmp(data.cFileName, "." ) != 0		// カレントディレクトリ以外
-					&&  strcmp(data.cFileName, "..") != 0		// 親ディレクトリ以外
+					if (lstrcmp(data.cFileName, TEXT(".") ) != 0		// カレントディレクトリ以外
+					&&  lstrcmp(data.cFileName, TEXT("..")) != 0		// 親ディレクトリ以外
 					&& (data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == 0/* STEP 032 */) { // 隠しフォルダ以外
 						// ディレクトリ付きファイル名作成
-						strcpy(sCurFile, sDir);
-						strcat(sCurFile, data.cFileName);
-						m_sTargetFile = sCurFile;
+						lstrcpy(sCurFile.data(), sDir);
+						lstrcat(sCurFile.data(), data.cFileName);
+						m_sTargetFile = sCurFile.data();
 						// ツリーにディレクトリアイテム追加
 						CSuperGridCtrl::CTreeItem	*pItemSubDir = NULL;
 						if (g_classInfo.nType == 0) {
@@ -506,20 +506,18 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 							pItemSubDir = listCtrl.AddDirectory(data.cFileName, pItemDir);
 						}
 						// サブディレクトリ突入処理
-						strcat(sCurFile, "\\");
-						if (!SearchFileReent(sCurFile, pItemSubDir)) {
+						lstrcat(sCurFile.data(), TEXT("\\"));
+						if (!SearchFileReent(sCurFile.data(), pItemSubDir)) {
 							break;				// サブディレクトリ検索エラー
 						}
-						sCurFile[strlen(sCurFile)-1] = NULL;
-						m_sTargetFile = sCurFile;	// サブディレクトリの処理が入るので再設定
+						sCurFile[lstrlen(sCurFile.data())-1] = NULL;
+						m_sTargetFile = sCurFile.data();	// サブディレクトリの処理が入るので再設定
 					}
 				}
 			} while(FindNextFile(hFindFile, &data) == TRUE);
 		}
 		if (hFindFile != INVALID_HANDLE_VALUE) FindClose(hFindFile); /* 2004.02.18 こっちに移動 */
 	}
-
-	delete[] sCurFile;
 
 	return(true);
 }
@@ -530,7 +528,7 @@ bool CSuperTagEditorDoc::SearchFileReent(const char *sDir, CSuperGridCtrl::CTree
 // 引数  : sLocal			= パス(入出力)
 // 戻り値: bool
 // =============================================
-BOOL CSuperTagEditorDoc::SelectDirectory(char *sLocal)
+BOOL CSuperTagEditorDoc::SelectDirectory(LPTSTR sLocal)
 {
 	bool	bResult;
 	CSHBrowseForFolder	browse(true, g_bEnableSearchSubDir);
@@ -539,7 +537,7 @@ BOOL CSuperTagEditorDoc::SelectDirectory(char *sLocal)
 	return(bResult);
 }
 
-void CSuperTagEditorDoc::OpenFolder(const char *sOpenDir)
+void CSuperTagEditorDoc::OpenFolder(LPCTSTR sOpenDir)
 {
 	//追加 by Kobarin
 	if(IsTagUpdating())//タグを更新中は追加しない
@@ -552,21 +550,21 @@ void CSuperTagEditorDoc::OpenFolder(const char *sOpenDir)
 	((CSuperTagEditorApp *)AfxGetApp())->AddToRecentFileList (sOpenDir); /* StartInaction 053 */
 
 	// ディレクトリのファイルを読み込む
-	char	sFolderName[_MAX_PATH] = {'\0'};
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
 
-	strcpy(sFolderName, sOpenDir);
+	lstrcpy(sFolderName, sOpenDir);
 
 	int		nLen;
-	nLen = strlen(sFolderName);
+	nLen = lstrlen(sFolderName);
 	if (nLen > 0) {
 		if (IsFolderName(sFolderName) == false) {
 			// 最後は '\\' である事
-			strcat(sFolderName, "\\");
+			lstrcat(sFolderName, TEXT("\\"));
 		}
 
 		// プログレスバー初期化
 		BOOL	bIsOpen = (m_dlgLoadProgress->GetSafeHwnd() == NULL) ? TRUE : FALSE;
-		if (bIsOpen) StartLoadFile("ＭＰ３ファイル読み込み中...");
+		if (bIsOpen) StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 		// フォルダ読み込み
 		if (g_classInfo.nType == 0) {
@@ -575,7 +573,7 @@ void CSuperTagEditorDoc::OpenFolder(const char *sOpenDir)
 			TCHAR	drive[_MAX_DRIVE], dir[_MAX_DIR];
 			_tsplitpath(sFolderName, drive, dir, NULL, NULL);
 			CString	str;
-			str.Format("%s%s", drive, dir);
+			str.Format(TEXT("%s%s"), drive, dir);
 			SearchFileReent(sFolderName, listCtrl.AddDirectory(str, listCtrl.m_pItemRoot, 2));
 		} else {
 			// タグ情報で分類
@@ -607,10 +605,10 @@ void CSuperTagEditorDoc::OnUpdateOpenFolder(CCmdUI* pCmdUI)
 }
 void CSuperTagEditorDoc::OnOpenFolder()
 {
-	char	sFolderName[_MAX_PATH] = {'\0'};
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
 
 	// フォルダ選択ダイアログを開く
-	strcpy(sFolderName, g_strCurrentDirectory);
+	lstrcpy(sFolderName, g_strCurrentDirectory);
 	if (SelectDirectory(sFolderName) == TRUE) {
 		g_strCurrentDirectory = sFolderName;
 
@@ -622,9 +620,9 @@ BOOL CSuperTagEditorDoc::CanCloseFrame(CFrameWnd* pFrame)
 {
 	if (CheckFileModified()) {
 		int		nResult;
-		nResult = MessageBox(AfxGetMainWnd()->GetSafeHwnd(), "タグ情報が変更されています。\n"
-								   "変更されているファイルを更新してもよろしいですか？",
-								   "保存確認", MB_YESNOCANCEL);
+		nResult = MessageBox(AfxGetMainWnd()->GetSafeHwnd(), TEXT("タグ情報が変更されています。\n"
+								   "変更されているファイルを更新してもよろしいですか？"),
+								   TEXT("保存確認"), MB_YESNOCANCEL);
 		switch(nResult) {
 		case IDYES:
 			//OnSaveAllTag();
@@ -665,7 +663,7 @@ void CSuperTagEditorDoc::OnUpdateDlgEnvironment(CCmdUI* pCmdUI)
 }
 void CSuperTagEditorDoc::OnDlgEnvironment()
 {
-	CDlgEnvSheet	dialog("オプション設定");
+	CDlgEnvSheet	dialog(TEXT("オプション設定"));
 	bool	bKeepTimeStamp = g_bOptKeepTimeStamp;
 	bool	bHideMP3ListFile = g_bOptHideMP3ListFile;
 	bool	bFileNameMaxCellColor = g_bFileNameMaxCellColor; /* SeaKnows 036 */
@@ -701,8 +699,8 @@ BOOL CSuperTagEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 //	if (!CDocument::OnOpenDocument(lpszPathName))
 //		return FALSE;
 
-	char	sFileName[FILENAME_MAX];
-	strcpy(sFileName, lpszPathName);
+	TCHAR	sFileName[FILENAME_MAX];
+	lstrcpy(sFileName, lpszPathName);
 
 	// 初期化処理
 	if (m_bInitialized == false) { /* StartInaction2 055 */
@@ -720,14 +718,14 @@ BOOL CSuperTagEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	// プレイリストか？
 	CString	strFileName = sFileName;
 	strFileName.MakeLower();
-	if (strFileName.Find(".m3u") != -1) {
+	if (strFileName.Find(TEXT(".m3u")) != -1) {
 		// プレイリスト追加
 		GetView()->LoadPlayList(sFileName);
 		return(TRUE);
 	}
 
 	// プログレスバー初期化
-	StartLoadFile("ＭＰ３ファイル読み込み中...");
+	StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 	CFileStatus	status;
 	if (CFile::GetStatus(sFileName, status) == TRUE && status.m_mtime != -1) {
@@ -735,7 +733,7 @@ BOOL CSuperTagEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 			// ディレクトリの場合
 			// 最後の '\\' は必要
 			if (IsFolderName(sFileName) == false) {
-				strcat(sFileName, "\\");
+				lstrcat(sFileName, TEXT("\\"));
 			}
 			bool bEnableSearchSubDir = g_bEnableSearchSubDir; /* TyphoonSwell 026 */
 			if (g_bOptDropSearchSubFolder) {
@@ -752,11 +750,11 @@ BOOL CSuperTagEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 				CString	strLongFileName;
 				TCHAR	drive[_MAX_DRIVE], dir[_MAX_DIR];
 				_tsplitpath(status.m_szFullName, drive, dir, NULL, NULL);
-				strLongFileName.Format("%s%s%s", drive, dir, sFileName);
+				strLongFileName.Format(TEXT("%s%s%s"), drive, dir, sFileName);
 				AddRequestFile(strLongFileName, NULL);
 			}
 		}
-	} else if (strlen(sFileName) == 3 && sFileName[1] == ':' && sFileName[2] == '\\') { /* STEP 027 */
+	} else if (lstrlen(sFileName) == 3 && sFileName[1] == ':' && sFileName[2] == '\\') { /* STEP 027 */
 			// ドライブの場合
 			// 下位階層を検索
 			bool bEnableSearchSubDir = g_bEnableSearchSubDir;
@@ -837,8 +835,8 @@ void CSuperTagEditorDoc::OnUpdateExecClassification(CCmdUI* pCmdUI)
 void CSuperTagEditorDoc::OnExecClassification()
 {
 	// プレイリスト読みこみ
-	StartLoadFile("分類表示を更新中...");
-	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, "処理中...");
+	StartLoadFile(TEXT("分類表示を更新中..."));
+	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, TEXT("処理中..."));
 	m_dlgLoadProgress->EnableCancelButton(FALSE);
 
 	// グリッドに再登録
@@ -880,11 +878,11 @@ bool CSuperTagEditorDoc::CheckFileAttribute(FILE_MP3 *fileMP3)
 			// 上書き確認ダイアログを開く
 			CDlgFileOverWrite	dialog;
 			dialog.m_strFileName = fileMP3->strFullPathName;
-			dialog.m_strSize.Format("%ld byte", fileStatus.m_size);
+			dialog.m_strSize.Format(TEXT("%ld byte"), fileStatus.m_size);
 			if (fileStatus.m_mtime.GetTime() < 0) {
-				dialog.m_strTimeStamp.Format("----/--/-- --:--:--");
+				dialog.m_strTimeStamp.Format(TEXT("----/--/-- --:--:--"));
 			} else {
-				dialog.m_strTimeStamp.Format("%04d/%02d/%02d %02d:%02d:%02d",
+				dialog.m_strTimeStamp.Format(TEXT("%04d/%02d/%02d %02d:%02d:%02d"),
 											 fileStatus.m_mtime.GetYear(),
 											 fileStatus.m_mtime.GetMonth(),
 											 fileStatus.m_mtime.GetDay(),
@@ -933,8 +931,8 @@ void CSuperTagEditorDoc::SaveAllTag(BOOL bSaveOnly)
 	extern	int		g_nWriteTagProcFlag;
 
 	// プログレスバー表示
-	StartLoadFile("タグ情報を更新中...");
-	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, "処理中...");
+	StartLoadFile(TEXT("タグ情報を更新中..."));
+	m_dlgLoadProgress->SetDlgItemText(IDC_ST_MESSAGE, TEXT("処理中..."));
 
 	// 更新ファイルのタグ情報更新
 	g_nWriteTagProcFlag = 0;
@@ -953,7 +951,7 @@ void CSuperTagEditorDoc::SaveAllTag(BOOL bSaveOnly)
 			if (CFileMP3::WriteTag(fileMP3, g_bOptKeepTimeStamp)) {
 				fileMP3->bModifyFlag = FALSE;
 			} else {
-				MessageBox(NULL, "タグ情報をファイルを更新できませんでした", fileMP3->strFullPathName, MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(NULL, TEXT("タグ情報をファイルを更新できませんでした"), fileMP3->strFullPathName, MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				m_bSaveAllTagResult = false;
 			}
 		}

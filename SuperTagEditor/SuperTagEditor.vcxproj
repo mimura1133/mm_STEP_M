@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -1092,6 +1092,7 @@
     <ClInclude Include="scmpx.h" />
     <ClInclude Include="SHBrowseForFolder.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="strcnv.h" />
     <ClInclude Include="SuperGridCtrl.h" />
     <ClInclude Include="SuperTagEditor.h" />
     <ClInclude Include="SuperTagEditorDoc.h" />

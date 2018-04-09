@@ -23,7 +23,7 @@
  
 #define	FAIL(m)		{ regerror(m); return(NULL); }
 #define	ISREPN(c)	((c) == _T('*') || (c) == _T('+') || (c) == _T('?'))
-#define	META		"^$.[()|?+*\\"
+#define	META		TEXT("^$.[()|?+*\\")
 
 // Flags to be passed up and down.
  
@@ -116,7 +116,7 @@ CRegExp* CRegExp::RegComp(const TCHAR *exp)
 		 
 		if (flags&SPSTART) 
 		{
-			char *longest = NULL;
+			LPTSTR longest = NULL;
 			size_t len = 0;
 
 			for (; scan != NULL; scan = regnext(scan))
@@ -145,9 +145,9 @@ CRegExp* CRegExp::RegComp(const TCHAR *exp)
 
 TCHAR *CRegExp::reg(int paren, int *flagp)
 {
-	char *ret = NULL;
-	char *br;
-	char *ender;
+	LPTSTR ret = NULL;
+	LPTSTR br;
+	LPTSTR ender;
 	int parno = 0;
 	int flags;
 

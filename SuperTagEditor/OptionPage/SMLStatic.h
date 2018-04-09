@@ -73,7 +73,7 @@ public:
 		\retval	TRUE	Operation was successful.
 		\retval FALSE	Operation failed.
 	*/
-	BOOL SetSMLText(LPCSTR stream);
+	BOOL SetSMLText(LPCTSTR stream);
 
 	/*!
 		\brief Creates a CSMLDoc object and parses the character stream.
@@ -99,7 +99,7 @@ public:
 		\retval	TRUE	Operation was successful.
 		\retval FALSE	Operation failed.
 	*/
-	BOOL SetPlainText(LPCSTR lpszText);
+	BOOL SetPlainText(LPCTSTR lpszText);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Attributes

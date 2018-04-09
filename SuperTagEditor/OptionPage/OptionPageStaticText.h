@@ -47,7 +47,7 @@ public:
 		\param	lpszText	Pointer to a string buffer containing the SML or plain text.
 		\param	bIsHText	If TRUE, the supplied text is SML formatted, otherwise it is plain text.
 	*/
-	COptionPageStaticText(UINT captionID, LPCSTR lpszText, BOOL bIsHText = FALSE);
+	COptionPageStaticText(UINT captionID, LPCTSTR lpszText, BOOL bIsHText = FALSE);
 
 	/*!
 		\brief	Constructor

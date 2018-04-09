@@ -63,7 +63,7 @@ BOOL CDlgWriteForm::OnInitDialog()
 	m_listFormatType.ResetContent();
 	for (i = 0; i < WRITE_FORMAT_MAX; i++) {
 		CString	strName;
-		strName.Format("%d: %s", i+1, m_writeFormat[i].strName);
+		strName.Format(TEXT("%d: %s"), i+1, m_writeFormat[i].strName);
 		m_listFormatType.AddString(strName);
 	}
 
@@ -92,7 +92,7 @@ void CDlgWriteForm::OnBtNameChange()
 		m_listFormatType.ResetContent();
 		int i; for (i = 0; i < WRITE_FORMAT_MAX; i++) {
 			CString	strName;
-			strName.Format("%d: %s", i+1, m_writeFormat[i].strName);
+			strName.Format(TEXT("%d: %s"), i+1, m_writeFormat[i].strName);
 			m_listFormatType.AddString(strName);
 		}
 		// 選択しなおす
@@ -106,9 +106,9 @@ void CDlgWriteForm::OnBtRefFile()
 	m_editFileName.GetWindowText(strFileName);
 
 	// ファイル選択ダイアログを開く
-	static	LPCSTR	sFileFilter =	"書式ファイル(*.txt)|*.txt|" \
-									"All Files(*.*)|*.*|";
-	CFileDialog		dialog(TRUE, ".txt", strFileName,
+	static	LPCTSTR	sFileFilter =	TEXT("書式ファイル(*.txt)|*.txt|" \
+									"All Files(*.*)|*.*|");
+	CFileDialog		dialog(TRUE, TEXT(".txt"), strFileName,
 	                       OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXTENSIONDIFFERENT | OFN_PATHMUSTEXIST,
 	                       sFileFilter, NULL);
 	if (dialog.DoModal() == IDOK) {

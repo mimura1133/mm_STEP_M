@@ -110,7 +110,7 @@ struct	FILE_MP3	{
 struct	GENRE_LIST	{		// ジャンルリスト
 	bool	bAddList;		// リストに追加するかどうか
 	BYTE	byGenre;		// ジャンル番号
-	char	*sName;			// ジャンル名(NULL:リスト終端)
+	LPCTSTR	sName;			// ジャンル名(NULL:リスト終端)
 };
 struct	USER_GENRE_LIST	{	// ユーザジャンルリスト
 	bool	bAddList;		// リストに追加するかどうか
@@ -145,11 +145,11 @@ extern	USER_GENRE_LIST*	g_genreListUSER;
 // =====     関数プロトタイプ       =====
 // ======================================
 extern	const char *GetGenreName(BYTE);
-extern	const char *GetGenreNameSIF(BYTE byGenre);
-extern	int		GetGenreCode(const char *);
-extern bool IsUserGenre(const char *sGenre);
-extern	void	StringCopyN(char *, const char *, int, BOOL = TRUE);
-extern	bool	IsFolderName(const char *);
+extern	LPCTSTR GetGenreNameSIF(BYTE byGenre);
+extern	int		GetGenreCode(LPCTSTR);
+extern bool IsUserGenre(LPCTSTR sGenre);
+extern	void	StringCopyN(LPTSTR, LPCTSTR, int, BOOL = TRUE);
+extern	bool	IsFolderName(LPCTSTR);
 
 
 
@@ -174,10 +174,10 @@ public:		// ======================================
 	static	void	InitData(FILE_MP3 *);
 	static	void	InitDataSIF(FILE_MP3 *);
 	static	void	InitDataID3(FILE_MP3 *); /* STEP 029 */
-			bool	Attach(const char *);
+			bool	Attach(LPCTSTR);
 			void	Detach(void);
 			bool	LoadFile(const char *, const char *);
-	static	bool	CopyFile(FILE_MP3 *, const char *, bool = false);
+	static	bool	CopyFile(FILE_MP3 *, LPCTSTR, bool = false);
 	static	bool	WriteTag(FILE_MP3 *, bool = true);
 	static	bool	WriteFileTag(FILE_MP3 *fileMP3);
 	static	bool	ConvFileFormat(FILE_MP3 *, int);
@@ -198,7 +198,7 @@ private:	// ======================================
 			// ======================================
 			void	Initialize(void);
 	static	void	DeleteLineEndSpace(TCHAR *);
-	static	CString SearchFileReent(const char *, const char *);
+	static	CString SearchFileReent(LPCTSTR, LPCTSTR);
 
 
 //	static	bool	ReadTagID3(LPCSTR, FILE_MP3 *, char * = NULL);

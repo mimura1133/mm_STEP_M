@@ -19,7 +19,7 @@
 //追加 by Kobarin
 #include "dde/kbdde.h"
 
-#define DDE_TOPIC_NAME "SuperTagEditor"
+#define DDE_TOPIC_NAME TEXT("SuperTagEditor")
 #define DDE_SERVICE_NAME  DDE_TOPIC_NAME
 
 static KbDDEServer *g_DdeServer = NULL;
@@ -45,6 +45,8 @@ static CSuperTagEditorView *g_SteView = NULL;
 #include "DlgConvFormatEx.h" /* STEP 009 */
 #include "DlgUserConvFormat.h" /* STEP 009 */
 #include "DlgUserConvFormartTag2Tag.h" /* STEP 034 */
+
+#include <vector>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -602,7 +604,7 @@ void CSuperTagEditorView::OnSize(UINT nType, int cx, int cy)
 // =============================================
 void CSuperTagEditorView::OnDropFiles(HDROP hDropInfo) 
 {
-	char	sFileName[FILENAME_MAX];
+	TCHAR	sFileName[FILENAME_MAX];
 	int		nFileCount = (int)DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0);
 
 	CSuperTagEditorDoc* pDoc = GetDocument();
@@ -623,7 +625,7 @@ void CSuperTagEditorView::OnDropFiles(HDROP hDropInfo)
 		DragQueryFile(hDropInfo, 0, sFileName, _MAX_PATH);
 		CString	strFileName = sFileName;
 		strFileName.MakeLower();
-		if (strFileName.Find(".m3u") != -1) {
+		if (strFileName.Find(TEXT(".m3u")) != -1) {
 			// プレイリスト追加
 			LoadPlayList(sFileName);
 			DragFinish(hDropInfo);
@@ -632,7 +634,7 @@ void CSuperTagEditorView::OnDropFiles(HDROP hDropInfo)
 	}
 
 	// プログレスバー初期化
-	pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+	pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 	// ドロップされたファイルを処理する
 	int i; for (i = 0; i < nFileCount; i++) {
@@ -653,7 +655,7 @@ void CSuperTagEditorView::OnDropFiles(HDROP hDropInfo)
 				// ファイルの場合
 				pDoc->AddRequestFile(sFileName, NULL);
 			}
-		} else if (strlen(sFileName) == 3 && sFileName[1] == ':' && sFileName[2] == '\\') { /* STEP 027 */
+		} else if (lstrlen(sFileName) == 3 && sFileName[1] == ':' && sFileName[2] == '\\') { /* STEP 027 */
 				// ドライブの場合
 				// 下位階層を検索
 				bool bEnableSearchSubDir = g_bEnableSearchSubDir;
@@ -884,9 +886,9 @@ bool CSuperTagEditorView::ExecuteWinamp()
 	sei.cbSize			= sizeof(SHELLEXECUTEINFO);
 	sei.fMask			= SEE_MASK_NOCLOSEPROCESS;
 	sei.hwnd			= GetSafeHwnd();
-	sei.lpVerb			= "open"; 
+	sei.lpVerb			= TEXT("open"); 
 	sei.lpFile			= g_sOptWinAmpPath;
-	sei.lpParameters	= "";
+	sei.lpParameters	= TEXT("");
 	sei.lpDirectory		= NULL;
 	sei.nShow			= SW_SHOW;
 	sei.hInstApp		= AfxGetInstanceHandle();
@@ -916,9 +918,9 @@ bool CSuperTagEditorView::ExecuteLilith(void)
 	sei.cbSize			= sizeof(SHELLEXECUTEINFO);
 	sei.fMask			= SEE_MASK_NOCLOSEPROCESS;
 	sei.hwnd			= GetSafeHwnd();
-	sei.lpVerb			= "open"; 
+	sei.lpVerb			= TEXT("open"); 
 	sei.lpFile			= g_sOptWinAmpPath;
-	sei.lpParameters	= "/nomultiboot";
+	sei.lpParameters	= TEXT("/nomultiboot");
 	sei.lpDirectory		= NULL;
 	sei.nShow			= SW_SHOW;
 	sei.hInstApp		= AfxGetInstanceHandle();
@@ -958,7 +960,7 @@ void CSuperTagEditorView::ExecWinampCommand(int nCommand, LPARAM lParam)
 			sei.cbSize			= sizeof(SHELLEXECUTEINFO);
 			sei.fMask			= SEE_MASK_NOCLOSEPROCESS;
 			sei.hwnd			= GetSafeHwnd();
-			sei.lpVerb			= "open"; 
+			sei.lpVerb			= TEXT("open"); 
 			sei.lpFile			= g_sOptWinAmpPath;
 			CString param = CString("\"") + (LPCSTR)((COPYDATASTRUCT *)lParam)->lpData + "\""; /* Misirlou 145 */
 			sei.lpParameters	= param;//(LPCSTR)((COPYDATASTRUCT *)lParam)->lpData; /* Misirlou 145 */
@@ -972,7 +974,7 @@ void CSuperTagEditorView::ExecWinampCommand(int nCommand, LPARAM lParam)
 
 	/* Winamp/SCMPX の起動とハンドルの取得 */
 	HWND hWinamp;
-	const char	*sClassName = (g_nOptPlayerType == PLAYER_WINAMP) ? "Winamp v1.x" : "SCMPX";
+	const auto sClassName = (g_nOptPlayerType == PLAYER_WINAMP) ? TEXT("Winamp v1.x") : TEXT("SCMPX");
 	for (int nErr = 0; nErr < 5; nErr++){				// 起動リトライは5回まで
 		if ((hWinamp = ::FindWindow(sClassName, NULL)) != NULL) break;	// ウィンドウハンドルの取得
 		if ((nCommand == CONTROL_WINAMP_QUIT)			// 終了コマンドなら意味がない
@@ -1042,7 +1044,7 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 	CWinApp* pApp = AfxGetApp();
 	CString strINI = pApp->m_pszProfileName;
 	//Profile_Initialize(strINI, TRUE);
-	CString cszMutexKbmplay = MyGetProfileString("haseta", "KbmplayName", "KbMedia Player"); /* Misirlou 138 */
+	CString cszMutexKbmplay = MyGetProfileString(TEXT("haseta"), TEXT("KbmplayName"), TEXT("KbMedia Player")); /* Misirlou 138 */
 	//Profile_Free();
     HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, cszMutexKbmplay);
 	if(!hMutex){
@@ -1075,7 +1077,7 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 
     case CONTROL_WINAMP_QUIT:
 		// KbMedia Player を終了させる 
-		ddeClient.Execute("", "/quit");
+		ddeClient.Execute(TEXT(""), TEXT("/quit"));
 		break;
 
     case CONTROL_WINAMP_PLAYFILE:{
@@ -1083,11 +1085,11 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 	    COPYDATASTRUCT	*cds = (COPYDATASTRUCT *)lParam;
         if(bPlay){
             //リストに追加＋演奏開始
-            ddeClient.Execute((char *)cds->lpData, "/ADD");
+            ddeClient.Execute((LPCTSTR)cds->lpData, TEXT("/ADD"));
         }
         else{
             //リストに追加のみ
-            ddeClient.Execute((char *)cds->lpData, "/ADD /NOPLAY /NP"/* Misirlou 138 */);
+            ddeClient.Execute((LPCTSTR)cds->lpData, TEXT("/ADD /NOPLAY /NP")/* Misirlou 138 */);
         }
         //ちなみに、
         //ddeClient.Execute(szFileName, "/NOPLAY");//ファイルは開くが再生はしない
@@ -1099,30 +1101,30 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
     }
 	case CONTROL_WINAMP_PLAY:
 		// 演奏開始
-        ddeClient.Execute("", "/play");
+        ddeClient.Execute(TEXT(""), TEXT("/play"));
         break;
 
 	case CONTROL_WINAMP_DELETE:
         // リスト破棄
         // KbMedia Player Version 2.07β4 以降でのみ機能します
-        ddeClient.Execute("", "/clear");
+        ddeClient.Execute(TEXT(""), TEXT("/clear"));
         break;
 
     case CONTROL_WINAMP_STOP:
 		// 演奏停止 
-        ddeClient.Execute("", "/stop");
+        ddeClient.Execute(TEXT(""), TEXT("/stop"));
         // すぐに停止するのではなく、フェードアウトさせて停止する場合は
         //ddeClient.Execute("", "/fadeout");
 		break;
 
 	case CONTROL_WINAMP_PLAY_PREV:
 		// 前の曲
-        ddeClient.Execute("", "/prev");
+        ddeClient.Execute(TEXT(""), TEXT("/prev"));
 		break;
 
 	case CONTROL_WINAMP_PLAY_NEXT:
 		// 次の曲
-        ddeClient.Execute("", "/next");
+        ddeClient.Execute(TEXT(""), TEXT("/next"));
 		break;
 	}
 }
@@ -1130,7 +1132,7 @@ void CSuperTagEditorView::ExecKbmplayCommand(int nCommand, LPARAM lParam,BOOL bP
 void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bPlay) /* WildCherry 070 */
 {
 	HWND hLilith;
-	const char	*sClassName = "Lilith";
+	const auto sClassName = TEXT("Lilith");
 	for (int nErr = 0; nErr < 5; nErr++){				// 起動リトライは5回まで
 		if ((hLilith = ::FindWindow(sClassName, NULL)) != NULL) break;	// ウィンドウハンドルの取得
 		if ((nCommand == CONTROL_WINAMP_QUIT)			// 終了コマンドなら意味がない
@@ -1142,8 +1144,8 @@ void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bP
 
     // DDE による制御  
 	KbDDEClient ddeClient(NULL, 
-						  "LILITH_EXT_CONTROL", //サービス名
-						  "LILITH_EXT_CONTROL");//トピック名
+						  TEXT("LILITH_EXT_CONTROL"), //サービス名
+						  TEXT("LILITH_EXT_CONTROL"));//トピック名
 
 	// コマンド別機能
 	switch (nCommand){
@@ -1152,7 +1154,7 @@ void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bP
 
     case CONTROL_WINAMP_QUIT:
 		// KbMedia Player を終了させる 
-		ddeClient.Execute("", "/quit");
+		ddeClient.Execute(TEXT(""), TEXT("/quit"));
 		break;
 
     case CONTROL_WINAMP_PLAYFILE:{
@@ -1160,28 +1162,28 @@ void CSuperTagEditorView::ExecLilithCommand(int nCommand, LPARAM lParam, BOOL bP
 	    COPYDATASTRUCT	*cds = (COPYDATASTRUCT *)lParam;
         if(bPlay){
             //リストに追加＋演奏開始
-            ddeClient.Execute2((char *)cds->lpData, "/add");
-            ddeClient.Execute2("", "/add /play");
+            ddeClient.Execute2((LPCTSTR)cds->lpData, TEXT("/add"));
+            ddeClient.Execute2(TEXT(""), TEXT("/add /play"));
         }
         else{
             //リストに追加のみ
-            ddeClient.Execute2((char *)cds->lpData, "/add");
+            ddeClient.Execute2((LPCTSTR)cds->lpData, TEXT("/add"));
         }
         break;
     }
 	case CONTROL_WINAMP_PLAY:
 		// 演奏開始
-        ddeClient.Execute("", "/play");
+        ddeClient.Execute(TEXT(""), TEXT("/play"));
         break;
 
 	case CONTROL_WINAMP_DELETE:
         // リスト破棄
-        ddeClient.Execute("", "/delete all");
+        ddeClient.Execute(TEXT(""), TEXT("/delete all"));
         break;
 
     case CONTROL_WINAMP_STOP:
 		// 演奏停止 
-        ddeClient.Execute("", "/stop");
+        ddeClient.Execute(TEXT(""), TEXT("/stop"));
 		break;
 
 	case CONTROL_WINAMP_PLAY_PREV:
@@ -1244,7 +1246,7 @@ void CSuperTagEditorView::OnWinampPlay()
 				if (nNumber >= 0) {
 					FILE_MP3	*fileMP3 = pDoc->GetListMP3(nNumber);
 					cds.dwData = IPC_PLAYFILE;
-					cds.lpData = (void *)((LPCSTR)fileMP3->strFullPathName);
+					cds.lpData = (void *)(implicit_cast<LPCTSTR>(fileMP3->strFullPathName));
 					if (cds.lpData != NULL) {
 						cds.cbData = strlen((char *)cds.lpData)+1;
 						// 再生開始
@@ -1392,9 +1394,9 @@ void CSuperTagEditorView::OnWritePlaylist()
 	strDefaultDir += "*.m3u";
 
 	// ファイル選択ダイアログを開く
-	static	LPCSTR	sFileFilter =	"PlayList(*.m3u)|*.m3u|" \
-									"All Files(*.*)|*.*|";
-	CFileDialog		dialog(FALSE, ".m3u", g_strCurrentPlayList,
+	static	LPCTSTR	sFileFilter =	TEXT("PlayList(*.m3u)|*.m3u|") \
+									TEXT("All Files(*.*)|*.*|");
+	CFileDialog		dialog(FALSE, TEXT(".m3u"), g_strCurrentPlayList,
 	                       OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 	                       sFileFilter, NULL);
 	if (dialog.DoModal() == IDOK) {
@@ -1414,9 +1416,9 @@ void CSuperTagEditorView::OnUpdateWriteTreePlaylist(CCmdUI* pCmdUI)
 void CSuperTagEditorView::OnWriteTreePlaylist() 
 {
 	// プレイリストを出力するフォルダを指定する
-	extern	BOOL SelectDirectory(char *);
-	char	sFolderName[_MAX_PATH] = {'\0'};
-	strcpy(sFolderName, g_strCurrentPlayList);
+	extern	BOOL SelectDirectory(LPTSTR);
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
+	_tcscpy(sFolderName, g_strCurrentPlayList);
 	if (SelectDirectory(sFolderName) == FALSE) {
 		return;
 	}
@@ -1440,9 +1442,9 @@ void CSuperTagEditorView::OnLoadPlaylist()
 	strDefaultDir += "*.m3u";
 
 	// ファイル選択ダイアログを開く
-	static	LPCSTR	sFileFilter =	"PlayList(*.m3u)|*.m3u|" \
-									"All Files(*.*)|*.*|";
-	CMyFileDialogPlaylist/* RockDance 126 */		dialog(TRUE, ".m3u", g_strCurrentPlayList,
+	static const auto sFileFilter =	TEXT("PlayList(*.m3u)|*.m3u|") \
+									TEXT("All Files(*.*)|*.*|");
+	CMyFileDialogPlaylist/* RockDance 126 */		dialog(TRUE, TEXT(".m3u"), g_strCurrentPlayList,
 	                       OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXTENSIONDIFFERENT | OFN_PATHMUSTEXIST,
 	                       sFileFilter, NULL);
 	dialog.m_bShowLoadPlaylistDlg = g_bShowLoadPlaylistDlg; /* RockDance 126 */
@@ -1451,7 +1453,7 @@ void CSuperTagEditorView::OnLoadPlaylist()
 		LoadPlayList(dialog.GetPathName());
 	}
 }
-void CSuperTagEditorView::LoadPlayList(const char *sFileName)
+void CSuperTagEditorView::LoadPlayList(LPCTSTR sFileName)
 {
 	CWaitCursor	wait;
 	g_strCurrentPlayList = sFileName;
@@ -1485,7 +1487,7 @@ void CSuperTagEditorView::LoadPlayList(const char *sFileName)
 		}
 
 		// プレイリスト読みこみ
-		pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+		pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 		pDoc->LoadPlayList(g_strCurrentPlayList);
 		if (g_bPlayListAddList) {
 			// 追加リクエストのあったファイルのタグ情報を読み込む
@@ -1625,9 +1627,9 @@ void CSuperTagEditorView::OnSelectDeleteList()
 		nCount = m_List.MakeSelectFileArray(arrayList);
 
 		CString	strMess;
-		strMess.Format("選択されているファイル(%d個)をリストから削除します\n\n"
-		               "実行してもよろしいですか？", nCount);
-		if (g_bConfDeleteList == false || MessageBox(strMess, "ファイルをリストから削除", MB_YESNO|MB_TOPMOST) == IDYES) {
+		strMess.Format(TEXT("選択されているファイル(%d個)をリストから削除します\n\n"
+		               "実行してもよろしいですか？"), nCount);
+		if (g_bConfDeleteList == false || MessageBox(strMess, TEXT("ファイルをリストから削除"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			// リストから削除(インデックスがずれるので、後ろから削除していく)
 			bool	bFileModified = false;
 			for (int i = nCount-1; i >= 0; i--) {
@@ -1641,9 +1643,9 @@ void CSuperTagEditorView::OnSelectDeleteList()
 						m_List.DeleteItemFromIndex(nIndex);
 					} else if (bFileModified == false) {
 						// 変更が保存されていないファイルがある
-						MessageBox("変更が保存されていないファイルが含まれています\n\n"
-						           "変更が保存されていないファイルは無視します",
-						           "選択ファイルをリストから削除", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+						MessageBox(TEXT("変更が保存されていないファイルが含まれています\n\n"
+						           "変更が保存されていないファイルは無視します"),
+						           TEXT("選択ファイルをリストから削除"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 						bFileModified = true;
 					}
 				}
@@ -1677,9 +1679,9 @@ void CSuperTagEditorView::OnSelectDeleteFile()
 		nCount = m_List.MakeSelectFileArray(arrayList);
 
 		CString	strMess;
-		strMess.Format("選択されているファイル(%d個)を削除します\n\n"
-		               "実行してもよろしいですか？", nCount);
-		if (g_bConfDeleteFile == false || MessageBox(strMess, "ファイルの削除", MB_YESNO|MB_TOPMOST) == IDYES) {
+		strMess.Format(TEXT("選択されているファイル(%d個)を削除します\n\n"
+		               "実行してもよろしいですか？"), nCount);
+		if (g_bConfDeleteFile == false || MessageBox(strMess, TEXT("ファイルの削除"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			/* WildCherry4 082 *//*
 			// 削除ファイルのリストを作成
 			CString	strFileList;
@@ -1788,9 +1790,9 @@ void CSuperTagEditorView::OnSelectEditDestory()
 		if (nCount == 0)	return; /* SeaKnows 033 */
 
 		CString	strMess;
-		strMess.Format("選択されているファイル(%d個)を編集前の状態に戻します\n\n"
-		               "実行してもよろしいですか？", nCount);
-		if (g_bConfEditModify == false || MessageBox(strMess, "編集前の状態に戻す", MB_YESNO|MB_TOPMOST) == IDYES) {
+		strMess.Format(TEXT("選択されているファイル(%d個)を編集前の状態に戻します\n\n"
+		               "実行してもよろしいですか？"), nCount);
+		if (g_bConfEditModify == false || MessageBox(strMess, TEXT("編集前の状態に戻す"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			// 変更されているファイルのタグ情報を読みなおす
 			int i; for (i = 0; i < nCount; i++) {
 				int		nIndex = arrayList[i];
@@ -1929,7 +1931,7 @@ void CSuperTagEditorView::OnHelpIndex()
 	TCHAR *sHelpName;
 	
 	// HTML ヘルプファイル名作成
-	sHelpName = pApp->MakeFileName("chm");
+	sHelpName = pApp->MakeFileName(TEXT("chm"));
 	::HtmlHelp(GetSafeHwnd(), sHelpName, HH_DISPLAY_TOPIC, (DWORD)NULL);
 	free((void *)sHelpName);
 }
@@ -2121,14 +2123,14 @@ void CSuperTagEditorView::OnUpdateFolderTreeSync(CCmdUI* pCmdUI)
 }
 void CSuperTagEditorView::OnFolderTreeSync() 
 {
-	static	const char *sMessage = "フォルダの同期処理を実行します\n\n実行してもよろしいですか？";
-	if (g_bConfFolderSync == false || MessageBox(sMessage, "フォルダの同期", MB_YESNO|MB_TOPMOST) == IDYES) {
+	static	const auto sMessage = TEXT("フォルダの同期処理を実行します\n\n実行してもよろしいですか？");
+	if (g_bConfFolderSync == false || MessageBox(sMessage, TEXT("フォルダの同期"), MB_YESNO|MB_TOPMOST) == IDYES) {
 		CWaitCursor	wait;
 		if (g_bSyncSelectAlways) {
 			// 実行時にフォルダ指定ダイアログを開く
-			extern	BOOL SelectDirectory(char *);
-			char	sFolderName[_MAX_PATH] = {'\0'};
-			strcpy(sFolderName, g_strRootFolder);
+			extern	BOOL SelectDirectory(LPTSTR);
+			TCHAR	sFolderName[_MAX_PATH] = {'\0'};
+			_tcscpy(sFolderName, g_strRootFolder);
 			if (SelectDirectory(sFolderName) == FALSE) {
 				return;
 			}
@@ -2147,14 +2149,14 @@ void CSuperTagEditorView::OnUpdateCheckFileSync(CCmdUI* pCmdUI)
 }
 void CSuperTagEditorView::OnCheckFileSync() 
 {
-	static	const char *sMessage = "フォルダの同期処理を実行します\n\n実行してもよろしいですか？";
-	if (g_bConfFolderSync == false || MessageBox(sMessage, "フォルダの同期", MB_YESNO|MB_TOPMOST) == IDYES) {
+	static	const auto sMessage = TEXT("フォルダの同期処理を実行します\n\n実行してもよろしいですか？");
+	if (g_bConfFolderSync == false || MessageBox(sMessage, TEXT("フォルダの同期"), MB_YESNO|MB_TOPMOST) == IDYES) {
 		CWaitCursor	wait;
 		if (g_bSyncSelectAlways) {
 			// 実行時にフォルダ指定ダイアログを開く
-			extern	BOOL SelectDirectory(char *);
-			char	sFolderName[_MAX_PATH] = {'\0'};
-			strcpy(sFolderName, g_strRootFolder);
+			extern	BOOL SelectDirectory(LPTSTR);
+			TCHAR	sFolderName[_MAX_PATH] = {'\0'};
+			_tcscpy(sFolderName, g_strRootFolder);
 			if (SelectDirectory(sFolderName) == FALSE) {
 				return;
 			}
@@ -2172,7 +2174,7 @@ void CSuperTagEditorView::PlayFile(int nNumber)
 	OnWinampPlay();
 }
 
-bool CSuperTagEditorView::LoadFormatFile(LPCSTR sFileName, CString *strHead, CString *strBody, CString *strFoot)
+bool CSuperTagEditorView::LoadFormatFile(LPCTSTR sFileName, CString *strHead, CString *strBody, CString *strFoot)
 {
 	strHead->Empty();
 	strBody->Empty();
@@ -2188,14 +2190,14 @@ bool CSuperTagEditorView::LoadFormatFile(LPCSTR sFileName, CString *strHead, CSt
 				strLine += "\r\n";
 				switch(nType) {
 				case TYPE_HEAD:		// ヘッダ部分
-					if (strncmp(strLine, _T("[LOOP_START]"), 12) == 0) {
+					if (_tcsncmp(strLine, _T("[LOOP_START]"), 12) == 0) {
 						nType = TYPE_BODY;
 					} else {
 						*strHead += strLine;
 					}
 					break;
 				case TYPE_BODY:		// ボディー部分
-					if (strncmp(strLine, _T("[LOOP_END]"), 10) == 0) {
+					if (_tcsncmp(strLine, _T("[LOOP_END]"), 10) == 0) {
 						nType = TYPE_FOOT;
 					} else {
 						*strBody += strLine;
@@ -2210,8 +2212,8 @@ bool CSuperTagEditorView::LoadFormatFile(LPCSTR sFileName, CString *strHead, CSt
 	}
 	CATCH( CFileException, e) {
 		CString	str;
-		str.Format("%s の読み込みに失敗しました", sFileName);
-		MessageBox(str, "ファイルエラー", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+		str.Format(TEXT("%s の読み込みに失敗しました"), sFileName);
+		MessageBox(str, TEXT("ファイルエラー"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		return(false);
 	}
 	END_CATCH
@@ -2223,14 +2225,14 @@ bool CSuperTagEditorView::ExecWriteList(WRITE_FORMAT *pFormat)
 {
 	CString	strHead, strBody, strFoot;
 	if (pFormat->strFileName.IsEmpty()) {
-		MessageBox("書式ファイルが指定されていません", "リスト出力エラー", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+		MessageBox(TEXT("書式ファイルが指定されていません"), TEXT("リスト出力エラー"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		return(false);
 	}
 	// 書式ファイルの読み込み
 	if (LoadFormatFile(pFormat->strFileName, &strHead, &strBody, &strFoot)) {
 		// ファイル選択ダイアログを開く
 		CString	strFilter;
-		strFilter.Format("%s(*%s)|*%s|All Files(*.*)|*.*|", pFormat->strName, pFormat->strExtName, pFormat->strExtName);
+		strFilter.Format(TEXT("%s(*%s)|*%s|All Files(*.*)|*.*|"), pFormat->strName, pFormat->strExtName, pFormat->strExtName);
 		CMyFileDialog	dialog(FALSE, pFormat->strExtName, pFormat->strCurrentFile,
 							   OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 							   strFilter, NULL);
@@ -2304,7 +2306,7 @@ HDDEDATA CALLBACK CSuperTagEditorView::DdemlCallback(UINT uType, UINT uFmt,
     DWORD dwData1, DWORD dwData2)
 {
     if(!g_DdeServer)return NULL;
-    char szBuffer[512];
+    TCHAR szBuffer[512];
     switch (uType) {
         case XTYP_CONNECT:
             //hszTpc2:サービス名 hszTpc1:トピック名
@@ -2321,7 +2323,7 @@ HDDEDATA CALLBACK CSuperTagEditorView::DdemlCallback(UINT uType, UINT uFmt,
         case XTYP_POKE:
             return NULL;
         case XTYP_EXECUTE:{
-            char sz[2048];
+            TCHAR sz[2048];
             sz[0] = 0;
             DdeGetData(hData, (LPBYTE)sz, 2048, 0);
             g_SteView->OnDDE(sz);
@@ -2332,7 +2334,7 @@ HDDEDATA CALLBACK CSuperTagEditorView::DdemlCallback(UINT uType, UINT uFmt,
     }
 }
 
-void   CSuperTagEditorView::OnDDE(char *sFileName)
+void   CSuperTagEditorView::OnDDE(LPTSTR sFileName)
 {   //多重起動でファイル名が渡されたときの処理
     //ほとんど CSuperTagEditorView::OnDropFiles をコピペしただけ(^^ゞ
 
@@ -2345,8 +2347,8 @@ void   CSuperTagEditorView::OnDDE(char *sFileName)
 
     //実際は sFileName は "" で括られているので、取り除く必要がある
     //（KbDDEClient::Execute の仕様）
-    char *tmpFileName = new char[lstrlen(sFileName)];
-    lstrcpyn(tmpFileName, sFileName+1, lstrlen(sFileName)-2);
+	std::vector<TCHAR> tmpFileName(lstrlen(sFileName));
+    lstrcpyn(&tmpFileName[0], sFileName+1, lstrlen(sFileName)-2);
 
     int		nFileCount = 1;
 
@@ -2354,33 +2356,32 @@ void   CSuperTagEditorView::OnDDE(char *sFileName)
 
 	// ファイルが１個の場合は、プレイリストの読み込みに対応
 	if (nFileCount == 1) {
-		CString strFileName = tmpFileName;
+		CString strFileName = tmpFileName.data();
         strFileName.MakeLower();
-		if (strFileName.Find(".m3u") != -1) {
+		if (strFileName.Find(TEXT(".m3u")) != -1) {
 			// プレイリスト追加
-			LoadPlayList(tmpFileName);
-            delete[] tmpFileName;
+			LoadPlayList(tmpFileName.data());
 			return;
 		}
 	}
 
 	// プログレスバー初期化
-	pDoc->StartLoadFile("ＭＰ３ファイル読み込み中...");
+	pDoc->StartLoadFile(TEXT("ＭＰ３ファイル読み込み中..."));
 
 	// ドロップされたファイルを処理する
 	int i; for (i = 0; i < nFileCount; i++) {
 		CFileStatus	status;
-		if (CFile::GetStatus(tmpFileName, status) == TRUE && status.m_mtime != -1) {
+		if (CFile::GetStatus(tmpFileName.data(), status) == TRUE && status.m_mtime != -1) {
 			if (status.m_attribute & CFile::directory) {
 				// ディレクトリの場合
-				pDoc->OpenFolder(tmpFileName);
+				pDoc->OpenFolder(tmpFileName.data());
 			} else {
 				// ファイルの場合
-				pDoc->AddRequestFile(tmpFileName, NULL);
+				pDoc->AddRequestFile(tmpFileName.data(), NULL);
 			}
-		} else if (strlen(tmpFileName) == 3 && tmpFileName[1] == ':' && tmpFileName[2] == '\\') { /* STEP 027 */
+		} else if (lstrlen(tmpFileName.data()) == 3 && tmpFileName[1] == ':' && tmpFileName[2] == '\\') { /* STEP 027 */
 				// ドライブの場合
-				pDoc->OpenFolder(tmpFileName);
+				pDoc->OpenFolder(tmpFileName.data());
 		}
 	}
 
@@ -2397,7 +2398,6 @@ void   CSuperTagEditorView::OnDDE(char *sFileName)
 	pDoc->EndLoadFile();
 
 	pDoc->UpdateAllViews(NULL);
-    delete[] tmpFileName;
 }
 
 void CSuperTagEditorView::OnDeleteChar() 
@@ -2511,11 +2511,11 @@ void CSuperTagEditorView::OnMoveFolder05()
 	DoMoveFolder(4); /* STEP 022 */
 }
 
-BOOL CSuperTagEditorView::SelectDirectory(char *sLocal, bool bCopy)
+BOOL CSuperTagEditorView::SelectDirectory(LPTSTR sLocal, bool bCopy)
 {
 	bool	bResult;
 	CSHBrowseForFolder	browse(true, /*g_bEnableMoveFolderCopy*/bCopy /* WildCherry 064 */);
-	browse.SetCheckBoxTitle("コピーする");
+	browse.SetCheckBoxTitle(TEXT("コピーする"));
 	bResult = browse.Exec(sLocal);
 	g_bEnableMoveFolderCopy = browse.GetSearchSubDirState();
 	return(bResult);
@@ -2817,7 +2817,7 @@ void CSuperTagEditorView::OnConvFormatUser() /* AstralCircle 041 */
 	int i; for (i = 0; i < USER_CONV_FORMAT_MAX; i++) {
 		pageConv.m_userFormat[i] = g_userConvFormat[i];
 	}
-	prop.SetTitle("ユーザ変換書式設定");
+	prop.SetTitle(TEXT("ユーザ変換書式設定"));
 	prop.AddGroup(&pageConv);
 	if (prop.DoModal() == IDOK) {
 		g_nUserConvFormatType	= pageConv.m_nFormatType;
@@ -2855,7 +2855,7 @@ void CSuperTagEditorView::OnTeikeiConfig() /* AstralCircle 041 */
 			pageTeikei[k].m_teikeiInfo[i] = g_teikeiInfo[i+k*10];
 		}
 	}
-	prop.SetTitle("定型文設定");
+	prop.SetTitle(TEXT("定型文設定"));
 	prop.AddPage(&pageTeikei[0]);
 	prop.AddPage(&pageTeikei[1]);
 	prop.AddPage(&pageTeikei[2]);
@@ -3469,7 +3469,7 @@ void CSuperTagEditorView::OnConvExSetup()
 	int i; for (i = 0; i < USER_CONV_FORMAT_EX_MAX; i++) {
 		pageConvEx.m_userFormatEx[i] = g_userConvFormatEx[i];
 	}
-	prop.SetTitle("拡張書式変換書式設定");
+	prop.SetTitle(TEXT("拡張書式変換書式設定"));
 	prop.AddGroup(&pageConvEx);
 	if (prop.DoModal() == IDOK) {
 		for (i = 0; i < USER_CONV_FORMAT_EX_MAX; i++) {
@@ -3518,16 +3518,16 @@ void CSuperTagEditorView::OnUpdateMoveToParent(CCmdUI* pCmdUI) /* STEP 014 */
 
 void CSuperTagEditorView::DoMoveFolder(UINT index)  /* STEP 022 */
 {
-	char	sFolderName[_MAX_PATH] = {'\0'};
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
 
 	// フォルダ選択ダイアログを開く
 	if (g_userMoveFolder[index].strInitFolder.IsEmpty() && g_userMoveFolder[index].strCurrentMoveDirectory.IsEmpty()) {
-		strcpy(sFolderName, g_strCurrentMoveDirectory);
+		_tcscpy(sFolderName, g_strCurrentMoveDirectory);
 	} else {
 		if ( g_userMoveFolder[index].strCurrentMoveDirectory.IsEmpty()) {
-			strcpy(sFolderName, g_userMoveFolder[index].strInitFolder);
+			_tcscpy(sFolderName, g_userMoveFolder[index].strInitFolder);
 		} else {
-			strcpy(sFolderName, g_userMoveFolder[index].strCurrentMoveDirectory);
+			_tcscpy(sFolderName, g_userMoveFolder[index].strCurrentMoveDirectory);
 		}
 	}
 	if (SelectDirectory(sFolderName, g_userMoveFolder[index].bCopy) == TRUE) {
@@ -3702,7 +3702,7 @@ void CSuperTagEditorView::OnConvTag2tagSetup()
 	int i; for (i = 0; i < USER_CONV_FORMAT_TAG2TAG_MAX; i++) {
 		pageConvTag2Tag.m_userFormatTag2Tag[i] = g_userConvFormatTag2Tag[i];
 	}
-	prop.SetTitle("タグ情報変換書式設定");
+	prop.SetTitle(TEXT("タグ情報変換書式設定"));
 	prop.AddGroup(&pageConvTag2Tag);
 	if (prop.DoModal() == IDOK) {
 		for (i = 0; i < USER_CONV_FORMAT_TAG2TAG_MAX; i++) {

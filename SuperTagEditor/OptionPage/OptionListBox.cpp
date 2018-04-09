@@ -216,7 +216,7 @@ BOOL COptionListBox::AddItem(COptionPage *pPage, COptionPage *pGroup, int nIndex
 		if(0 != id) {
 			HICON icon;
 
-			icon = LoadIcon(AfxGetInstanceHandle(), (LPCSTR)id);
+			icon = LoadIcon(AfxGetInstanceHandle(), (LPCTSTR)id);
 			if(NULL != icon) {
 				id = m_ImageList.Add(icon);
 				item->m_ImgIdx = id;

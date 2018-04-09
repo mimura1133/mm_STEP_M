@@ -16,7 +16,6 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CDoubleZeroString::CDoubleZeroString()
-:	m_buf(NULL)
 {
 	m_ar.SetSize(0, 16);
 	Empty();
@@ -32,11 +31,10 @@ void CDoubleZeroString::Empty()
 	m_ar.RemoveAll();
 	m_ar.FreeExtra();
 
-	delete[]	m_buf;
-	m_buf	=	NULL;
+	m_buf.clear();
 }
 
-bool CDoubleZeroString::Add(const char* str)
+bool CDoubleZeroString::Add(LPCTSTR str)
 {
 	ASSERT(str!=NULL);
 	try
@@ -51,16 +49,16 @@ bool CDoubleZeroString::Add(const char* str)
 	return	true;
 }
 
-bool CDoubleZeroString::AddDoubleZero(const char * dzstring)
+bool CDoubleZeroString::AddDoubleZero(LPCTSTR dzstring)
 {
 	ASSERT(dzstring!=NULL);
-	const char*	p	=	dzstring;
+	auto p =	dzstring;
 
 	while(*p)
 	{
 		if(Add(p)==false)
 			return	false;
-		p	+=	(strlen(p) + 1);
+		p	+=	(lstrlen(p) + 1);
 	}
 	return	true;
 }
@@ -70,10 +68,9 @@ int CDoubleZeroString::GetCount() const
 	return	m_ar.GetSize();
 }
 
-CDoubleZeroString::operator const char*()
+CDoubleZeroString::operator LPCTSTR()
 {
-	delete[]	m_buf;
-	m_buf	=	NULL;
+	m_buf.clear();
 		//	calculate the required buffer length
 	size_t	tlen(0);
 	if(m_ar.GetSize()>0)
@@ -85,20 +82,18 @@ CDoubleZeroString::operator const char*()
 		tlen=1;
 	tlen++;	//	for the double zeroterminator
 
-	m_buf	=	new	char[tlen];
-	ASSERT(m_buf!=NULL);
-	ZeroMemory(m_buf, tlen);
-	char* p = m_buf;
+	m_buf.resize(tlen, TEXT('0'));
+	auto p = m_buf.data();
 	int i; for(i=0;i<m_ar.GetSize();i++)
 	{
-		strcpy(p, m_ar[i]);
+		lstrcpy(p, m_ar[i]);
 		p+= (m_ar[i].GetLength() + 1);
 	}
 
-	return	m_buf;
+	return	m_buf.data();
 }
 
-const char* CDoubleZeroString::Get(int index)
+LPCTSTR CDoubleZeroString::Get(int index)
 {
 		// assert on debug builds when index is out of bounds
 	ASSERT(index>=0&&index<=m_ar.GetSize());

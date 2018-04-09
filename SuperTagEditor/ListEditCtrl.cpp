@@ -200,7 +200,7 @@ bool CListEditCtrl::CalculateSize(CRect& rect) /* BeachMonster 089 */
 		size.cy = size.cx = 0;
 		while (true) { // ƒzƒ“ƒg‚Í‚Ps‚Ã‚Âˆ—‚µ‚½‚­‚È‚¢‚Ì‚¾‚ªDrawText‚ª‰¡•‚ðŸŽè‚ÉL‚°‚Äc‚ª‘«‚è‚È‚­‚È‚é‚Ì‚ÅŽ©•ª‚Å‚â‚é
 			bool bEmpty = false;
-			int nIndex = str.Find("\r");
+			int nIndex = str.Find(TEXT("\r"));
 			CString line = str;
 			if (nIndex >= 0) {
 				line = str.Left(nIndex);
@@ -250,8 +250,8 @@ bool CListEditCtrl::CalculateSize(CRect& rect) /* BeachMonster 089 */
 			if (str.IsEmpty()) {
 				break;
 			}
-			str.TrimLeft("\r");// "\r\n"‚Ì‘©‚ª“Z‚ß‚ÄTrim‚³‚ê‚È‚¢‚æ‚¤‚É‚í‚¯‚Ä‚â‚é
-			str.TrimLeft("\n");
+			str.TrimLeft(TEXT("\r"));// "\r\n"‚Ì‘©‚ª“Z‚ß‚ÄTrim‚³‚ê‚È‚¢‚æ‚¤‚É‚í‚¯‚Ä‚â‚é
+			str.TrimLeft(TEXT("\n"));
 		}
 		size.cy += 5;
 		size.cx += 5;

@@ -71,7 +71,7 @@ BOOL CDlgSetCheck::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO: ‚±‚ÌˆÊ’u‚É‰Šú‰»‚Ì•â‘«ˆ—‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
-	extern	const char	***g_sNameList;
+	extern	const TCHAR	***g_sNameList;
 	// m_listTargetColumn.AddString("‘S‚Ä‚Ì€–Ú");
 	for (int i = 2; g_sNameList[0][i] != NULL; i++) {
 		m_listTargetColumn.AddString(g_sNameList[0][i]);

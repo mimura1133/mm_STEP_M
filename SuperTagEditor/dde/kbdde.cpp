@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <windows.h>
 #include "kbdde.h"
+#include <vector>
 
 //---------------------------------------------------------------------------
 HDDEDATA CALLBACK DefCallback(UINT uType, UINT uFmt,
@@ -15,7 +16,7 @@ HDDEDATA CALLBACK DefCallback(UINT uType, UINT uFmt,
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-KbDDE::KbDDE(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService)
+KbDDE::KbDDE(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService)
 {
     m_ddeInst = 0;
     m_hszService = NULL;
@@ -52,7 +53,7 @@ KbDDE::~KbDDE(void)
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-DWORD __fastcall KbDDEServer::QueryString(HSZ hsz, char *szBuffer, int Size)
+DWORD __fastcall KbDDEServer::QueryString(HSZ hsz, LPTSTR szBuffer, int Size)
 {
     return DdeQueryString(m_ddeInst, hsz, szBuffer, Size, CP_WINANSI);
 }
@@ -71,7 +72,7 @@ HDDEDATA __fastcall KbDDEServer::CreateDataHandle(LPBYTE pSrc, DWORD cb, HSZ hsz
 */
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-KbDDEServer::KbDDEServer(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService)
+KbDDEServer::KbDDEServer(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService)
     :KbDDE(pfnCallBack, cszTopic, cszService)
 {
     DdeNameService(m_ddeInst, m_hszService, 0, DNS_REGISTER);
@@ -92,7 +93,7 @@ KbDDEServer::~KbDDEServer(void)
 */
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-KbDDEClient::KbDDEClient(PFNCALLBACK pfnCallBack, LPCSTR cszTopic, LPCSTR cszService)
+KbDDEClient::KbDDEClient(PFNCALLBACK pfnCallBack, LPCTSTR cszTopic, LPCTSTR cszService)
     :KbDDE(pfnCallBack, cszTopic, cszService)
 {
     m_hConv = DdeConnect(m_ddeInst, m_hszService, m_hszTopic, NULL);
@@ -132,12 +133,12 @@ HDDEDATA KbDDEClient::ClientTransaction(
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-bool __fastcall KbDDEClient::Execute(LPCSTR cszFileName, 
-                                     LPCSTR cszCommand)
+bool __fastcall KbDDEClient::Execute(LPCTSTR cszFileName, 
+                                     LPCTSTR cszCommand)
 {
     HDDEDATA hRet;
     HSZ hszTopic;
-    static LPCSTR cszEmpty = "";
+    static LPCTSTR cszEmpty = TEXT("");
     if(!m_hConv){
         return false;
     }
@@ -149,19 +150,19 @@ bool __fastcall KbDDEClient::Execute(LPCSTR cszFileName,
     int lenFileName = lstrlen(cszFileName);
     int lenCommand = lstrlen(cszCommand);
     int szTopicLen = lenFileName + lenCommand + 8;
-    char *szTopic = new char[szTopicLen + 1];
+    std::vector<TCHAR> szTopic(szTopicLen + 1);
     if(lenFileName){
         szTopic[0] = '\"';
         lstrcpy(&szTopic[1], cszFileName);
-        lstrcat(szTopic, "\" ");
+        lstrcat(szTopic.data(), TEXT("\" "));
     }
     else{
         szTopic[0] = 0;
     }
-    lstrcat(szTopic, cszCommand);
-    hszTopic = DdeCreateStringHandle(m_ddeInst, szTopic, CP_WINANSI);
+    lstrcat(szTopic.data(), cszCommand);
+    hszTopic = DdeCreateStringHandle(m_ddeInst, szTopic.data(), CP_WINANSI);
     hRet = DdeClientTransaction(
-            (BYTE*)szTopic,
+            (BYTE*)szTopic.data(),
             szTopicLen,
             m_hConv,
             NULL,
@@ -170,7 +171,6 @@ bool __fastcall KbDDEClient::Execute(LPCSTR cszFileName,
             2000,//‘Ò‹@ŽžŠÔ
             NULL);
 
-    delete[] szTopic;
     if(!hRet && DdeGetLastError(m_ddeInst) != DMLERR_NO_ERROR){
         //MessageBeep(MB_OK);
         return false;
@@ -182,12 +182,12 @@ bool __fastcall KbDDEClient::Execute(LPCSTR cszFileName,
     return true;
 }
 
-bool __fastcall KbDDEClient::Execute2(LPCSTR cszFileName, 
-                                     LPCSTR cszCommand)
+bool __fastcall KbDDEClient::Execute2(LPCTSTR cszFileName, 
+                                     LPCTSTR cszCommand)
 {
     HDDEDATA hRet;
     HSZ hszTopic;
-    static LPCSTR cszEmpty = "";
+    static LPCTSTR cszEmpty = TEXT("");
     if(!m_hConv){
         return false;
     }
@@ -199,21 +199,21 @@ bool __fastcall KbDDEClient::Execute2(LPCSTR cszFileName,
     int lenFileName = lstrlen(cszFileName);
     int lenCommand = lstrlen(cszCommand);
     int szTopicLen = lenFileName + lenCommand + 8;
-    char *szFileName = new char[lenFileName + 3 + 1];
+    std::vector<TCHAR> szFileName(lenFileName + 3 + 1);
     if(lenFileName){
-        lstrcpy(szFileName, " \"");
+        lstrcpy(szFileName.data(), TEXT(" \""));
         lstrcat(&szFileName[2], cszFileName);
-        lstrcat(szFileName, "\"");
+        lstrcat(szFileName.data(), TEXT("\""));
     }
     else{
         szFileName[0] = 0;
     }
-    char *szTopic = new char[szTopicLen + 1];
-    lstrcpy(szTopic, cszCommand);
-    lstrcat(szTopic, szFileName);
-    hszTopic = DdeCreateStringHandle(m_ddeInst, szTopic, CP_WINANSI);
+    std::vector<TCHAR> szTopic(szTopicLen + 1);
+    lstrcpy(szTopic.data(), cszCommand);
+    lstrcat(szTopic.data(), szFileName.data());
+    hszTopic = DdeCreateStringHandle(m_ddeInst, szTopic.data(), CP_WINANSI);
     hRet = DdeClientTransaction(
-            (BYTE*)szTopic,
+            (BYTE*)szTopic.data(),
             szTopicLen,
             m_hConv,
             NULL,
@@ -222,8 +222,6 @@ bool __fastcall KbDDEClient::Execute2(LPCSTR cszFileName,
             2000,//‘Ò‹@ŽžŠÔ
             NULL);
 
-    delete[] szTopic;
-	delete[] szFileName;
     if(!hRet && DdeGetLastError(m_ddeInst) != DMLERR_NO_ERROR){
         //MessageBeep(MB_OK);
         return false;

@@ -31,7 +31,7 @@ public:
 	USER_CONV_FORMAT_TAG2TAG	m_userFormatTag2Tag[USER_CONV_FORMAT_TAG2TAG_MAX];
 
 	int		m_nOutputFormatType;
-	void	OutputFormatString(const char *);
+	void	OutputFormatString(LPCTSTR);
 
 // オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。

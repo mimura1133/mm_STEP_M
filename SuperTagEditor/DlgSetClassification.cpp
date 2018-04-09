@@ -110,7 +110,7 @@ BOOL CDlgSetClassification::OnInitDialog()
 	COptionPage::OnInitDialog();
 
 	// TODO: ‚±‚ÌˆÊ’u‚É‰Šú‰»‚Ì•â‘«ˆ—‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
-	extern	const char	***g_sNameList;
+	extern	const TCHAR	***g_sNameList;
 	int i; for (i = 0; g_sNameList[0][i] != NULL; i++) {
 		m_listClass1.AddString(g_sNameList[0][i]);
 		m_listClass2.AddString(g_sNameList[0][i]);

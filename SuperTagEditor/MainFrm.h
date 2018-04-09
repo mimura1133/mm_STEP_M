@@ -24,7 +24,7 @@ protected: // シリアライズ機能のみから作成します。
 protected:
 public:
 
-	inline	void	SetStatusBarText(LPCSTR sText) {
+	inline	void	SetStatusBarText(LPCTSTR sText) {
 		if (IsWindow(m_wndStatusBar.m_hWnd)) m_wndStatusBar.SetPaneText(0, sText); /* Baja 161 */
 			}
 

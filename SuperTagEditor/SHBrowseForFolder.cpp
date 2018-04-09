@@ -59,7 +59,7 @@
 // ======================================
 bool	CSHBrowseForFolder::m_bEnableSubDirButton = false;
 bool	CSHBrowseForFolder::m_bSearchSubDirState = false;
-const char* CSHBrowseForFolder::pCheckBoxTitle = NULL;/* FunnyCorn 185 *///"サブディレクトリを検索";
+LPCTSTR CSHBrowseForFolder::pCheckBoxTitle = NULL;/* FunnyCorn 185 *///"サブディレクトリを検索";
 WNDPROC	CSHBrowseForFolder::m_VSSelectOrgProc;
 
 
@@ -91,7 +91,7 @@ CSHBrowseForFolder::CSHBrowseForFolder(bool bEnable, bool bState)
 {
 	SetEnableSubDirButton(bEnable);
 	SetSearchSubDirState(bState);
-	SetCheckBoxTitle("サブディレクトリを検索"); /* FunnyCorn 185 */
+	SetCheckBoxTitle(TEXT("サブディレクトリを検索")); /* FunnyCorn 185 */
 }
 
 // =============================================
@@ -138,7 +138,7 @@ int CALLBACK CSHBrowseForFolder::CallbackSelectDir(HWND hWnd, UINT uMsg, LPARAM,
 		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
 		{
 			// フォルダーツリーで常に選択状態を表示
-			HWND hwndTree = FindWindowEx(hWnd, NULL, "SysTreeView32", NULL);
+			HWND hwndTree = FindWindowEx(hWnd, NULL, TEXT("SysTreeView32"), NULL);
 			if (hwndTree != NULL) {
 				LONG style;
 				style = GetWindowLong(hwndTree, GWL_STYLE);
@@ -193,11 +193,11 @@ int CALLBACK CSHBrowseForFolder::CallbackSelectDir(HWND hWnd, UINT uMsg, LPARAM,
 // 引数  : sLocal			= パス(入出力)
 // 戻り値: bool
 // =============================================
-bool CSHBrowseForFolder::Exec(char *sLocal)
+bool CSHBrowseForFolder::Exec(LPTSTR sLocal)
 {
 	BOOL			bResult = FALSE;
 	BROWSEINFO		bi;
-	LPSTR			lpBuffer;
+	LPTSTR			lpBuffer;
 	LPITEMIDLIST	pidlRoot;	   // ブラウズのルートPIDL
 	LPITEMIDLIST	pidlBrowse;    // ユーザーが選択したPIDL
 	LPMALLOC		lpMalloc = NULL;
@@ -208,7 +208,7 @@ bool CSHBrowseForFolder::Exec(char *sLocal)
 	HWND	hwnd = AfxGetMainWnd()->GetSafeHwnd();
 
 	// ブラウズ情報受け取りバッファ領域の確保
-	if ((lpBuffer = (LPSTR) lpMalloc->Alloc(_MAX_PATH)) == NULL) {
+	if ((lpBuffer = (LPTSTR) lpMalloc->Alloc(_MAX_PATH)) == NULL) {
 		lpMalloc->Release(); /* WildCherry2 080 */
 		return(FALSE);
 	}
@@ -229,7 +229,7 @@ bool CSHBrowseForFolder::Exec(char *sLocal)
 	bi.hwndOwner = hwnd;
 	bi.pidlRoot = pidlRoot;
 	bi.pszDisplayName = lpBuffer;
-	bi.lpszTitle = "フォルダを選択して下さい。";
+	bi.lpszTitle = TEXT("フォルダを選択して下さい。");
 	bi.ulFlags = 0;
 	bi.lpfn = CallbackSelectDir;		// コールバック関数のアドレスを設定
 	bi.lParam = (LPARAM)sLocal;			// 指定したいパスを設定
@@ -239,7 +239,7 @@ bool CSHBrowseForFolder::Exec(char *sLocal)
 		// PIDL形式の戻り値のファイルシステムのパスに変換
 		if (SHGetPathFromIDList(pidlBrowse, lpBuffer)) {
 			// 取得成功
-			strcpy(sLocal, lpBuffer);
+			lstrcpy(sLocal, lpBuffer);
 			bResult = TRUE;
 		}
 		// SHBrowseForFolderの戻り値PIDLを解放

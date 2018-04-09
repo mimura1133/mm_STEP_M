@@ -13,6 +13,7 @@
 #include "SuperGridCtrl.h"
 #include "resource.h"
 
+#if false
 struct NONCLIENTMETRICS_X501	// NONCLIENTMETRICS 0x501
 {
     UINT    cbSize;
@@ -31,6 +32,7 @@ struct NONCLIENTMETRICS_X501	// NONCLIENTMETRICS 0x501
     LOGFONTA lfStatusFont;
     LOGFONTA lfMessageFont;
 };
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -843,14 +845,14 @@ CString COXToolTipCtrl::GetTooltipText(COXToolTipInfo *pToolTip)
 
 LPLOGFONT COXToolTipCtrl::GetSystemToolTipFont() const
 {
-    static LOGFONTA LogFont;
+    static LOGFONT LogFont;
 
-	NONCLIENTMETRICS_X501 ncm = {0};
-    ncm.cbSize = sizeof(NONCLIENTMETRICS_X501);
-    if (!SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS_X501), &ncm, 0))
+	NONCLIENTMETRICS ncm = {0};
+    ncm.cbSize = sizeof(NONCLIENTMETRICS);
+    if (!SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0))
         return FALSE;
 
-    memcpy(&LogFont, &ncm.lfStatusFont, sizeof(LOGFONTA));
+    memcpy(&LogFont, &ncm.lfStatusFont, sizeof(LOGFONT));
 
     return &LogFont; 
 }

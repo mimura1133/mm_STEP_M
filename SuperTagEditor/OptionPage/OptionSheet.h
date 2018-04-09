@@ -609,7 +609,7 @@ public:
 		\param	lpszText	Points to the text to be displayed on the Finish
 							command button.
 	*/
-	void SetFinishText(LPCSTR lpszText);
+	void SetFinishText(LPCTSTR lpszText);
 
 	
 	/*!
@@ -1008,7 +1008,7 @@ private:
 		\param	id		The control ID of the button.
 		\param	showBut	If TRUE, shows the button when created.
 	*/
-	void AddButton(char *txt, int x, int w, UINT id, BOOL showBut = TRUE);
+	void AddButton(LPCTSTR txt, int x, int w, UINT id, BOOL showBut = TRUE);
 
 	/*!
 		\brief	Adds standard buttons to the window.

@@ -12,7 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern BOOL SelectDirectory(char *sLocal);
+extern BOOL SelectDirectory(LPTSTR sLocal);
 
 /////////////////////////////////////////////////////////////////////////////
 // CDlgFavorites ダイアログ
@@ -149,8 +149,8 @@ void CDlgFavorites::OnBtRefFavorites9()
 void CDlgFavorites::OnBtRefFavorites(CString &strFavorite)
 {
 	// フォルダ選択ダイアログを開く
-	char	sFolderName[_MAX_PATH] = {'\0'};
-	strcpy(sFolderName, strFavorite);
+	TCHAR	sFolderName[_MAX_PATH] = {'\0'};
+	lstrcpy(sFolderName, strFavorite);
 	if (SelectDirectory(sFolderName) == TRUE) {
 		strFavorite = sFolderName;
 	}

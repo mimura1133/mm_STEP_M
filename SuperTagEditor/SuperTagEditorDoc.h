@@ -17,6 +17,8 @@
 
 #include "Registry.h"
 
+#include <string>
+
 struct FILE_STATE	{					// ファイル情報
 	CString	strFullPathName;			// フルパス名
 	CSuperGridCtrl::CTreeItem *pParent;	// 親のアイテム
@@ -67,15 +69,15 @@ public:		// ======================================
 
 	inline	void SaveAllTag(void) {OnSaveAllTag();}
 
-	bool	LoadPlayList(const char *);
-	bool	FoundFile(const char *, CSuperGridCtrl::CTreeItem * = NULL, bool = true);
-	bool	SearchFileReent(const char *, CSuperGridCtrl::CTreeItem * = NULL);
-	int		AddRequestFile(const char *, CSuperGridCtrl::CTreeItem * = NULL);
+	bool	LoadPlayList(LPCTSTR);
+	bool	FoundFile(LPCTSTR, CSuperGridCtrl::CTreeItem * = NULL, bool = true);
+	bool	SearchFileReent(LPCTSTR, CSuperGridCtrl::CTreeItem * = NULL);
+	int		AddRequestFile(LPCTSTR, CSuperGridCtrl::CTreeItem * = NULL);
 	void	ExecRequestFiles(bool = true, bool = true);
-	void	StartLoadFile(const char *);
+	void	StartLoadFile(LPCTSTR);
 	void	EndLoadFile(void);
 	void	ClearRequestFiles(void);
-	void	OpenFolder(const char *);
+	void	OpenFolder(LPCTSTR);
 	bool	CheckFileAttribute(FILE_MP3 *);
 	//追加 by Kobarin
 	//タグを更新中かどうか
@@ -84,7 +86,7 @@ public:		// ======================================
 private:	// ======================================
 			// =====     private メンバ関数     =====
 			// ======================================
-			char	*m_sTargetFile;				// 検索処理：現在のファイル
+			std::basic_string<TCHAR> m_sTargetFile;				// 検索処理：現在のファイル
 			CArray <FILE_MP3, const FILE_MP3 &>	m_arrayFiles;
 			CArray <FILE_STATE, const FILE_STATE &>	m_arrayRequestFiles;
 			int		m_nArrayFileCount;
@@ -122,8 +124,8 @@ private:	// ======================================
 				CString strINI = AfxGetApp()->m_pszProfileName;
 				InitProfile();
 			}
-	CTime	GetFileTime(const char *);
-	BOOL	SelectDirectory(char *);
+	CTime	GetFileTime(LPCTSTR);
+	BOOL	SelectDirectory(LPTSTR);
 
 	//追加 by Kobarin
 	//StartLoadFile/EndLoadFile は同じ回数呼び出さなければならない

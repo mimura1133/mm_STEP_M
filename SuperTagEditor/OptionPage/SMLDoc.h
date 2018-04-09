@@ -56,7 +56,7 @@ private:
 	public:
 		virtual ~CSMLTagOptionList();
 		void Reset();
-		CString *GetParam(LPCSTR param);
+		CString *GetParam(LPCTSTR param);
 		CString GetParamTypeface(CString &defaultFace);
 		DWORD GetParamSize(DWORD defaultSize);
 		DWORD GetParamColor(DWORD defaultColor);
@@ -232,7 +232,7 @@ private:
 
 		\return	A pointer to the character immediately AFTER the entire tag.
 	*/
-	LPCSTR ParseTag(LPCSTR src, CString &tagText, DWORD &tagID, CSMLTagOptionList &paramList);
+	LPCTSTR ParseTag(LPCTSTR src, CString &tagText, DWORD &tagID, CSMLTagOptionList &paramList);
 
 	/*!
 		\brief	Adds a text group to the document.
@@ -287,7 +287,7 @@ public:
 		\retval	TRUE	Operation was successful.
 		\retval FALSE	Operation failed.
 	*/
-	BOOL ParseSMLText(LPCSTR stream);
+	BOOL ParseSMLText(LPCTSTR stream);
 
 	/*!
 		\brief	Parses a "hypertext" stream.

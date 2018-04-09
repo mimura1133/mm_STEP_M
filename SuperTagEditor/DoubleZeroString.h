@@ -9,6 +9,8 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include <vector>
+
 class CDoubleZeroString  
 {
 public:
@@ -22,22 +24,22 @@ public:
 		//
 		// AddDoubleZero expects a double zeroterminated string:
 		// "aa\0bb\0cc\0\0"
-	bool AddDoubleZero(const char* dzstring);
+	bool AddDoubleZero(LPCTSTR dzstring);
 		// Add adds a 'normal' zeroterminated string to the
 		// CDoubleTerminatedString
-	bool Add(const char* str);
+	bool Add(LPCTSTR str);
 
 		// accessing (parsing) the CDoubleTerminatedString
 		//
 		// get the complete double zeroterminated string:
 		// "aa\0bb\0cc\0\0"
-	operator const char*();
+	operator LPCTSTR();
 		// get the single substring at position 'index'
 		// will return NULL if index is to high
 		// "aa\0bb\0cc\0\0"
 		// Get(0) --> "aa"
 		// Get(3) --> NULL
-	const char* Get(int index);
+	LPCTSTR Get(int index);
 		// get the count of substrings:
 		// "aa\0bb\0cc\0\0"
 		// GetCount() -> 3
@@ -47,7 +49,7 @@ protected:
 		// AddDoubleZero() and Add()
 	CStringArray m_ar;
 		// returned by operator const char*()
-	char*		m_buf;
+	std::vector<TCHAR>	m_buf;
 };
 
 #endif // !defined(AFX_DOUBLEZEROSTRING_H__0E067530_2B7A_11D2_A0F2_0000832CDDC7__INCLUDED_)

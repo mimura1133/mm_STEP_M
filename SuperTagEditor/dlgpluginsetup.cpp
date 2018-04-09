@@ -74,7 +74,7 @@ BOOL CDlgPluginSetup::OnInitDialog()
 	RECT	rect;
 	m_listPlugin.GetClientRect(&rect);
 
-	m_listPlugin.InsertColumn(1, "プラグイン", LVCFMT_LEFT, rect.right-rect.left-16, -1);
+	m_listPlugin.InsertColumn(1, TEXT("プラグイン"), LVCFMT_LEFT, rect.right-rect.left-16, -1);
 	m_listPlugin.DeleteAllItems();					// クリア
 
 	for (int nIndex=0;nIndex<plugins.arPlugins.GetSize();nIndex++) {
@@ -145,14 +145,14 @@ extern "C" STEP_API void WINAPI STEPUpdateCellInfo(void);
 void CDlgPluginSetup::OnBtInstall() 
 {
 	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
-	char szFilter[] = "STEプラグイン (*.ste)|*.ste|全て (*.*)|*.*||";
-	CFileDialog dialog(TRUE, "ste", NULL, 0, szFilter, this);
+	TCHAR szFilter[] = TEXT("STEプラグイン (*.ste)|*.ste|全て (*.*)|*.*||");
+	CFileDialog dialog(TRUE, TEXT("ste"), NULL, 0, szFilter, this);
 	if (dialog.DoModal() == IDOK) {
 		CString strPluginFile = dialog.GetPathName();
 		extern PSTEPlugin STEPluginLoadFile(LPCTSTR);
 		PSTEPlugin pPlugin = STEPluginLoadFile(strPluginFile);
 		if (pPlugin == NULL) {
-			MessageBox("選択されたプラグインは使用できません。", "プラグインのインストール", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(TEXT("選択されたプラグインは使用できません。"), TEXT("プラグインのインストール"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return;
 		}
 		pPlugin->bUse = true;
@@ -200,9 +200,9 @@ void CDlgPluginSetup::OnOK()
 	TCHAR   dir[_MAX_DIR];
 	TCHAR   buff[_MAX_PATH] = {'\0'};
 	{
-		TCHAR*	szName = pApp->MakeFileName("ini");
+		TCHAR*	szName = pApp->MakeFileName(TEXT("ini"));
 		_tsplitpath(szName, drive, dir, NULL, NULL);
-		_tmakepath(buff, drive, dir, "Plugin", "ini");
+		_tmakepath(buff, drive, dir, TEXT("Plugin"), TEXT("ini"));
 		strINI = buff;
 		delete szName;
 		//DeleteFile(strINI);
@@ -213,7 +213,7 @@ void CDlgPluginSetup::OnOK()
 	for (int nIndex=0;nIndex<m_listPlugin.GetItemCount();nIndex++) {
 		PSTEPlugin pPlugin = (PSTEPlugin)m_listPlugin.GetItemData(nIndex);
 		pPlugin->bUse = ListView_GetCheckState(m_listPlugin.GetSafeHwnd(), nIndex) ? true : false;
-		strSection.Format("Load%03d", nIndex);
+		strSection.Format(TEXT("Load%03d"), nIndex);
 		// 相対パスに変換
 		TCHAR   pDrive[_MAX_DRIVE];
 		TCHAR   pDir[_MAX_DIR];
@@ -221,7 +221,7 @@ void CDlgPluginSetup::OnOK()
 		TCHAR	pExt[_MAX_EXT];
 		TCHAR   pBuff[_MAX_PATH] = {'\0'};
 		_tsplitpath(pPlugin->sFileName, pDrive, pDir, pFname, pExt);
-		if (strcmp(pDrive, drive) == 0) {
+		if (_tcscmp(pDrive, drive) == 0) {
 			//TCHAR   pWDir[_MAX_DIR];
 			//TCHAR   pWFname[_MAX_FNAME];
 			//TCHAR   pRDir[_MAX_DIR] = {'\0'};
@@ -274,9 +274,9 @@ void CDlgPluginSetup::OnOK()
 			// 変換なし
 			_tmakepath(pBuff, pDrive, pDir, pFname, pExt);
 		}
-		MyWriteProfileString(strSection, "Path", pBuff/*pPlugin->sFileName*/);
+		MyWriteProfileString(strSection, TEXT("Path"), pBuff/*pPlugin->sFileName*/);
 		//WritePrivateProfileString(strSection, "Path", pPlugin->sFileName, strINI);
-		MyWriteProfileString(strSection, "Use", pPlugin->bUse ? "1" : "0");
+		MyWriteProfileString(strSection, TEXT("Use"), pPlugin->bUse ? TEXT("1") : TEXT("0"));
 		//WritePrivateProfileString(strSection, "Use", pPlugin->bUse ? "1" : "0", strINI);
 	}
 	Profile_Flush(strINI);
@@ -287,7 +287,7 @@ void CDlgPluginSetup::OnOK()
 void CDlgPluginSetup::OnBtUninstall() 
 {
 	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
-	if (MessageBox("選択されているプラグインをアンインストールしますか？\n※ファイルは削除されません。", "アンインストール", MB_YESNO|MB_TOPMOST) == IDYES) {
+	if (MessageBox(TEXT("選択されているプラグインをアンインストールしますか？\n※ファイルは削除されません。"), TEXT("アンインストール"), MB_YESNO|MB_TOPMOST) == IDYES) {
 		int nIndex =  ListView_GetSelectedItem(m_listPlugin);
 		PSTEPlugin pPlugin = (PSTEPlugin)m_listPlugin.GetItemData(nIndex);
 		pPlugin->bUse = false;

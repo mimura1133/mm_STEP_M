@@ -73,7 +73,7 @@ void CDlgFileOverWrite2::OnBtRename()
 	TCHAR	drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext[_MAX_EXT];
 	_tsplitpath(m_strFileName, drive, dir, fname, ext);
 	CDlgFileNameChange dialog;
-	dialog.m_nMaxChar = g_nConfFileNameMaxChar - strlen(ext);
+	dialog.m_nMaxChar = g_nConfFileNameMaxChar - lstrlen(ext);
 	dialog.m_strFileName = fname;
 	dialog.m_strOrgFileName = fname;
 	//dialog.m_strMsg.Format("ファイル名を %d 文字以内に変更してください", dialog.m_nMaxChar);

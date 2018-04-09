@@ -63,21 +63,21 @@ void CDlgEnvPlayer::OnBtRefWinamp()
 	GetDlgItemText(IDC_ED_WINAMP_PATH, strFileName);
 
 	// ファイル選択ダイアログを開く
-	static	LPCSTR	sFileFilter =	"Execute File(*.exe)|*.EXE|" \
-									"All Files(*.*)|*.*|";
-	CFileDialog		dialog(TRUE, ".exe", strFileName,
+	static	LPCTSTR	sFileFilter =	TEXT("Execute File(*.exe)|*.EXE|" \
+									"All Files(*.*)|*.*|");
+	CFileDialog		dialog(TRUE, TEXT(".exe"), strFileName,
 	                       OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 	                       sFileFilter, NULL);
 	if (dialog.DoModal() == IDOK) {
 		CString	strFileName(dialog.GetPathName());
 		strFileName.MakeUpper();
-		if (strFileName.Find("WINAMP.EXE") >= 0) {
+		if (strFileName.Find(TEXT("WINAMP.EXE")) >= 0) {
 			m_nPlayerType = PLAYER_WINAMP;
-		} else if (strFileName.Find("SCMPX.EXE") >= 0) {
+		} else if (strFileName.Find(TEXT("SCMPX.EXE")) >= 0) {
 			m_nPlayerType = PLAYER_SCMPX;
-		} else if (strFileName.Find("KBMPLAY.EXE") >= 0) {
+		} else if (strFileName.Find(TEXT("KBMPLAY.EXE")) >= 0) {
 			m_nPlayerType = PLAYER_KBMPLAY;
-		} else if (strFileName.Find("LILITH.EXE") >= 0) { /* WildCherry 070 */
+		} else if (strFileName.Find(TEXT("LILITH.EXE")) >= 0) { /* WildCherry 070 */
 			m_nPlayerType = PLAYER_LILITH;
 		} else {
 			m_nPlayerType = PLAYER_EXTEND;
