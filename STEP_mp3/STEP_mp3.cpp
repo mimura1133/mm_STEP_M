@@ -1165,7 +1165,7 @@ bool WriteTagID3v2(FILE_INFO *pFileMP3)
 	byGenre = STEPGetGenreCode(GetGenreSI(pFileMP3));
 	if (!lstrlen(GetGenreSI(pFileMP3)) == 0) {
 		if (byGenre == (BYTE)0xff || STEPIsUserGenre(GetGenreSI(pFileMP3)) || bOptID3v2GenreAddNumber == false) strGenre.Format(TEXT("%s"), GetGenreSI(pFileMP3));
-		else                       strGenre.Format("(%d)%s", STEPGetGenreCode(GetGenreSI(pFileMP3)), GetGenreSI(pFileMP3));
+		else                       strGenre.Format(TEXT("(%d)%s"), STEPGetGenreCode(GetGenreSI(pFileMP3)), GetGenreSI(pFileMP3));
 	}
 	id3v2.SetGenre(strGenre/* 2005.08.23 del , bOptID3v2GenreAddNumber*/);
 
