@@ -1174,7 +1174,7 @@ void CId3tagv2::SetYear(const char *year)
 CString CId3tagv2::GetGenre()
 {
 	//ジャンル
-	CString strGenre = GetId3String("TCON");
+	CStringA strGenre = GetId3String("TCON");
 	unsigned char *data = (unsigned char *)(LPCSTR )strGenre;
 	//最初の()を読み飛ばす処理	Fix 2001-05-20
 	while(1)
@@ -1193,7 +1193,7 @@ CString CId3tagv2::GetGenre()
 			int index = strGenre.Find(')');	
 			if(0 <= index)
 			{
-				CString strGenreFromCode = strGenre;
+				auto strGenreFromCode = strGenre;
 				strGenre.Delete(0,index+1);	//)'以前を削除
 				if (strGenre.GetLength() == 0) { // 空になってしまったらジャンルコードから変換を試みる
 					BOOL m_bScmpxGenre = TRUE; // m_bScmpxGenreが削除されたのでここで定義
@@ -1216,7 +1216,7 @@ CString CId3tagv2::GetGenre()
 void CId3tagv2::SetGenre(const char *szGenre)
 {
 	//ジャンル
-	CString strGenre;
+	CStringA strGenre;
 /*	CId3tagv1 id3tagv1(m_bScmpxGenre);
 	long genre = id3tagv1.GenreString2Num(szGenre);
 	if((genre != -1) &&
@@ -2069,7 +2069,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 
 	//デフォルト情報
 	char szDefaultName[MAX_PATH];
-	strcpy(szDefaultName,getFileName(CString(szFileName)));
+	strcpy(szDefaultName, static_cast<CStringA>(getFileName(CString(szFileName))));
 	SetId3String("TIT2",szDefaultName);
 	SetId3String("TSSE",m_strDefaultEnc);
 	

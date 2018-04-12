@@ -454,7 +454,7 @@ private:
 	ID3HEAD m_head;
 	WORD m_wVer;
 	multimap<DWORD,CId3Frame> m_frames; /* STEP map -> multimap */
-	CString m_strDefaultEnc;		//TENCのデフォルト値
+	CStringA m_strDefaultEnc;		//TENCのデフォルト値
 //	WORD m_wDefaultId3TagVersion;	// ID3V2の初期値(新規作成時にこのバージョンとなる)
 
 public: /* STE改で追加 */
