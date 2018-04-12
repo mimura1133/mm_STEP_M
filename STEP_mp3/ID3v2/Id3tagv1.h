@@ -24,13 +24,13 @@ public:
 	void SetScmpxGenre(BOOL bSwitch);
 	BOOL IsEnable(){return m_bEnable;};
 
-	CString GetTitle();
+	CStringA GetTitle() const;
 	void SetTitle(const char *title);
-	CString GetArtist();
+	CStringA GetArtist() const;
 	void SetArtist(const char *artist);
-	CString GetAlbum();
+	CStringA GetAlbum() const;
 	void SetAlbum(const char *album);
-	CString GetYear();
+	CStringA GetYear() const;
 	void SetYear(const char *year);
 	unsigned char GetGenreNum();
 	CString GetGenre();
@@ -40,7 +40,7 @@ public:
 	CString GetTrackNo();
 	void SetTrackNo(unsigned char cTrackNo);
 	void SetTrackNo(const char *szTrackNo);
-	CString GetComment();
+	CStringA GetComment() const;
 	void SetComment(const char *comment);
 
 	CString GenreNum2String(unsigned char cGenre);
@@ -51,7 +51,7 @@ public:
 	DWORD Save(HWND hWnd,const char *szFileName);
 	DWORD DelTag(HWND hWnd,const char *szFileName);
 	void GetId3tagString(char *szTag);
-	DWORD MakeTag(HWND hWnd,const char *szFileName);
+	DWORD MakeTag(HWND hWnd, LPCTSTR szFileName);
 
 private:
 	void Release();

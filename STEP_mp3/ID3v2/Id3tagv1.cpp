@@ -6,6 +6,7 @@
 #include "GlobalCommand.h"
 #include "Id3tagv1.h"
 #include <io.h>
+#include <algorithm>
 
 static const unsigned char SCMPX_GENRE_NULL = 247;
 static const unsigned char WINAMP_GENRE_NULL = 255;
@@ -47,6 +48,18 @@ static const char	szId3gnr[256][30]={
 	"Heavy Rock(J)","Doom Rock(J)","J-POP(J)","Seiyu(J)","Tecno Ambient(J)","Moemoe(J)","Tokusatsu(J)","Anime(J)"
 	};
 
+namespace
+{
+	template<std::size_t N>
+	void CopyText(std::array<std::int8_t, N>& dest, const char* src, std::size_t maxLength)
+	{
+		auto length = check2ByteLength(src, maxLength);
+		dest.fill(0);
+		memcpy_s(dest.data(), dest.size(), src, length);
+		dest[length] = '\0';
+	}
+}
+
 //////////////////////////////////////////////////////////////////////
 // ç\íz/è¡ñ≈
 //////////////////////////////////////////////////////////////////////
@@ -65,15 +78,15 @@ CId3tagv1::~CId3tagv1()
 void CId3tagv1::Release()
 {
 	m_bEnable = FALSE;
-	strcpy(m_szTitle,"");
-	strcpy(m_szArtist,"");
-	strcpy(m_szAlbum,"");
-	strcpy(m_szYear,"");
+	m_szTitle.fill(0);
+	m_szArtist.fill(0);
+	m_szAlbum.fill(0);
+	m_szAlbum.fill(0);
 	if(m_bScmpxGenre)
 		m_cGenre = SCMPX_GENRE_NULL;
 	else
 		m_cGenre = WINAMP_GENRE_NULL;
-	strcpy(m_szComment,"");
+	m_szComment.fill(0);
 	m_cTrackNo = 0;
 }
 
@@ -82,56 +95,48 @@ void CId3tagv1::SetScmpxGenre(BOOL bSwitch)
 	m_bScmpxGenre = bSwitch;
 }
 
-CString CId3tagv1::GetTitle()
+CStringA CId3tagv1::GetTitle() const
 {
-	return m_szTitle;
+	return reinterpret_cast<const char*>(m_szTitle.data());
 }
 
 void CId3tagv1::SetTitle(const char *title)
 {
 	m_bEnable = TRUE;
-	long length = check2ByteLength(title,30);
-	strncpy(m_szTitle,title,length);
-	m_szTitle[length] = '\0';
+	CopyText(m_szTitle, title, 30);
 }
 
-CString CId3tagv1::GetArtist()
+CStringA CId3tagv1::GetArtist() const
 {
-	return m_szArtist;
+	return reinterpret_cast<const char*>(m_szArtist.data());
 }
 
 void CId3tagv1::SetArtist(const char *artist)
 {
 	m_bEnable = TRUE;
-	long length = check2ByteLength(artist,30);
-	strncpy(m_szArtist,artist,length);
-	m_szArtist[length] = '\0';
+	CopyText(m_szArtist, artist, 30);
 }
 
-CString CId3tagv1::GetAlbum()
+CStringA CId3tagv1::GetAlbum() const
 {
-	return m_szAlbum;
+	return reinterpret_cast<const char*>(m_szAlbum.data());
 }
 
 void CId3tagv1::SetAlbum(const char *album)
 {
 	m_bEnable = TRUE;
-	long length = check2ByteLength(album,30);
-	strncpy(m_szAlbum,album,length);
-	m_szAlbum[length] = '\0';
+	CopyText(m_szAlbum, album, 30);
 }
 
-CString CId3tagv1::GetYear()
+CStringA CId3tagv1::GetYear() const
 {
-	return m_szYear;
+	return reinterpret_cast<const char*>(m_szYear.data());
 }
 
 void CId3tagv1::SetYear(const char *year)
 {
 	m_bEnable = TRUE;
-	long length = check2ByteLength(year,4);
-	strncpy(m_szYear,year,length);
-	m_szYear[length] = '\0';
+	CopyText(m_szYear, year, 4);
 }
 
 unsigned char CId3tagv1::GetGenreNum()
@@ -176,7 +181,7 @@ CString CId3tagv1::GetTrackNo()
 {
 	CString str;
 	if(m_cTrackNo)
-		str.Format("%d",m_cTrackNo);
+		str.Format(TEXT("%d"), m_cTrackNo);
 	return str;
 }
 
@@ -193,9 +198,9 @@ void CId3tagv1::SetTrackNo(const char *szTrackNo)
 		m_cTrackNo = atoi(szTrackNo);
 }
 
-CString CId3tagv1::GetComment()
+CStringA CId3tagv1::GetComment() const
 {
-	return m_szComment;
+	return reinterpret_cast<const char*>(m_szComment.data());
 }
 
 void CId3tagv1::SetComment(const char *comment)
@@ -204,9 +209,7 @@ void CId3tagv1::SetComment(const char *comment)
 	int len=30;
 	if(m_cTrackNo)
 		len = 28;
-	long length = check2ByteLength(comment,len);
-	strncpy(m_szComment,comment,length);
-	m_szComment[length] = '\0';
+	CopyText(m_szComment, comment, len);
 }
 
 CString CId3tagv1::GenreNum2String(unsigned char cGenre)
@@ -270,7 +273,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 	char *p;
 	int i;
 	p = szTmp+3;
-	mbsncpy2((unsigned char *)m_szTitle,(unsigned char *)p,30);
+	mbsncpy2(reinterpret_cast<unsigned char*>(m_szTitle.data()), reinterpret_cast<unsigned char *>(p), 30);
 	m_szTitle[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -280,7 +283,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 			break;
 	}
 	p += 30;
-	mbsncpy2((unsigned char *)m_szArtist,(unsigned char *)p,30);
+	mbsncpy2(reinterpret_cast<unsigned char *>(m_szArtist.data()), reinterpret_cast<unsigned char *>(p), 30);
 	m_szArtist[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -290,7 +293,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 			break;
 	}
 	p+=30;
-	mbsncpy2((unsigned char *)m_szAlbum,(unsigned char *)p,30);
+	mbsncpy2(reinterpret_cast<unsigned char*>(m_szAlbum.data()), reinterpret_cast<unsigned char*>(p), 30);
 	m_szAlbum[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -300,7 +303,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 			break;
 	}
 	p+=30;
-	mbsncpy2((unsigned char *)m_szYear,(unsigned char *)p,4);
+	mbsncpy2(reinterpret_cast<unsigned char*>(m_szYear.data()), reinterpret_cast<unsigned char*>(p), 4);
 	m_szYear[4] = '\0';
 	for(i=3; i>=0; i--)
 	{
@@ -313,7 +316,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 	if((szTmp[125] == '\0') && szTmp[126])
 	{
 		m_cTrackNo = szTmp[126];
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)p,28);
+		mbsncpy2(reinterpret_cast<unsigned char*>(m_szComment.data()), reinterpret_cast<unsigned char*>(p), 28);
 		m_szComment[28] = '\0';
 		for(i=27; i>=0; i--)
 		{
@@ -326,7 +329,7 @@ DWORD CId3tagv1::Load(const char *szFileName)
 	else
 	{
 		m_cTrackNo = 0;
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)p,30);
+		mbsncpy2(reinterpret_cast<unsigned char*>(m_szComment.data()), reinterpret_cast<unsigned char*>(p), 30);
 		m_szComment[30] = '\0';
 		for(i=29; i>=0; i--)
 		{
@@ -403,7 +406,7 @@ DWORD CId3tagv1::LoadMulti(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CId3tagv1::Save(HWND hWnd,const char *szFileName)
+DWORD CId3tagv1::Save(HWND, const char *szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -413,16 +416,16 @@ DWORD CId3tagv1::Save(HWND hWnd,const char *szFileName)
 
 	//èÓïÒÇÃï€ë∂
 	p = szTmp;
-	memset(p,0x00,128-3);
-	strncpy(p,m_szTitle,strlen(m_szTitle));
+	memset(p, 0x00, 128-3);
+	std::copy_n(m_szTitle.begin(), 30, p);
 	p += 30;
-	strncpy(p,m_szArtist,strlen(m_szArtist));
+	std::copy_n(m_szArtist.begin(), 30, p);
 	p += 30;
-	strncpy(p,m_szAlbum,strlen(m_szAlbum));
+	std::copy_n(m_szAlbum.begin(), 30, p);
 	p += 30;
-	strncpy(p,m_szYear,strlen(m_szYear));
+	std::copy_n(m_szYear.begin(), 4, p);
 	p += 4;
-	strncpy(p,m_szComment,strlen(m_szComment));
+	std::copy_n(m_szComment.begin(), 30, p);
 	p += 28;
 	if(m_cTrackNo)
 	{
@@ -550,7 +553,7 @@ void CId3tagv1::GetId3tagString(char *szTag)
 		szTag[127] = (char )WINAMP_GENRE_NULL;
 }
 
-DWORD CId3tagv1::MakeTag(HWND hWnd,const char *szFileName)
+DWORD CId3tagv1::MakeTag(HWND, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
@@ -581,7 +584,7 @@ DWORD CId3tagv1::MakeTag(HWND hWnd,const char *szFileName)
 	}
 	//ID3É^ÉOÇçÏê¨
 	GetId3tagString(szTag);
-	strcpy(szDefaultName,getFileName(CString(szFileName)));
+	strcpy(szDefaultName,static_cast<CStringA>(getFileName(CString(szFileName))));
 	strncpy(szTag+3,szDefaultName,30);
 	if(WriteFile(hFile,szTag,128,&dwWritten,NULL) == 0)
 	{
