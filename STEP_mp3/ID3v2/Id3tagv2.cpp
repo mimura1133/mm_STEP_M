@@ -1426,7 +1426,7 @@ void CId3tagv2::MakeV2Size(DWORD dwSize,unsigned char size[4])
 	size[0] = (dwSize>>21) & 0x7f;
 }
 
-DWORD CId3tagv2::Load(const char *szFileName)
+DWORD CId3tagv2::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
@@ -1582,14 +1582,14 @@ DWORD CId3tagv2::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv2::Save(const char *szFileName)
+DWORD CId3tagv2::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
 	BOOL bInsPadding = FALSE;
 	DWORD	dwWritten = 0;
-	char szTempPath[MAX_PATH];
-	char szTempFile[MAX_PATH];
+	TCHAR szTempPath[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
 	
 	if(!m_bEnable)
 	{
@@ -1757,9 +1757,9 @@ DWORD CId3tagv2::Save(const char *szFileName)
 
 		//==================テンポラリを作成==================
 		//テンポラリ名を取得
-		strcpy(szTempPath,szFileName);
+		lstrcpy(szTempPath,szFileName);
 		cutFileName(szTempPath);
-		if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+		if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szTempFile))
 		{
 			dwWin32errorCode = GetLastError();
 			free(pRawData);
@@ -1901,8 +1901,8 @@ DWORD CId3tagv2::Save(const char *szFileName)
 	if(bInsPadding)
 	{
 		//オリジナルファイルを退避(リネーム)
-		char szPreFile[MAX_PATH];
-		if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+		TCHAR szPreFile[MAX_PATH];
+		if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szPreFile))
 		{
 			dwWin32errorCode = GetLastError();
 			DeleteFile(szTempFile);
@@ -1932,12 +1932,12 @@ DWORD CId3tagv2::Save(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv2::DelTag(const char *szFileName)
+DWORD CId3tagv2::DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD	dwWritten = 0;
-	char szTempPath[MAX_PATH];
-	char szTempFile[MAX_PATH];
+	TCHAR szTempPath[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
 
 	if(!m_bEnable)
 	{
@@ -1988,9 +1988,9 @@ DWORD CId3tagv2::DelTag(const char *szFileName)
 
 	//==================テンポラリを作成==================
 	//テンポラリ名を取得
-	strcpy(szTempPath,szFileName);
+	lstrcpy(szTempPath,szFileName);
 	cutFileName(szTempPath);
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -2027,8 +2027,8 @@ DWORD CId3tagv2::DelTag(const char *szFileName)
 	CloseHandle(hFile);
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);
@@ -2059,7 +2059,7 @@ DWORD CId3tagv2::DelTag(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv2::MakeTag(const char *szFileName)
+DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	if(m_bEnable)
@@ -2193,11 +2193,11 @@ DWORD CId3tagv2::MakeTag(const char *szFileName)
 
 	//==================テンポラリを作成==================
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	char szTempFile[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
+	lstrcpy(szTempPath, szFileName);
 	cutFileName(szTempPath);
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -2296,8 +2296,8 @@ DWORD CId3tagv2::MakeTag(const char *szFileName)
 	CloseHandle(hFile);
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);

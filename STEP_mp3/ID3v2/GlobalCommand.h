@@ -72,7 +72,7 @@ void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes = "Error");
 			（実行後、パス名からファイル名が切り離される）
 戻り値：なし
 */
-void cutFileName(char *szPath);
+void cutFileName(LPTSTR szPath);
 
 //////////////////////////////////////////////////////////////////////////////
 //cutExtName

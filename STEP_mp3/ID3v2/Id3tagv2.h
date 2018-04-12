@@ -430,10 +430,10 @@ public:
 	CString GetEngineer();
 	void SetEngineer(const char *engineer);
 
-	DWORD Load(const char *szFileName);
-	DWORD Save(const char *szFileName);
-	DWORD DelTag(const char *szFileName);
-	DWORD MakeTag(const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
+	DWORD DelTag(LPCTSTR szFileName);
+	DWORD MakeTag(LPCTSTR szFileName);
 
 private:
 	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
