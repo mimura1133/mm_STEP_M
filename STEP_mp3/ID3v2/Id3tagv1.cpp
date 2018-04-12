@@ -240,7 +240,7 @@ long CId3tagv1::GenreString2Num(const char *szGenre)
 	return cGenre;
 }
 
-DWORD CId3tagv1::Load(const char *szFileName)
+DWORD CId3tagv1::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();

@@ -46,10 +46,10 @@ public:
 	CString GenreNum2String(unsigned char cGenre);
 	long GenreString2Num(const char *szGenre);
 
-	DWORD Load(const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
 	DWORD LoadMulti(const char *szFileName);
 	DWORD Save(HWND hWnd,const char *szFileName);
-	DWORD DelTag(HWND hWnd,const char *szFileName);
+	DWORD DelTag(HWND hWnd, LPCTSTR szFileName);
 	void GetId3tagString(char *szTag);
 	DWORD MakeTag(HWND hWnd, LPCTSTR szFileName);
 
