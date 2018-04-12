@@ -542,14 +542,14 @@ static	bool	IsID3Tag11(const ID3TAG *data) {
 #ifndef iskanji
 #define iskanji(c)		((unsigned char)(c) >= 0x81 && (unsigned char)(c) <= 0x9f || (unsigned char)(c) >= 0xe0 && (unsigned char)(c) <= 0xfc)
 #endif
-void	StringCopyN(char *, const char *, int, BOOL = TRUE);
-void	StringCopyN2(char *, const char *, int, BOOL = TRUE);
-void StringCopyN(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
+void	StringCopyN(LPTSTR, LPCTSTR, int, BOOL = TRUE);
+void	StringCopyN2(LPTSTR, LPCTSTR, int, BOOL = TRUE);
+void StringCopyN(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (strlen(sSrc) < (unsigned int)nLen) {
-		if (bTerm) strcpy(sDest, sSrc);
-		else       memcpy(sDest, sSrc, strlen(sSrc));
+	if (lstrlen(sSrc) < (unsigned int)nLen) {
+		if (bTerm) lstrcpy(sDest, sSrc);
+		else       memcpy(sDest, sSrc, lstrlen(sSrc));
 		return;
 	}
 	while(nLen > 0) {
@@ -567,7 +567,7 @@ void StringCopyN(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
 		}
 	}
 }
-void StringCopyN2(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
+void StringCopyN2(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	bool bCR = false;
