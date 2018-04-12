@@ -61,7 +61,7 @@ bool GetValues_mp3infp(FILE_INFO *pFileMP3)
 	// 音声フォーマット
 	{
 		lpmp3infp_GetValue("AFMT",&buf);
-		SetAudioFormat(pFileMP3, buf);
+		SetAudioFormat(pFileMP3, static_cast<CString>(buf));
 	}
     return true;
 }
