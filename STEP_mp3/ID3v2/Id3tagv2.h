@@ -441,7 +441,8 @@ private:
 	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
-	void SetId3String(const char szId[],const char *szString,const char *szDescription = NULL);
+	void SetId3String(const char szId[], LPCTSTR szString, const char *szDescription = NULL);
+	void SetId3String(const char szId[], LPCSTR szString, const char *szDescription = NULL);
 	DWORD GetTotalFrameSize();
 	void v23IDtov22ID(char *v23ID,char *v22ID);
 	void UTF16toUTF16BE(WCHAR *str,int len);
@@ -454,7 +455,7 @@ private:
 	ID3HEAD m_head;
 	WORD m_wVer;
 	multimap<DWORD,CId3Frame> m_frames; /* STEP map -> multimap */
-	CStringA m_strDefaultEnc;		//TENCのデフォルト値
+	CString m_strDefaultEnc;		//TENCのデフォルト値
 //	WORD m_wDefaultId3TagVersion;	// ID3V2の初期値(新規作成時にこのバージョンとなる)
 
 public: /* STE改で追加 */

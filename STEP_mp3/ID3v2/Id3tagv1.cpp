@@ -245,7 +245,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 	FILE *fp;
-	if((fp=fopen(szFileName,"rb")) == NULL)
+	if((fp= _tfopen(szFileName, TEXT("rb"))) == NULL)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -344,7 +344,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv1::LoadMulti(const char *szFileName)
+DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 {
 	DWORD dwError;
 	CId3tagv1 tag;
@@ -486,14 +486,14 @@ DWORD CId3tagv1::Save(HWND, const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv1::DelTag(HWND hWnd,const char *szFileName)
+DWORD CId3tagv1::DelTag(HWND hWnd, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
 	char	szTag[4];
 
 	//ŠJ‚­
-	if((fp=fopen(szFileName,"r+b")) == NULL)
+	if((fp= _tfopen(szFileName, TEXT("r+b"))) == NULL)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;

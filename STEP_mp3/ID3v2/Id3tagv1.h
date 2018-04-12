@@ -47,7 +47,7 @@ public:
 	long GenreString2Num(const char *szGenre);
 
 	DWORD Load(LPCTSTR szFileName);
-	DWORD LoadMulti(const char *szFileName);
+	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,const char *szFileName);
 	DWORD DelTag(HWND hWnd, LPCTSTR szFileName);
 	void GetId3tagString(char *szTag);

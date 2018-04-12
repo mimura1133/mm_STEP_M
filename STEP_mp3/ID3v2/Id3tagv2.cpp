@@ -512,7 +512,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 	return "";
 }
 
-void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *szDescription)
+void CId3tagv2::SetId3String(const char szId[], LPCTSTR szString, const char *szDescription)
+{
+	return SetId3String(szId, CStringA(szString), szDescription);
+}
+void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szDescription)
 {
 	multimap<DWORD,CId3Frame>::iterator p;
 	CId3Frame *pFrame;
@@ -1089,7 +1093,7 @@ CString CId3tagv2::GetTitle()
 	return GetId3String("TIT2");
 }
 
-void CId3tagv2::SetTitle(const char *title)
+void CId3tagv2::SetTitle(LPCTSTR title)
 {
 	//タイトル
 	SetId3String("TIT2",title);
@@ -1101,7 +1105,7 @@ CString CId3tagv2::GetTrackNo()
 	return GetId3String("TRCK");
 }
 
-void CId3tagv2::SetTrackNo(const char *szTrackNo)
+void CId3tagv2::SetTrackNo(LPCTSTR szTrackNo)
 {
 	//トラック番号
 	SetId3String("TRCK",szTrackNo);
@@ -1113,7 +1117,7 @@ CString CId3tagv2::GetDiskNo()
 	return GetId3String("TPOS");
 }
 
-void CId3tagv2::SetDiskNo(const char *szTrackNo)
+void CId3tagv2::SetDiskNo(LPCTSTR szTrackNo)
 {
 	//ディスク番号
 	SetId3String("TPOS",szTrackNo);
@@ -1125,7 +1129,7 @@ CString CId3tagv2::GetArtist()
 	return GetId3String("TPE1");
 }
 
-void CId3tagv2::SetArtist(const char *artist)
+void CId3tagv2::SetArtist(LPCTSTR artist)
 {
 	//アーティスト
 	SetId3String("TPE1",artist);
@@ -1137,7 +1141,7 @@ CString CId3tagv2::GetAlbum()
 	return GetId3String("TALB");
 }
 
-void CId3tagv2::SetAlbum(const char *album)
+void CId3tagv2::SetAlbum(LPCTSTR album)
 {
 	//アルバム
 	SetId3String("TALB",album);
@@ -1156,18 +1160,18 @@ CString CId3tagv2::GetYear()
 	}
 }
 
-void CId3tagv2::SetYear(const char *year)
+void CId3tagv2::SetYear(LPCTSTR year)
 {
 	//西暦
 	if(m_wVer < 0x0400)
 	{
-		SetId3String("TDRC","");
+		SetId3String("TDRC", TEXT(""));
 		SetId3String("TYER",year);
 	}
 	else
 	{
 		SetId3String("TDRC",year);
-		SetId3String("TYER","");
+		SetId3String("TYER", TEXT(""));
 	}
 }
 
@@ -1213,10 +1217,10 @@ CString CId3tagv2::GetGenre()
 	return strGenre;
 }
 
-void CId3tagv2::SetGenre(const char *szGenre)
+void CId3tagv2::SetGenre(LPCTSTR szGenre)
 {
 	//ジャンル
-	CStringA strGenre;
+	CString strGenre;
 /*	CId3tagv1 id3tagv1(m_bScmpxGenre);
 	long genre = id3tagv1.GenreString2Num(szGenre);
 	if((genre != -1) &&
@@ -1228,7 +1232,7 @@ void CId3tagv2::SetGenre(const char *szGenre)
 	2003-01-25 iTunesがジャンルコードへの参照を正しく読めないため、ジャンルコードを入れないように修正
 */
 	// 2004-05-16 "("で始まる場合は先頭に"("を追加
-	if(strlen(szGenre) &&
+	if(lstrlen(szGenre) &&
 		!IsDBCSLeadByte(szGenre[0]) &&
 		(szGenre[0] == '(') )	//頭にカッコを検出
 	{
@@ -1245,7 +1249,7 @@ CString CId3tagv2::GetComment()
 	return GetId3String("COMM");
 }
 
-void CId3tagv2::SetComment(const char *comment)
+void CId3tagv2::SetComment(LPCTSTR comment)
 {
 	//コメント
 	SetId3String("COMM",comment);
@@ -1257,7 +1261,7 @@ CString CId3tagv2::GetWriter()
 	return GetId3String("TEXT");
 }
 
-void CId3tagv2::SetWriter(const char *writer)
+void CId3tagv2::SetWriter(LPCTSTR writer)
 {
 	//作詞
 	SetId3String("TEXT",writer);
@@ -1269,7 +1273,7 @@ CString CId3tagv2::GetComposer()
 	return GetId3String("TCOM");
 }
 
-void CId3tagv2::SetComposer(const char *composer)
+void CId3tagv2::SetComposer(LPCTSTR composer)
 {
 	//作曲
 	SetId3String("TCOM",composer);
@@ -1281,7 +1285,7 @@ CString CId3tagv2::GetAlbmArtist()
 	return GetId3String("TPE2");
 }
 
-void CId3tagv2::SetAlbmArtist(const char *albmArtist)
+void CId3tagv2::SetAlbmArtist(LPCTSTR albmArtist)
 {
 	//Albm.アーティスト
 	SetId3String("TPE2",albmArtist);
@@ -1293,7 +1297,7 @@ CString CId3tagv2::GetOrigArtist()
 	return GetId3String("TOPE");
 }
 
-void CId3tagv2::SetOrigArtist(const char *origArtist)
+void CId3tagv2::SetOrigArtist(LPCTSTR origArtist)
 {
 	//Orig.アーティスト
 	SetId3String("TOPE",origArtist);
@@ -1305,7 +1309,7 @@ CString CId3tagv2::GetCopyright()
 	return GetId3String("TCOP");
 }
 
-void CId3tagv2::SetCopyright(const char *copyright)
+void CId3tagv2::SetCopyright(LPCTSTR copyright)
 {
 	//著作権
 	SetId3String("TCOP",copyright);
@@ -1317,7 +1321,7 @@ CString CId3tagv2::GetUrl()
 	return GetId3String("WXXX");
 }
 
-void CId3tagv2::SetUrl(const char *url)
+void CId3tagv2::SetUrl(LPCTSTR url)
 {
 	//URL
 	SetId3String("WXXX",url);
@@ -1329,7 +1333,7 @@ CString CId3tagv2::GetEncoder()
 	return GetId3String("TSSE");
 }
 
-void CId3tagv2::SetEncoder(const char *encoder)
+void CId3tagv2::SetEncoder(LPCTSTR encoder)
 {
 	//エンコーダー
 	SetId3String("TSSE",encoder);
@@ -1341,7 +1345,7 @@ CString CId3tagv2::GetEncodest()
 	return GetId3String("TENC");
 }
 
-void CId3tagv2::SetEncodest(const char *encoder)
+void CId3tagv2::SetEncodest(LPCTSTR encoder)
 {
 	//エンコードした人または組織
 	SetId3String("TENC",encoder);
@@ -1353,7 +1357,7 @@ CString CId3tagv2::GetEngineer()
 	return GetId3String("TPUB");
 }
 
-void CId3tagv2::SetEngineer(const char *engineer)
+void CId3tagv2::SetEngineer(LPCTSTR engineer)
 {
 	//エンコードした人または組織
 	SetId3String("TPUB",engineer);
@@ -2068,8 +2072,8 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 	}
 
 	//デフォルト情報
-	char szDefaultName[MAX_PATH];
-	strcpy(szDefaultName, static_cast<CStringA>(getFileName(CString(szFileName))));
+	TCHAR szDefaultName[MAX_PATH];
+	lstrcpy(szDefaultName, getFileName(CString(szFileName)));
 	SetId3String("TIT2",szDefaultName);
 	SetId3String("TSSE",m_strDefaultEnc);
 	
