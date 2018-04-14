@@ -193,83 +193,27 @@ void CDlgPluginSetup::OnBtDown()
 
 void CDlgPluginSetup::OnOK() 
 {
-	// TODO: この位置にその他の検証用のコードを追加してください
-	CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
-	TCHAR   drive[_MAX_DRIVE];
-	TCHAR   dir[_MAX_DIR];
-	TCHAR   buff[_MAX_PATH] = {'\0'};
+	auto pApp = (CSuperTagEditorApp*)AfxGetApp();
 
 	auto strINI = pApp->MakeFileName(TEXT("Plugin"), TEXT("ini"));
 	Profile_Initialize(strINI.c_str(), FALSE);
 
-	CString strSection;
-	for (int nIndex=0;nIndex<m_listPlugin.GetItemCount();nIndex++) {
-		PSTEPlugin pPlugin = (PSTEPlugin)m_listPlugin.GetItemData(nIndex);
+	for (int nIndex = 0; nIndex < m_listPlugin.GetItemCount(); nIndex++) {
+		auto pPlugin = (PSTEPlugin)m_listPlugin.GetItemData(nIndex);
 		pPlugin->bUse = ListView_GetCheckState(m_listPlugin.GetSafeHwnd(), nIndex) ? true : false;
-		strSection.Format(TEXT("Load%03d"), nIndex);
 		// 相対パスに変換
-		TCHAR   pDrive[_MAX_DRIVE];
-		TCHAR   pDir[_MAX_DIR];
-		TCHAR   pFname[_MAX_FNAME];
-		TCHAR	pExt[_MAX_EXT];
-		TCHAR   pBuff[_MAX_PATH] = {'\0'};
-		_tsplitpath(pPlugin->sFileName, pDrive, pDir, pFname, pExt);
-		if (_tcscmp(pDrive, drive) == 0) {
-			//TCHAR   pWDir[_MAX_DIR];
-			//TCHAR   pWFname[_MAX_FNAME];
-			//TCHAR   pRDir[_MAX_DIR] = {'\0'};
-			//TCHAR   pRFname[_MAX_FNAME];
-			CString strRelDir = "";
-			ULONG nPathSeparatorIndex;
-			BOOL  bAnyParent;
-			ULONG i;
-
-			nPathSeparatorIndex = 0;
-
-			i = 0;
-
-#ifndef iskanji
-#define iskanji(c)		((c) >= 0x81 && (c) <= 0x9f || (c) >= 0xe0 && (c) <= 0xfc)
-#endif
-			while ((dir[i] == pDir[i] ) && (dir[i] != 0)) {
-				if (!iskanji(dir[i])) {
-					if (dir[i] == '\\' ) {
-						nPathSeparatorIndex = i;
-					}
-				} else {
-					i++;
-				}
-				i++;
-			}
-
-			if (dir[nPathSeparatorIndex] != '\\') {
-				strRelDir = pDir;
-			} else {
-				i = nPathSeparatorIndex + 1;
-
-				bAnyParent = FALSE;
-
-				while (dir[i] != 0) {
-					if (dir[i] == '\\') {
-						bAnyParent = TRUE;
-						strRelDir += "..\\";
-					}
-					i++;
-				}
-
-				if (!bAnyParent) {
-					strRelDir += ".\\";
-				}
-			}
-			strRelDir += pDir+nPathSeparatorIndex+1;
-			_tmakepath(pBuff, NULL, strRelDir, pFname, pExt);
-		} else {
+		TCHAR buff[_MAX_PATH] = {};
+		if (!PathRelativePathTo(buff, strINI.c_str(), 0, pPlugin->sFileName, 0)) {
 			// 変換なし
-			_tmakepath(pBuff, pDrive, pDir, pFname, pExt);
+			lstrcpy(buff, pPlugin->sFileName);
 		}
-		Profile_WriteString(strSection, TEXT("Path"), pBuff, strINI.c_str());
+
+		CString strSection;
+		strSection.Format(TEXT("Load%03d"), nIndex);
+		Profile_WriteString(strSection, TEXT("Path"), buff, strINI.c_str());
 		Profile_WriteString(strSection, TEXT("Use"), pPlugin->bUse ? TEXT("1") : TEXT("0"), strINI.c_str());
 	}
+
 	Profile_Flush(strINI.c_str());
 	Profile_Free();
 	CDialog::OnOK();
