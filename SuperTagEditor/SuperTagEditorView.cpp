@@ -1928,12 +1928,10 @@ void CSuperTagEditorView::OnUpdateHelpIndex(CCmdUI* pCmdUI)
 void CSuperTagEditorView::OnHelpIndex() 
 {
 	CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
-	TCHAR *sHelpName;
 	
 	// HTML ヘルプファイル名作成
-	sHelpName = pApp->MakeFileName(TEXT("chm"));
-	::HtmlHelp(GetSafeHwnd(), sHelpName, HH_DISPLAY_TOPIC, (DWORD)NULL);
-	free((void *)sHelpName);
+	auto sHelpName = pApp->MakeFileName(TEXT(".chm"));
+	::HtmlHelp(GetSafeHwnd(), sHelpName.c_str(), HH_DISPLAY_TOPIC, (DWORD)NULL);
 }
 
 // 拡張ユーザー変換書式

@@ -321,7 +321,8 @@ protected:
 public:
 	void AddToRecentFileList(LPCTSTR lpszPathName);
 	inline	HACCEL	GetAccelHandle(void) {return(m_hAccel);}
-	TCHAR	*MakeFileName(TCHAR *);
+	tstring	MakeFileName(TCHAR *) const;
+	tstring	MakeFileName(LPCTSTR, LPCTSTR) const;
 	void	ReadWindowStatus(LPCTSTR, RECT *);
 	void	WriteWindowStatus(LPCTSTR, RECT *);
 	void	ReadRegistry(void);

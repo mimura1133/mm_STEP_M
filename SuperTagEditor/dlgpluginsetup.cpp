@@ -195,19 +195,12 @@ void CDlgPluginSetup::OnOK()
 {
 	// TODO: この位置にその他の検証用のコードを追加してください
 	CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
-	CString strINI;
 	TCHAR   drive[_MAX_DRIVE];
 	TCHAR   dir[_MAX_DIR];
 	TCHAR   buff[_MAX_PATH] = {'\0'};
-	{
-		TCHAR*	szName = pApp->MakeFileName(TEXT("ini"));
-		_tsplitpath(szName, drive, dir, NULL, NULL);
-		_tmakepath(buff, drive, dir, TEXT("Plugin"), TEXT("ini"));
-		strINI = buff;
-		delete szName;
-		//DeleteFile(strINI);
-	}
-	Profile_Initialize(strINI, FALSE);
+
+	auto strINI = pApp->MakeFileName(TEXT("Plugin"), TEXT("ini"));
+	Profile_Initialize(strINI.c_str(), FALSE);
 
 	CString strSection;
 	for (int nIndex=0;nIndex<m_listPlugin.GetItemCount();nIndex++) {
@@ -274,12 +267,10 @@ void CDlgPluginSetup::OnOK()
 			// 変換なし
 			_tmakepath(pBuff, pDrive, pDir, pFname, pExt);
 		}
-		MyWriteProfileString(strSection, TEXT("Path"), pBuff/*pPlugin->sFileName*/);
-		//WritePrivateProfileString(strSection, "Path", pPlugin->sFileName, strINI);
-		MyWriteProfileString(strSection, TEXT("Use"), pPlugin->bUse ? TEXT("1") : TEXT("0"));
-		//WritePrivateProfileString(strSection, "Use", pPlugin->bUse ? "1" : "0", strINI);
+		Profile_WriteString(strSection, TEXT("Path"), pBuff, strINI.c_str());
+		Profile_WriteString(strSection, TEXT("Use"), pPlugin->bUse ? TEXT("1") : TEXT("0"), strINI.c_str());
 	}
-	Profile_Flush(strINI);
+	Profile_Flush(strINI.c_str());
 	Profile_Free();
 	CDialog::OnOK();
 }

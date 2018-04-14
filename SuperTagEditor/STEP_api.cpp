@@ -56,14 +56,8 @@ PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile) {
 			CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
 			CString strEXE;
 			{
-				TCHAR*	szName = pApp->MakeFileName(TEXT(""));
-				TCHAR   drive[_MAX_DRIVE];
-				TCHAR   dir[_MAX_DIR];
-				TCHAR   buff[_MAX_PATH] = {'\0'};
-				_tsplitpath(szName, drive, dir, NULL, NULL);
-				_tmakepath_s(buff,_MAX_PATH, drive, dir, TEXT(""), TEXT(""));
-				strEXE = buff;
-				delete szName;
+				auto	szName = pApp->MakeFileName(TEXT(""), TEXT(""));
+				strEXE = szName.c_str();
 			}
 
 			_tcscpy_s(full,_MAX_PATH, strEXE);
@@ -147,20 +141,18 @@ void STEPluginLoad(HWND hWnd) {
 	CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
 	CString strINI;
 	{
-		TCHAR*	szName = pApp->MakeFileName(TEXT("ini"));
-		TCHAR   drive[_MAX_DRIVE];
-		TCHAR   dir[_MAX_DIR];
-		TCHAR   buff[_MAX_PATH] = {'\0'};
-		_tsplitpath(szName, drive, dir, NULL, NULL);
-		_tmakepath_s(buff,_MAX_PATH, drive, dir, TEXT("Plugin"), TEXT("ini"));
-		strINI = buff;
+		auto	szName = pApp->MakeFileName(TEXT("Plugin"), TEXT("ini"));
+		strINI = szName.c_str();
 		BOOL isExists = Profile_Initialize(strINI, TRUE);
 		Profile_Free();
 		if (!isExists) {
-			_tmakepath_s(buff,_MAX_PATH, drive, dir, TEXT("DefaultPlugin"), TEXT("ini"));
+			TCHAR   drive[_MAX_DRIVE];
+			TCHAR   dir[_MAX_DIR];
+			TCHAR   buff[_MAX_PATH] = { '\0' };
+			_tsplitpath(szName.c_str(), drive, dir, NULL, NULL);
+			_tmakepath_s(buff, _MAX_PATH, drive, dir, TEXT("DefaultPlugin"), TEXT("ini"));
 			strINI = buff;
 		}
-		delete szName;
 	}
 
 	CString strSection;

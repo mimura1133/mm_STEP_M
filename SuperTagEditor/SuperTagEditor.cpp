@@ -582,29 +582,46 @@ CSuperTagEditorApp theApp;
 // 引数  : sExt			= ファイル拡張子
 // 戻り値: TCHAR *		= ファイル名(NULL=失敗)
 // =============================================
-TCHAR *CSuperTagEditorApp::MakeFileName(TCHAR *sExt)
+tstring CSuperTagEditorApp::MakeFileName(TCHAR *sExt) const
 {
-	TCHAR   drive[_MAX_DRIVE];
-	TCHAR   dir[_MAX_DIR];
-	TCHAR   fname[_MAX_FNAME];
-	TCHAR   buff[_MAX_PATH] = {'\0'};
+	TCHAR buff[_MAX_PATH] = {};
 
-	//自己アプリのパス所得（大小文字識別付き）
-	GetModuleFileName(m_hInstance, buff, _MAX_PATH);
-	WIN32_FIND_DATA wfd;
+	//自己アプリのパス所得
+	{
+		TCHAR modulename[_MAX_PATH];
+		GetModuleFileName(m_hInstance, modulename, _MAX_PATH);
+		PathCanonicalize(buff, const_cast<LPCTSTR>(modulename));
+	}
 
-	HANDLE  h = ::FindFirstFile(buff, &wfd);
-	if (h == NULL) return(NULL);
-
-	_tsplitpath(buff, drive, dir, NULL, NULL);
-	_tmakepath(buff, drive, dir, wfd.cFileName, NULL);
-	::FindClose(h);
-
-	_tsplitpath(buff, drive, dir, fname, NULL);
-	_tmakepath(buff, drive, dir, fname, sExt);
-	return(_tcsdup(buff));
+	PathRenameExtension(buff, sExt);
+	return buff;
 }
+tstring	 CSuperTagEditorApp::MakeFileName(LPCTSTR filename, LPCTSTR ext) const
+{
+	if (ext[0] == TEXT('.')) {
+		ext++;
+	}
 
+	//自己アプリのパス所得
+	TCHAR buff[_MAX_PATH] = {};
+	{
+		TCHAR modulename[_MAX_PATH];
+		GetModuleFileName(m_hInstance, modulename, _MAX_PATH);
+		PathCanonicalize(buff, const_cast<LPCTSTR>(modulename));
+	}
+
+	WIN32_FIND_DATA wfd;
+	if (auto h = ::FindFirstFile(buff, &wfd)) {
+		TCHAR drive[_MAX_DRIVE];
+		TCHAR dir[_MAX_DIR];
+		_tsplitpath(buff, drive, dir, NULL, NULL);
+		_tmakepath(buff, drive, dir, filename, ext);
+		::FindClose(h);
+		return buff;
+	}
+
+	return TEXT("");
+}
 
 BOOL CSuperTagEditorApp::InitInstance()
 {
@@ -620,7 +637,7 @@ BOOL CSuperTagEditorApp::InitInstance()
 	// 変更してください。
 	//SetRegistryKey(_T("MERCURY"));
 	free((void*)m_pszProfileName);
-	m_pszProfileName = MakeFileName(TEXT("ini"));
+	m_pszProfileName = _tcsdup(MakeFileName(TEXT(".ini")).c_str());
 	{ /* STEP 031 */
 		BOOL bFlag = FALSE;
 		for (int i = 1; i < __argc; i++) {
