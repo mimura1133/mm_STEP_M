@@ -41,39 +41,52 @@ extern STEP_API void WINAPI STEPConvSiFieldToId3tag(FILE_INFO* pFileInfo); /* ST
 
 CPlugin plugins;
 
-PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile) {
+PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile)
+{
 	HINSTANCE hLib;
 	CString strPluginFolder;
 	{
-		TCHAR   drive[_MAX_DRIVE];
-		TCHAR   dir[_MAX_DIR];
-		TCHAR   buff[_MAX_PATH] = {'\0'};
-		TCHAR   full[_MAX_PATH] = {'\0'};
-
-		_tsplitpath(strPluginFile, drive, dir, NULL, NULL);
-		_tmakepath_s(buff,_MAX_PATH, drive, dir, NULL, NULL);
-		if (drive[0] == '\0') {
-			CSuperTagEditorApp	*pApp = (CSuperTagEditorApp *)AfxGetApp();
-			CString strEXE;
-			{
-				auto	szName = pApp->MakeFileName(TEXT(""), TEXT(""));
-				strEXE = szName.c_str();
+		auto pApp = (CSuperTagEditorApp*)AfxGetApp();
+		auto szName = pApp->MakeFileName(TEXT(""), TEXT(""));
+		TCHAR full[_MAX_PATH] = {};
+		if (PathIsRelative(strPluginFile)) {
+			TCHAR buff[_MAX_PATH] = {};
+			PathCombine(buff, szName.c_str(), strPluginFile);
+			if (!PathCanonicalize(full, buff)) {
+				return nullptr;
+			}
+		} else {
+			if (!PathCanonicalize(full, strPluginFile)) {
+				return nullptr;
+			}
+		}
+		
+#ifndef DEBUG
+		{
+			// exe外の外にあるファイルを読まないようにチェック
+			TCHAR buff[_MAX_PATH];
+			if (!PathRelativePathTo(buff, szName.c_str(), FILE_ATTRIBUTE_DIRECTORY, full, 0)) {
+				return nullptr;
 			}
 
-			_tcscpy_s(full,_MAX_PATH, strEXE);
-			_tcscat_s(full,_MAX_PATH, dir);
-			_tfullpath(buff, full, _MAX_PATH);
+			if (_tcsstr(buff, TEXT(".."))) {
+				return nullptr;
+			}
 		}
-		strPluginFolder = buff;
-		char* pathvar = getenv("PATH");
-		CString strPath = "PATH=";
-		strPath = strPath + strPluginFolder + ";" + pathvar;
-		_tputenv(strPath);
-		hLib = LoadLibrary(strPluginFile);
-		strPath = "PATH=";
-		strPath = strPath + pathvar;
-		_tputenv(strPath);
-		if (hLib == NULL) return NULL;
+#endif
+		{
+			TCHAR buff[_MAX_PATH] = {};
+			lstrcpy(buff, full);
+			PathRemoveFileSpec(buff);
+			PathAddBackslash(buff);
+			strPluginFolder = buff;
+		}
+
+		// https://support.microsoft.com/help/2389418/secure-loading-of-libraries-to-prevent-dll-preloading-attacks
+		hLib = LoadLibrary(full);
+		if (!hLib) {
+			return nullptr;
+		}
 	}
 
 	UINT (WINAPI *STEPGetAPIVersion)(void);
