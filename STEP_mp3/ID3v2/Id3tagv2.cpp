@@ -512,7 +512,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 	return "";
 }
 
-void CId3tagv2::SetId3String(const char szId[], LPCTSTR szString, const char *szDescription)
+void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *szDescription)
 {
 	return SetId3String(szId, CStringA(szString), szDescription);
 }

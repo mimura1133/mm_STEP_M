@@ -441,7 +441,7 @@ private:
 	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
-	void SetId3String(const char szId[], LPCTSTR szString, const char *szDescription = NULL);
+	void SetId3String(const char szId[], LPCWSTR szString, const char *szDescription = NULL);
 	void SetId3String(const char szId[], LPCSTR szString, const char *szDescription = NULL);
 	DWORD GetTotalFrameSize();
 	void v23IDtov22ID(char *v23ID,char *v22ID);
