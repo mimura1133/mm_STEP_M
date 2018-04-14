@@ -115,26 +115,28 @@ PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile) {
 	(FARPROC&)pPlugin->STEPGetPluginInfo = GetProcAddress(hLib, "_STEPGetPluginInfo@0");
 	(FARPROC&)pPlugin->STEPInitFileSpecificInfo = GetProcAddress(hLib, "_STEPInitFileSpecificInfo@4");
 	(FARPROC&)pPlugin->STEPOnConvSiFieldToId3tag = GetProcAddress(hLib, "_STEPOnConvSiFieldToId3tag@4");
-	
-	plugins.arPlugins.Add(pPlugin);
-
-	if ((*STEPInit)(plugins.arPlugins.GetSize(), strPluginFolder) == false) {
-		return NULL;
-	}
 
 	// STEPGetPluginName()がアルファベットのみを返すことを前提として
 	// 2Byte目が 0x00 かどうかで本体とプラグインのUnicode指定が一致しているかを判定する
 #ifdef UNICODE
 	if (static_cast<char const* const>(pluginName)[1] != 0) {
-		pPlugin->sPluginName = static_cast<LPCSTR>(pluginName);
+		FreeLibrary(pPlugin->hLib);
+		delete pPlugin;
 		return nullptr;
 	}
 #else
 	if (static_cast<char const* const>(pluginName)[1] == 0) {
-		pPlugin->sPluginName = static_cast<LPCWSTR>(pluginName);
+		FreeLibrary(pPlugin->hLib);
+		delete pPlugin;
 		return nullptr;
 	}
 #endif
+
+	plugins.arPlugins.Add(pPlugin);
+
+	if ((*STEPInit)(plugins.arPlugins.GetSize(), strPluginFolder) == false) {
+		return NULL;
+	}
 
 	return pPlugin;
 }
