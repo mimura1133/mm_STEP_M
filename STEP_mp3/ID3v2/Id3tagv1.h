@@ -13,6 +13,9 @@
 #define INVALID_SET_FILE_POINTER -1
 #endif /* PlatformSDKが古いのね～ */
 
+#include <array>
+#include <cstdint>
+
 class CId3tagv1  
 {
 public:
@@ -21,13 +24,13 @@ public:
 	void SetScmpxGenre(BOOL bSwitch);
 	BOOL IsEnable(){return m_bEnable;};
 
-	CString GetTitle();
+	CStringA GetTitle() const;
 	void SetTitle(const char *title);
-	CString GetArtist();
+	CStringA GetArtist() const;
 	void SetArtist(const char *artist);
-	CString GetAlbum();
+	CStringA GetAlbum() const;
 	void SetAlbum(const char *album);
-	CString GetYear();
+	CStringA GetYear() const;
 	void SetYear(const char *year);
 	unsigned char GetGenreNum();
 	CString GetGenre();
@@ -37,30 +40,30 @@ public:
 	CString GetTrackNo();
 	void SetTrackNo(unsigned char cTrackNo);
 	void SetTrackNo(const char *szTrackNo);
-	CString GetComment();
+	CStringA GetComment() const;
 	void SetComment(const char *comment);
 
 	CString GenreNum2String(unsigned char cGenre);
 	long GenreString2Num(const char *szGenre);
 
-	DWORD Load(const char *szFileName);
-	DWORD LoadMulti(const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,const char *szFileName);
-	DWORD DelTag(HWND hWnd,const char *szFileName);
+	DWORD DelTag(HWND hWnd, LPCTSTR szFileName);
 	void GetId3tagString(char *szTag);
-	DWORD MakeTag(HWND hWnd,const char *szFileName);
+	DWORD MakeTag(HWND hWnd, LPCTSTR szFileName);
 
 private:
 	void Release();
-	BOOL m_bEnable;			//ID3TAGが無い場合はFALSE
-	BOOL m_bScmpxGenre;		//SCMPX拡張ジャンルを使用する
-	char m_szTitle[30+1];	//タイトル
-	char m_szArtist[30+1];	//アーティスト
-	char m_szAlbum[30+1];	//アルバム
-	char m_szYear[4+1];		//西暦
-	unsigned char m_cGenre;	//ジャンル
-	char m_szComment[30+1];	//コメント
-	unsigned char m_cTrackNo;//トラック番号(1～255 0=N/A)
+	BOOL m_bEnable;			// ID3TAGが無い場合はFALSE
+	BOOL m_bScmpxGenre;		// SCMPX拡張ジャンルを使用する
+	std::array<std::int8_t, 30 + 1> m_szTitle;		// タイトル
+	std::array<std::int8_t, 30 + 1> m_szArtist;		// アーティスト
+	std::array<std::int8_t, 30 + 1> m_szAlbum;		// アルバム
+	std::array<std::int8_t, 4 + 1> m_szYear;		// 西暦
+	std::uint8_t m_cGenre;							// ジャンル(0xFF=N/A)
+	std::array<std::int8_t, 30 + 1> m_szComment;	// コメント
+	std::uint8_t m_cTrackNo;						// トラック番号(1～255 0=N/A)
 
 };
 

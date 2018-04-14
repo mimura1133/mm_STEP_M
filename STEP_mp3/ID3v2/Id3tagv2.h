@@ -396,44 +396,44 @@ public:
 	static const int	ID3V2CHARENCODE_UTF_8;
 	
 	CString GetTitle();	//TIT2
-	void SetTitle(const char *title);
+	void SetTitle(LPCTSTR title);
 	CString GetTrackNo();
-	void SetTrackNo(const char *szTrackNo);
+	void SetTrackNo(LPCTSTR szTrackNo);
 	CString GetDiskNo();
-	void SetDiskNo(const char *szTrackNo);
+	void SetDiskNo(LPCTSTR szTrackNo);
 	CString GetArtist();
-	void SetArtist(const char *artist);
+	void SetArtist(LPCTSTR artist);
 	CString GetAlbum();
-	void SetAlbum(const char *album);
+	void SetAlbum(LPCTSTR album);
 	CString GetYear();
-	void SetYear(const char *year);
+	void SetYear(LPCTSTR year);
 	CString GetGenre();
-	void SetGenre(const char *szGenre);
+	void SetGenre(LPCTSTR szGenre);
 	CString GetComment();
-	void SetComment(const char *comment);
+	void SetComment(LPCTSTR comment);
 	CString GetWriter();
-	void SetWriter(const char *writer);
+	void SetWriter(LPCTSTR writer);
 	CString GetComposer();
-	void SetComposer(const char *composer);
+	void SetComposer(LPCTSTR composer);
 	CString GetAlbmArtist();
-	void SetAlbmArtist(const char *albmArtist);
+	void SetAlbmArtist(LPCTSTR albmArtist);
 	CString GetOrigArtist();
-	void SetOrigArtist(const char *origArtist);
+	void SetOrigArtist(LPCTSTR origArtist);
 	CString GetCopyright();
-	void SetCopyright(const char *copyright);
+	void SetCopyright(LPCTSTR copyright);
 	CString GetUrl();
-	void SetUrl(const char *url);
+	void SetUrl(LPCTSTR url);
 	CString GetEncoder();
-	void SetEncoder(const char *encoder);
+	void SetEncoder(LPCTSTR encoder);
 	CString GetEncodest();
-	void SetEncodest(const char *encoder);
+	void SetEncodest(LPCTSTR encoder);
 	CString GetEngineer();
-	void SetEngineer(const char *engineer);
+	void SetEngineer(LPCTSTR engineer);
 
-	DWORD Load(const char *szFileName);
-	DWORD Save(const char *szFileName);
-	DWORD DelTag(const char *szFileName);
-	DWORD MakeTag(const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
+	DWORD DelTag(LPCTSTR szFileName);
+	DWORD MakeTag(LPCTSTR szFileName);
 
 private:
 	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
@@ -441,7 +441,8 @@ private:
 	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
-	void SetId3String(const char szId[],const char *szString,const char *szDescription = NULL);
+	void SetId3String(const char szId[], LPCWSTR szString, const char *szDescription = NULL);
+	void SetId3String(const char szId[], LPCSTR szString, const char *szDescription = NULL);
 	DWORD GetTotalFrameSize();
 	void v23IDtov22ID(char *v23ID,char *v22ID);
 	void UTF16toUTF16BE(WCHAR *str,int len);

@@ -148,18 +148,18 @@ UINT nIDConvID3v2Version;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.02 Copyright (C) 2003-2006 haseta\r\nVersion 1.04M Copyright (C) 2008-2010 Mimura\r\nMP3(ID3v1/ID3v2)/RIFF形式をサポートしています";
+	return TEXT("Version 1.02 Copyright (C) 2003-2006 haseta\r\nVersion 1.04M Copyright (C) 2008-2010 Mimura\r\nMP3(ID3v1/ID3v2)/RIFF形式をサポートしています");
 }
 
 void AddConvMenu(HMENU hMenu) {
 	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_SEPARATOR, 0, NULL);
-	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvMP3, "標準MP3形式に変換");
-	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvRMP, "RIFF MP3形式に変換");
-	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvID3v2, "ID3v2形式に変換");
-	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvAutoID3, "標準MP3形式/ID3v2形式に自動変換");
-	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDConvID3v2Version, "ID3v2バージョン/文字エンコードの変換");
+	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvMP3, TEXT("標準MP3形式に変換"));
+	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvRMP, TEXT("RIFF MP3形式に変換"));
+	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvID3v2, TEXT("ID3v2形式に変換"));
+	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDFileConvAutoID3, TEXT("標準MP3形式/ID3v2形式に自動変換"));
+	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDConvID3v2Version, TEXT("ID3v2バージョン/文字エンコードの変換"));
 //	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_SEPARATOR, 0, NULL);
-//	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDConvSIFieldToID3Tag, "SI/ID3v2フィールドからID3tagに変換");
+//	InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDConvSIFieldToID3Tag, TEXT("SI/ID3v2フィールドからID3tagに変換"));
 }
 
 void AddEditMenu(HMENU hMenu) {
@@ -174,7 +174,7 @@ void AddEditMenu(HMENU hMenu) {
 		if (GetMenuItemInfo(hMenu, iPos, true, &mii)) {
 			if (mii.fType == MFT_STRING) {
 				if (strcmp(szMenu, "編集前の状態に戻す") == 0) {
-					InsertMenu(hMenu, iPos, MF_BYPOSITION | MFT_STRING, nIDDeleteID3, "ID3tagを削除");
+					InsertMenu(hMenu, iPos, MF_BYPOSITION | MFT_STRING, nIDDeleteID3, TEXT("ID3tagを削除"));
 					bAddDeleteID3 = true;
 					iPos++;
 				}
@@ -183,7 +183,7 @@ void AddEditMenu(HMENU hMenu) {
 	}
 
 	if (!bAddDeleteID3) {
-		InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDDeleteID3, "ID3tagを削除");
+		InsertMenu(hMenu, MF_BYPOSITION, MF_BYPOSITION | MFT_STRING, nIDDeleteID3, TEXT("ID3tagを削除"));
 	}
 }
 
@@ -196,27 +196,27 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_mp3.ini";
-	bOptAutoConvID3v2 = GetPrivateProfileInt("RMP_ID3V2", "AutoConvID3v2", 1, strINI) ? true : false;
-	bOptAutoConvRMP = GetPrivateProfileInt("RMP_ID3V2", "AutoConvRMP", 0, strINI) ? true : false;
-	nOptSIFieldConvType = GetPrivateProfileInt("RMP_ID3V2", "SIFieldConvType", SIF_CONV_ALL_FIELD, strINI);
-	bOptID3v2ID3tagAutoWrite = GetPrivateProfileInt("RMP_ID3V2", "ID3v2ID3tagAutoWrite", 1, strINI) ? true : false;
-	bOptRmpID3tagAutoWrite = GetPrivateProfileInt("RMP_ID3V2", "RmpID3tagAutoWrite", 1, strINI) ? true : false;
-	bOptID3v2GenreListSelect = GetPrivateProfileInt("RMP_ID3V2", "ID3v2GenreListSelect", 1, strINI) ? true : false;
-	bOptRmpGenreListSelect = GetPrivateProfileInt("RMP_ID3V2", "RmpGenreListSelect", 1, strINI) ? true : false;
-	bOptID3v2ID3tagAutoDelete = GetPrivateProfileInt("RMP_ID3V2", "ID3v2ID3tagAutoDelete", 0, strINI) ? true : false;
-	bOptID3v2GenreAddNumber = false/* 2005.08.23 GetPrivateProfileInt("RMP_ID3V2", "ID3v2GenreAddNumber", 0, strINI) ? true : false*/;
-	bOptChangeFileExt = GetPrivateProfileInt("RMP_ID3V2", "ChangeFileExt", 0, strINI) ? true : false;
+	bOptAutoConvID3v2 = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("AutoConvID3v2"), 1, strINI) ? true : false;
+	bOptAutoConvRMP = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("AutoConvRMP"), 0, strINI) ? true : false;
+	nOptSIFieldConvType = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("SIFieldConvType"), SIF_CONV_ALL_FIELD, strINI);
+	bOptID3v2ID3tagAutoWrite = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("ID3v2ID3tagAutoWrite"), 1, strINI) ? true : false;
+	bOptRmpID3tagAutoWrite = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("RmpID3tagAutoWrite"), 1, strINI) ? true : false;
+	bOptID3v2GenreListSelect = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("ID3v2GenreListSelect"), 1, strINI) ? true : false;
+	bOptRmpGenreListSelect = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("RmpGenreListSelect"), 1, strINI) ? true : false;
+	bOptID3v2ID3tagAutoDelete = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("ID3v2ID3tagAutoDelete"), 0, strINI) ? true : false;
+	bOptID3v2GenreAddNumber = false/* 2005.08.23 GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("ID3v2GenreAddNumber"), 0, strINI) ? true : false*/;
+	bOptChangeFileExt = GetPrivateProfileInt(TEXT("RMP_ID3V2"), TEXT("ChangeFileExt"), 0, strINI) ? true : false;
 
-	GetPrivateProfileString("OTHER", "SoftwareTag", "", strOptSoftwareTag.GetBufferSetLength(255+1), 255, strINI);
+	GetPrivateProfileString(TEXT("OTHER"), TEXT("SoftwareTag"), TEXT(""), strOptSoftwareTag.GetBufferSetLength(255+1), 255, strINI);
 	strOptSoftwareTag.ReleaseBuffer();
 
-	bOptNotUnSyncAlways = GetPrivateProfileInt("OTHER", "ID3v2NotUnSync", 0, strINI) ? true : false;
-	bOptUnSyncNew = GetPrivateProfileInt("OTHER", "ID3v2UnSyncNew", 0, strINI) ? true : false;
+	bOptNotUnSyncAlways = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2NotUnSync"), 0, strINI) ? true : false;
+	bOptUnSyncNew = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2UnSyncNew"), 0, strINI) ? true : false;
 
-	nId3v2Encode = GetPrivateProfileInt("OTHER", "ID3v2CharEncode", 0, strINI);
-	nId3v2Version = GetPrivateProfileInt("OTHER", "ID3v2Version", 0, strINI);
-	nId3v2EncodeNew = GetPrivateProfileInt("OTHER", "ID3v2CharEncodeNew", 0, strINI);
-	nId3v2VersionNew = GetPrivateProfileInt("OTHER", "ID3v2VersionNew", 0, strINI);
+	nId3v2Encode = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2CharEncode"), 0, strINI);
+	nId3v2Version = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2Version"), 0, strINI);
+	nId3v2EncodeNew = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2CharEncodeNew"), 0, strINI);
+	nId3v2VersionNew = GetPrivateProfileInt(TEXT("OTHER"), TEXT("ID3v2VersionNew"), 0, strINI);
 
 	// サポートしている拡張子を登録
 	HBITMAP hMP3Bitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_MP3));
@@ -224,11 +224,11 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	HBITMAP hMP3V11Bitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_MP3));
 	HBITMAP hID3v2Bitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_ID3V2));
 	HBITMAP hRMPBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_RMP));
-	nFileTypeMP3 = STEPRegisterExt(nPluginID, "mp3", hMP3Bitmap);
-	nFileTypeMP3V1 = STEPRegisterExt(nPluginID, "mp3", hMP3V1Bitmap);
-	nFileTypeMP3V11 = STEPRegisterExt(nPluginID, "mp3", hMP3V11Bitmap);
-	nFileTypeID3V2 = STEPRegisterExt(nPluginID, "mp3", hID3v2Bitmap);
-	nFileTypeRMP = STEPRegisterExt(nPluginID, "rmp", hRMPBitmap);
+	nFileTypeMP3 = STEPRegisterExt(nPluginID, TEXT("mp3"), hMP3Bitmap);
+	nFileTypeMP3V1 = STEPRegisterExt(nPluginID, TEXT("mp3"), hMP3V1Bitmap);
+	nFileTypeMP3V11 = STEPRegisterExt(nPluginID, TEXT("mp3"), hMP3V11Bitmap);
+	nFileTypeID3V2 = STEPRegisterExt(nPluginID, TEXT("mp3"), hID3v2Bitmap);
+	nFileTypeRMP = STEPRegisterExt(nPluginID, TEXT("rmp"), hRMPBitmap);
 	DeleteObject(hMP3Bitmap);
 	DeleteObject(hMP3V1Bitmap);
 	DeleteObject(hMP3V11Bitmap);
@@ -242,28 +242,28 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 
 	nIDFileConvMP3 = STEPGetCommandID();
 	STEPAddToolBarButton(CreateMappedBitmap(theApp.m_hInstance, IDB_FILE_CONV_MP3, 0, &map, 1), nIDFileConvMP3, "STEP_mp3_FILE_CONV_MP3");
-	STEPKeyAssign(nIDFileConvMP3, "標準MP3形式に変換", "STEP_mp3_KEY_FILE_CONV_MP3");
+	STEPKeyAssign(nIDFileConvMP3, TEXT("標準MP3形式に変換"), TEXT("STEP_mp3_KEY_FILE_CONV_MP3"));
 
 	nIDFileConvRMP = STEPGetCommandID();
 	STEPAddToolBarButton(CreateMappedBitmap(theApp.m_hInstance, IDB_FILE_CONV_RMP, 0, &map, 1), nIDFileConvRMP, "STEP_mp3_FILE_CONV_RMP");
-	STEPKeyAssign(nIDFileConvRMP, "RIFF MP3形式に変換", "STEP_mp3_KEY_FILE_CONV_RMP");
+	STEPKeyAssign(nIDFileConvRMP, TEXT("RIFF MP3形式に変換"), TEXT("STEP_mp3_KEY_FILE_CONV_RMP"));
 
 	nIDFileConvID3v2 = STEPGetCommandID();
 	STEPAddToolBarButton(CreateMappedBitmap(theApp.m_hInstance, IDB_FILE_CONV_ID3V2, 0, &map, 1), nIDFileConvID3v2, "STEP_mp3_FILE_CONV_ID3V2");
-	STEPKeyAssign(nIDFileConvID3v2, "ID3v2 形式に変換", "STEP_mp3_KEY_FILE_CONV_ID3V2");
+	STEPKeyAssign(nIDFileConvID3v2, TEXT("ID3v2 形式に変換"), TEXT("STEP_mp3_KEY_FILE_CONV_ID3V2"));
 
 	nIDFileConvAutoID3 = STEPGetCommandID();
 	STEPAddToolBarButton(CreateMappedBitmap(theApp.m_hInstance, IDB_FILE_CONV_AUTO_ID3, 0, &map, 1), nIDFileConvAutoID3, "STEP_mp3_FILE_CONV_AUTO_ID3");
-	STEPKeyAssign(nIDFileConvAutoID3, "標準MP3形式/ID3v2 形式に自動変換", "STEP_mp3_KEY_FILE_CONV_AUTO_ID3");
+	STEPKeyAssign(nIDFileConvAutoID3, TEXT("標準MP3形式/ID3v2 形式に自動変換"), TEXT("STEP_mp3_KEY_FILE_CONV_AUTO_ID3"));
 
 //	nIDConvSIFieldToID3Tag = STEPGetCommandID();
-//	STEPKeyAssign(nIDConvSIFieldToID3Tag, "SI/ID3v2フィールドからID3tagに変換", "STEP_mp3_KEY_CONV_SI_FIELD_TO_ID3TAG");
+//	STEPKeyAssign(nIDConvSIFieldToID3Tag, TEXT("SI/ID3v2フィールドからID3tagに変換"), TEXT("STEP_mp3_KEY_CONV_SI_FIELD_TO_ID3TAG"));
 
 	nIDDeleteID3 = STEPGetCommandID();
-	STEPKeyAssign(nIDDeleteID3, "ID3tag を削除", "STEP_mp3_KEY_DELETE_ID3");
+	STEPKeyAssign(nIDDeleteID3, TEXT("ID3tag を削除"), TEXT("STEP_mp3_KEY_DELETE_ID3"));
 
 	nIDConvID3v2Version = STEPGetCommandID();
-	STEPKeyAssign(nIDConvID3v2Version, "ID3v2バージョン/文字エンコードの変換", "STEP_mp3_KEY_CONV_ID3V2_VERSION");
+	STEPKeyAssign(nIDConvID3v2Version, TEXT("ID3v2バージョン/文字エンコードの変換"), TEXT("STEP_mp3_KEY_CONV_ID3V2_VERSION"));
 
 	return true;
 }
@@ -281,7 +281,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_mp3";
+	return TEXT("STEP_mp3");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -542,14 +542,14 @@ static	bool	IsID3Tag11(const ID3TAG *data) {
 #ifndef iskanji
 #define iskanji(c)		((unsigned char)(c) >= 0x81 && (unsigned char)(c) <= 0x9f || (unsigned char)(c) >= 0xe0 && (unsigned char)(c) <= 0xfc)
 #endif
-void	StringCopyN(char *, const char *, int, BOOL = TRUE);
-void	StringCopyN2(char *, const char *, int, BOOL = TRUE);
-void StringCopyN(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
+void	StringCopyN(LPTSTR, LPCTSTR, int, BOOL = TRUE);
+void	StringCopyN2(LPTSTR, LPCTSTR, int, BOOL = TRUE);
+void StringCopyN(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (strlen(sSrc) < (unsigned int)nLen) {
-		if (bTerm) strcpy(sDest, sSrc);
-		else       memcpy(sDest, sSrc, strlen(sSrc));
+	if (lstrlen(sSrc) < (unsigned int)nLen) {
+		if (bTerm) lstrcpy(sDest, sSrc);
+		else       memcpy(sDest, sSrc, lstrlen(sSrc));
 		return;
 	}
 	while(nLen > 0) {
@@ -567,7 +567,7 @@ void StringCopyN(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
 		}
 	}
 }
-void StringCopyN2(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
+void StringCopyN2(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	bool bCR = false;
@@ -600,7 +600,7 @@ void StringCopyN2(char *sDest, const char *sSrc, int nLen, BOOL bTerm)
 void DeleteLineEndSpace(TCHAR *sBuffer)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	int		nPos = strlen(sBuffer) - 1;
+	int		nPos = lstrlen(sBuffer) - 1;
 	while(nPos >= 0 && sBuffer[nPos] == ' ') {
 		sBuffer[nPos] = '\0';
 		nPos--;
@@ -649,7 +649,7 @@ void setFileType(CId3tagv2& id3v2, FILE_INFO *pFileMP3)
 	SetFormat(pFileMP3, nFileTypeID3V2);		// ファイル形式：MP3(ID3v2)
 }
 
-bool ReadTagID3(LPCSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
+bool ReadTagID3(LPCTSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	TRY {
@@ -708,7 +708,7 @@ bool ReadTagID3(LPCSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 						SetBTrackNumber(pFileMP3, 0xff);
 					}
 					SetFormat(pFileMP3, nFileTypeMP3V11);	// ファイル形式：MP3V1.1
-					SetFileTypeName(pFileMP3, "MP3(ID3v1.1)");
+					SetFileTypeName(pFileMP3, TEXT("MP3(ID3v1.1)"));
 				} else {
 					// ID3 tag Ver 1.0
 					StringCopyN(sBuffer, pTag->sComment, ID3_LEN_COMMENT);
@@ -718,13 +718,13 @@ bool ReadTagID3(LPCSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 					// トラック番号
 					SetBTrackNumber(pFileMP3, 0xff);
 					SetFormat(pFileMP3, nFileTypeMP3V1);	// ファイル形式：MP3V1.0
-					SetFileTypeName(pFileMP3, "MP3(ID3v1.0)");
+					SetFileTypeName(pFileMP3, TEXT("MP3(ID3v1.0)"));
 				}
 				// ジャンル番号
 				SetBGenre(pFileMP3, pTag->byGenre);
 				SetGenre(pFileMP3, STEPGetGenreNameSIF(pTag->byGenre));
 			} else {
-				SetFileTypeName(pFileMP3, "MP3");
+				SetFileTypeName(pFileMP3, TEXT("MP3"));
 				SetFormat(pFileMP3, nFileTypeMP3);	// ファイル形式：MP3
 			}
 
@@ -734,8 +734,8 @@ bool ReadTagID3(LPCSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 	}
 	CATCH(CFileException, e) {
 		CString	strMsg;
-		strMsg.Format("%s がオープンできませんでした", sFileName);
-		MessageBox(NULL, strMsg, "ファイルのオープン失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+		strMsg.Format(TEXT("%s がオープンできませんでした"), sFileName);
+		MessageBox(NULL, strMsg, TEXT("ファイルのオープン失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		return(false);
 	}
 	END_CATCH
@@ -743,7 +743,7 @@ bool ReadTagID3(LPCSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 	return true ;
 }
 
-bool ReadTagID3v2(LPCSTR sFileName, FILE_INFO *pFileMP3)
+bool ReadTagID3v2(LPCTSTR sFileName, FILE_INFO *pFileMP3)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// ID3v2 タグの取得
@@ -782,7 +782,7 @@ bool ReadTagID3v2(LPCSTR sFileName, FILE_INFO *pFileMP3)
 	return(true);
 }
 
-bool ReadTagSIF(LPCSTR sFileName, FILE_INFO *pFileMP3)
+bool ReadTagSIF(LPCTSTR sFileName, FILE_INFO *pFileMP3)
 {
 	CRMP rmp/*(USE_SCMPX_GENRE_ANIMEJ)*/;
 	if (rmp.Load(GetFullPath(pFileMP3))  != ERROR_SUCCESS	// 読み込み失敗
@@ -809,7 +809,7 @@ bool ReadTagSIF(LPCSTR sFileName, FILE_INFO *pFileMP3)
 	SetCommissionSI(pFileMP3,	rmp.GetCMS());	// コミッション
 
 	SetFormat(pFileMP3, nFileTypeRMP);		// ファイル形式：RIFF MP3
-	SetFileTypeName(pFileMP3, "RIFF MP3");
+	SetFileTypeName(pFileMP3, TEXT("RIFF MP3"));
 
 	if (bOptRmpID3tagAutoWrite)
 		SetGenreSI(pFileMP3, GetGenre(pFileMP3));
@@ -835,7 +835,7 @@ bool LoadFileMP3(FILE_INFO *pFileMP3)
 			SetDiskNumberSI(pFileMP3, GetDiskNumber(pFileMP3));
 		}
 		if (ReadTagID3v2(GetFullPath(pFileMP3), pFileMP3) == false) {
-			MessageBox(NULL, "ID3v2 タグの読み込みに失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(NULL, TEXT("ID3v2 タグの読み込みに失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return false;
 		}
 	}
@@ -843,7 +843,7 @@ bool LoadFileMP3(FILE_INFO *pFileMP3)
 	// === RIFF MP3 形式ファイル(SIフィールドの読み込み) ===
 	if (strcmp(sHead, "RIFF") == 0) {
 		if (ReadTagSIF(GetFullPath(pFileMP3), pFileMP3) == false) {
-			MessageBox(NULL, "RIFF MP3 タグの読み込みに失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(NULL, TEXT("RIFF MP3 タグの読み込みに失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return(false);
 		}
 	}
@@ -866,7 +866,7 @@ bool LoadFileMP3(FILE_INFO *pFileMP3)
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (stricmp(szExt, "mp3") == 0 || stricmp(szExt, "rmp") == 0) {
+	if (_tcsicmp(szExt, TEXT("mp3")) == 0 || _tcsicmp(szExt, TEXT("rmp")) == 0) {
 		if (LoadFileMP3(pFileMP3) == false) {
 			return STEP_ERROR;
 		}
@@ -907,40 +907,40 @@ bool WriteTagID3(FILE_INFO *pFileMP3)
 
 			int		nLen;
 			// トラック名
-			nLen = strlen(GetTrackName(pFileMP3));
+			nLen = lstrlen(GetTrackName(pFileMP3));
 			if (nLen > ID3_LEN_TRACK_NAME) nLen = ID3_LEN_TRACK_NAME;
 			StringCopyN(&pTag->sTrackName[0], GetTrackName(pFileMP3), nLen, FALSE);
 
 			// アーティスト名
-			nLen = strlen(GetArtistName(pFileMP3));
+			nLen = lstrlen(GetArtistName(pFileMP3));
 			if (nLen > ID3_LEN_ARTIST_NAME) nLen = ID3_LEN_ARTIST_NAME;
 			StringCopyN(&pTag->sArtistName[0], GetArtistName(pFileMP3), nLen, FALSE);
 
 			// アルバム名
-			nLen = strlen(GetAlbumName(pFileMP3));
+			nLen = lstrlen(GetAlbumName(pFileMP3));
 			if (nLen > ID3_LEN_ALBUM_NAME) nLen = ID3_LEN_ALBUM_NAME;
 			StringCopyN(&pTag->sAlbumName[0], GetAlbumName(pFileMP3), nLen, FALSE);
 
 			// リリース年号
-			nLen = strlen(GetYear(pFileMP3));
+			nLen = lstrlen(GetYear(pFileMP3));
 			if (nLen > ID3_LEN_YEAR) nLen = ID3_LEN_YEAR;
 			StringCopyN(&pTag->sYear[0], GetYear(pFileMP3), nLen, FALSE);
 
 			if (GetBTrackNumber(pFileMP3) == 0xff) {
 				// ID3 tag Ver 1.0
 				// コメント
-				nLen = strlen(GetComment(pFileMP3));
+				nLen = lstrlen(GetComment(pFileMP3));
 				if (nLen > ID3_LEN_COMMENT) nLen = ID3_LEN_COMMENT;
 				memset(&pTag->sComment[0], 0x00, ID3_LEN_COMMENT);
 				StringCopyN2(&pTag->sComment[0], GetComment(pFileMP3), nLen, FALSE);
 
 				// 再設定
 				SetFormat(pFileMP3, nFileTypeMP3V1);	// ファイル形式：MP3V1.0
-				SetFileTypeName(pFileMP3, "MP3(ID3v1.0)");
+				SetFileTypeName(pFileMP3, TEXT("MP3(ID3v1.0)"));
 			} else {
 				// ID3 tag Ver 1.1
 				// コメント
-				nLen = strlen(GetComment(pFileMP3));
+				nLen = lstrlen(GetComment(pFileMP3));
 				if (nLen > ID3_LEN_COMMENT-2) nLen = ID3_LEN_COMMENT-2;
 				memset(&pTag->sComment[0], 0x00, ID3_LEN_COMMENT-2);
 				StringCopyN2(&pTag->sComment[0], GetComment(pFileMP3), nLen, FALSE);
@@ -951,10 +951,10 @@ bool WriteTagID3(FILE_INFO *pFileMP3)
 
 				// 再設定
 				CString strTrackNumber;
-				strTrackNumber.Format("%d", pTag->byTrackNumber);
+				strTrackNumber.Format(TEXT("%d"), pTag->byTrackNumber);
 				SetTrackNumber(pFileMP3, strTrackNumber);
 				SetFormat(pFileMP3, nFileTypeMP3V11);	// ファイル形式：MP3V1.1
-				SetFileTypeName(pFileMP3, "MP3(ID3v1.1)");
+				SetFileTypeName(pFileMP3, TEXT("MP3(ID3v1.1)"));
 			}
 			// ジャンル
 			pTag->byGenre = GetBGenre(pFileMP3);
@@ -965,8 +965,8 @@ bool WriteTagID3(FILE_INFO *pFileMP3)
 	}
 	CATCH(CFileException, e) {
 		CString	strMsg;
-		strMsg.Format("%s がオープンできませんでした", GetFullPath(pFileMP3));
-		MessageBox(NULL, strMsg, "ファイルのオープン失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+		strMsg.Format(TEXT("%s がオープンできませんでした"), GetFullPath(pFileMP3));
+		MessageBox(NULL, strMsg, TEXT("ファイルのオープン失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 		return false;
 	}
 	END_CATCH
@@ -1004,19 +1004,19 @@ bool ConvID3tagToSIField(FILE_INFO *pFileMP3)
 	// ソフトウェアの設定
 	UINT nFormat = GetFormat(pFileMP3);
 	if (!(nFormat == nFileTypeMP3 || nFormat == nFileTypeMP3V1 || nFormat == nFileTypeMP3V11)) {
-		if (strlen(GetSoftwareSI(pFileMP3)) == 0) {
+		if (lstrlen(GetSoftwareSI(pFileMP3)) == 0) {
 			SetSoftwareSI(pFileMP3, strOptSoftwareTag);
 		}
 	}
 
-	if (strlen(GetGenreSI(pFileMP3)) == 0 || false /* 常に再設定→未設定時のみ */) {
+	if (lstrlen(GetGenreSI(pFileMP3)) == 0 || false /* 常に再設定→未設定時のみ */) {
 		//SetGenreSI(pFileMP3, STEPGetGenreNameSIF(GetBGenre(pFileMP3)));
 		SetGenreSI(pFileMP3, GetGenre(pFileMP3));
 	}
-	if (strlen(GetTrackNumberSI(pFileMP3)) == 0) { /* 未設定時のみ */
+	if (lstrlen(GetTrackNumberSI(pFileMP3)) == 0) { /* 未設定時のみ */
 		SetTrackNumberSI(pFileMP3, GetTrackNumber(pFileMP3));
 	}
-	if (strlen(GetDiskNumberSI(pFileMP3)) == 0) { /* 未設定時のみ */
+	if (lstrlen(GetDiskNumberSI(pFileMP3)) == 0) { /* 未設定時のみ */
 		SetDiskNumberSI(pFileMP3, GetDiskNumber(pFileMP3));
 	}
 	return true;
@@ -1025,7 +1025,7 @@ bool ConvID3tagToSIField(FILE_INFO *pFileMP3)
 void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	char	sBuffer[256+1];
+	TCHAR	sBuffer[256+1];
 
 	if (GetFormat(pFileMP3) != nFileTypeID3V2 && GetFormat(pFileMP3) != nFileTypeRMP) {
 		return;
@@ -1036,7 +1036,7 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 // コピー対象のフィールドかどうかをチェックして、必要な場合だけコピーします
 #define COPY_FIELD(strID3, strSIF, len)	{			\
 	if (nOptSIFieldConvType == SIF_CONV_ALL_FIELD	\
-	|| strlen(strSIF) <= (len)) {					\
+	|| lstrlen(strSIF) <= (len)) {					\
 		StringCopyN(sBuffer, strSIF, len);			\
 		sBuffer[len] = '\0';						\
 		SetValue(pFileMP3, strID3, sBuffer);		\
@@ -1044,7 +1044,7 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 }
 #define COPY_FIELD2(strID3, strSIF, len)	{			\
 	if (nOptSIFieldConvType == SIF_CONV_ALL_FIELD	\
-	|| strlen(strSIF) <= (len)) {					\
+	|| lstrlen(strSIF) <= (len)) {					\
 		StringCopyN2(sBuffer, strSIF, len);			\
 		sBuffer[len] = '\0';						\
 		SetValue(pFileMP3, strID3, sBuffer);		\
@@ -1057,7 +1057,7 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 	// アルバム名
 	COPY_FIELD(FIELD_ALBUM_NAME, GetAlbumNameSI(pFileMP3), ID3_LEN_ALBUM_NAME);
 	// トラック番号 //コメント設定より先に処理する
-	if (strlen(GetTrackNumberSI(pFileMP3)) == 0) {
+	if (lstrlen(GetTrackNumberSI(pFileMP3)) == 0) {
 		if (GetFormat(pFileMP3) == nFileTypeID3V2) {
 			SetBTrackNumber(pFileMP3, (BYTE)0xff);
 		}
@@ -1065,7 +1065,7 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 		SetBTrackNumber(pFileMP3, (BYTE)STEPGetIntegerTrackNumber(GetTrackNumberSI(pFileMP3)));
 	}
 	// ディスク番号
-	if (strlen(GetDiskNumberSI(pFileMP3)) == 0) {
+	if (lstrlen(GetDiskNumberSI(pFileMP3)) == 0) {
 		if (GetFormat(pFileMP3) == nFileTypeID3V2) {
 			SetBDiskNumber(pFileMP3, (BYTE)0xff);
 		}
@@ -1138,7 +1138,7 @@ bool WriteTagID3v2(FILE_INFO *pFileMP3)
 //		ConvSIFieldToID3tag(pFileMP3);
 //	}
 	// ソフトウェアの設定
-	if (strlen(GetSoftwareSI(pFileMP3)) == 0) {
+	if (lstrlen(GetSoftwareSI(pFileMP3)) == 0) {
 		SetSoftwareSI(pFileMP3, strOptSoftwareTag);
 	}
 
@@ -1163,9 +1163,9 @@ bool WriteTagID3v2(FILE_INFO *pFileMP3)
 	CString	strGenre;
 	BYTE	byGenre;
 	byGenre = STEPGetGenreCode(GetGenreSI(pFileMP3));
-	if (!strlen(GetGenreSI(pFileMP3)) == 0) {
-		if (byGenre == (BYTE)0xff || STEPIsUserGenre(GetGenreSI(pFileMP3)) || bOptID3v2GenreAddNumber == false) strGenre.Format("%s", GetGenreSI(pFileMP3));
-		else                       strGenre.Format("(%d)%s", STEPGetGenreCode(GetGenreSI(pFileMP3)), GetGenreSI(pFileMP3));
+	if (!lstrlen(GetGenreSI(pFileMP3)) == 0) {
+		if (byGenre == (BYTE)0xff || STEPIsUserGenre(GetGenreSI(pFileMP3)) || bOptID3v2GenreAddNumber == false) strGenre.Format(TEXT("%s"), GetGenreSI(pFileMP3));
+		else                       strGenre.Format(TEXT("(%d)%s"), STEPGetGenreCode(GetGenreSI(pFileMP3)), GetGenreSI(pFileMP3));
 	}
 	id3v2.SetGenre(strGenre/* 2005.08.23 del , bOptID3v2GenreAddNumber*/);
 
@@ -1181,7 +1181,7 @@ bool WriteTagID3v2(FILE_INFO *pFileMP3)
 bool WriteTagSIF(FILE_INFO *pFileMP3)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (strlen(GetSoftwareSI(pFileMP3)) == 0) {
+	if (lstrlen(GetSoftwareSI(pFileMP3)) == 0) {
 		SetSoftwareSI(pFileMP3, strOptSoftwareTag);
 	}
 
@@ -1193,13 +1193,13 @@ bool WriteTagSIF(FILE_INFO *pFileMP3)
 	}
 
 	bool isNeedID3 = false;
-	if (strlen(GetTrackName(pFileMP3))	> 0)	isNeedID3 = true;
-	if (strlen(GetArtistName(pFileMP3))	> 0)	isNeedID3 = true;
-	if (strlen(GetAlbumName(pFileMP3))	> 0)	isNeedID3 = true;
-	if (strlen(GetComment(pFileMP3))	> 0)	isNeedID3 = true;
-	if (strlen(GetYear(pFileMP3))		> 0)	isNeedID3 = true;
-	if (strlen(GetGenre(pFileMP3))		> 0)	isNeedID3 = true;
-	if (strlen(GetTrackNumber(pFileMP3))> 0)	isNeedID3 = true;
+	if (lstrlen(GetTrackName(pFileMP3))	> 0)	isNeedID3 = true;
+	if (lstrlen(GetArtistName(pFileMP3))	> 0)	isNeedID3 = true;
+	if (lstrlen(GetAlbumName(pFileMP3))	> 0)	isNeedID3 = true;
+	if (lstrlen(GetComment(pFileMP3))	> 0)	isNeedID3 = true;
+	if (lstrlen(GetYear(pFileMP3))		> 0)	isNeedID3 = true;
+	if (lstrlen(GetGenre(pFileMP3))		> 0)	isNeedID3 = true;
+	if (lstrlen(GetTrackNumber(pFileMP3))> 0)	isNeedID3 = true;
 	if (isNeedID3 && !rmp.HasId3tag()) {
 		rmp.SetHasId3tag(TRUE);
 	}
@@ -1232,29 +1232,29 @@ bool WriteTagSIF(FILE_INFO *pFileMP3)
 			result = WriteTagID3(pFileMP3);
 		}
 		SetFormat(pFileMP3, nFileTypeRMP);		// ファイル形式：RIFF MP3
-		SetFileTypeName(pFileMP3, "RIFF MP3");
+		SetFileTypeName(pFileMP3, TEXT("RIFF MP3"));
 	}
 	return result;
 }
 
 bool IsCreateID3v2(FILE_INFO *pFileMP3)
 {
-	if (strlen(GetTrackName(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
-	if (strlen(GetArtistName(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
-	if (strlen(GetAlbumName(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
-	if (strlen(GetComment(pFileMP3))	> ID3_LEN_COMMENT-2)	return true;
-	if (strlen(GetYear(pFileMP3))		> ID3_LEN_YEAR)			return true;
+	if (lstrlen(GetTrackName(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
+	if (lstrlen(GetArtistName(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
+	if (lstrlen(GetAlbumName(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
+	if (lstrlen(GetComment(pFileMP3))	> ID3_LEN_COMMENT-2)	return true;
+	if (lstrlen(GetYear(pFileMP3))		> ID3_LEN_YEAR)			return true;
 	if (STEPIsUserGenre(GetGenreSI(pFileMP3)))					return true;
 	if (CString(GetComment(pFileMP3)).Find('\n') > -1)			return true;
 	if (!STEPIsNumeric(GetTrackNumberSI(pFileMP3)))				return true;
 	if (!STEPIsNumeric(GetDiskNumberSI(pFileMP3)))				return true;
 	/*
-	if (strlen(GetCopyrightSI(pFileMP3)) > 0)					return true;	// 著作権
-	if (strlen(GetComposerSI(pFileMP3)) > 0)					return true;	// 作曲
-	if (strlen(GetOrigArtistSI(pFileMP3)) > 0)					return true;	// Orig.アーティスト
-	if (strlen(GetURLSI(pFileMP3)) > 0)							return true;	// URL
-	if (strlen(GetEncodest(pFileMP3)) > 0)						return true;	// エンコードした人
-	if (strlen(GetSoftwareSI(pFileMP3)) > 0
+	if (lstrlen(GetCopyrightSI(pFileMP3)) > 0)					return true;	// 著作権
+	if (lstrlen(GetComposerSI(pFileMP3)) > 0)					return true;	// 作曲
+	if (lstrlen(GetOrigArtistSI(pFileMP3)) > 0)					return true;	// Orig.アーティスト
+	if (lstrlen(GetURLSI(pFileMP3)) > 0)							return true;	// URL
+	if (lstrlen(GetEncodest(pFileMP3)) > 0)						return true;	// エンコードした人
+	if (lstrlen(GetSoftwareSI(pFileMP3)) > 0
 		&& strcmp(GetSoftwareSI(pFileMP3), strOptSoftwareTag) != 0)		return true;	// ソフトウェア
 	*/
 	return false;
@@ -1262,14 +1262,14 @@ bool IsCreateID3v2(FILE_INFO *pFileMP3)
 
 bool IsCreateRMP(FILE_INFO *pFileMP3)
 {
-	if (strlen(GetTrackName(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
-	if (strlen(GetArtistName(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
-	if (strlen(GetAlbumName(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
-	if (strlen(GetComment(pFileMP3))	> ID3_LEN_COMMENT-2)	return true;
-	if (strlen(GetYear(pFileMP3))		> ID3_LEN_YEAR)			return true;
+	if (lstrlen(GetTrackName(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
+	if (lstrlen(GetArtistName(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
+	if (lstrlen(GetAlbumName(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
+	if (lstrlen(GetComment(pFileMP3))	> ID3_LEN_COMMENT-2)	return true;
+	if (lstrlen(GetYear(pFileMP3))		> ID3_LEN_YEAR)			return true;
 	if (STEPIsUserGenre(GetGenreSI(pFileMP3)))					return true;
 	/*
-	if (strlen(GetCopyrightSI(pFileMP3))	> 0)	return true;
+	if (lstrlen(GetCopyrightSI(pFileMP3))	> 0)	return true;
 	rmp.SetENG(GetEngineerSI(pFileMP3));	// エンジニア
 	rmp.SetSRC(GetSourceSI(pFileMP3));		// ソース
 	rmp.SetSFT(GetSoftwareSI(pFileMP3));	// ソフトウェア
@@ -1284,26 +1284,26 @@ bool IsCreateRMP(FILE_INFO *pFileMP3)
 
 bool IsCreateID3v2SI(FILE_INFO *pFileMP3, bool bID3v1Only = FALSE)
 {
-	if (strlen(GetTrackNameSI(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
-	if (strlen(GetArtistNameSI(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
-	if (strlen(GetAlbumNameSI(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
-	if (strlen(GetCommentSI(pFileMP3))		> ID3_LEN_COMMENT-2)	return true;
-	if (strlen(GetYearSI(pFileMP3))			> ID3_LEN_YEAR)			return true;
+	if (lstrlen(GetTrackNameSI(pFileMP3))	> ID3_LEN_TRACK_NAME)	return true;
+	if (lstrlen(GetArtistNameSI(pFileMP3))	> ID3_LEN_ARTIST_NAME)	return true;
+	if (lstrlen(GetAlbumNameSI(pFileMP3))	> ID3_LEN_ALBUM_NAME)	return true;
+	if (lstrlen(GetCommentSI(pFileMP3))		> ID3_LEN_COMMENT-2)	return true;
+	if (lstrlen(GetYearSI(pFileMP3))		> ID3_LEN_YEAR)			return true;
 	if (STEPIsUserGenre(GetGenreSI(pFileMP3)))						return true;
 	if (CString(GetCommentSI(pFileMP3)).Find('\n') > -1)			return true;
 	if (!STEPIsNumeric(GetTrackNumberSI(pFileMP3)))					return true;
 	if (!STEPIsNumeric(GetDiskNumberSI(pFileMP3)))					return true;
 	if (bID3v1Only == TRUE)	return false;
-	if (strlen(GetCopyrightSI(pFileMP3)) > 0)						return true;	// 著作権
-	if (strlen(GetComposerSI(pFileMP3)) > 0)						return true;	// 作曲
-	if (strlen(GetOrigArtistSI(pFileMP3)) > 0)						return true;	// Orig.アーティスト
-	if (strlen(GetAlbumArtistSI(pFileMP3)) > 0)						return true;	// Albm.アーティスト
-	if (strlen(GetWriterSI(pFileMP3)) > 0)							return true;	// 作詞者
-	if (strlen(GetURLSI(pFileMP3)) > 0)								return true;	// URL
-	if (strlen(GetEncodest(pFileMP3)) > 0)							return true;	// エンコードした人
-	if (strlen(GetEngineerSI(pFileMP3)) > 0)						return true;	// エンジニア
-	if (strlen(GetSoftwareSI(pFileMP3)) > 0
-		&& strcmp(GetSoftwareSI(pFileMP3), strOptSoftwareTag) != 0)		return true;	// ソフトウェア
+	if (lstrlen(GetCopyrightSI(pFileMP3)) > 0)						return true;	// 著作権
+	if (lstrlen(GetComposerSI(pFileMP3)) > 0)						return true;	// 作曲
+	if (lstrlen(GetOrigArtistSI(pFileMP3)) > 0)						return true;	// Orig.アーティスト
+	if (lstrlen(GetAlbumArtistSI(pFileMP3)) > 0)					return true;	// Albm.アーティスト
+	if (lstrlen(GetWriterSI(pFileMP3)) > 0)							return true;	// 作詞者
+	if (lstrlen(GetURLSI(pFileMP3)) > 0)							return true;	// URL
+	if (lstrlen(GetEncodest(pFileMP3)) > 0)							return true;	// エンコードした人
+	if (lstrlen(GetEngineerSI(pFileMP3)) > 0)						return true;	// エンジニア
+	if (lstrlen(GetSoftwareSI(pFileMP3)) > 0
+		&& lstrcmp(GetSoftwareSI(pFileMP3), strOptSoftwareTag) != 0)	return true;	// ソフトウェア
 	return false;
 }
 
@@ -1416,7 +1416,7 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 		}
 		if (bOptID3v2ID3tagAutoDelete) {
 			// ID3 tagを削除
-			extern bool DeleteTagID3v1(const char *sFileName, HWND hWnd);
+			extern bool DeleteTagID3v1(LPCTSTR sFileName, HWND hWnd);
 			DeleteTagID3v1(GetFullPath(pFileMP3), NULL);
 		}
 		return STEP_SUCCESS;
@@ -1481,31 +1481,31 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 		nId3v2VersionNew = dlg2.m_nId3v2VersionNew;
 
 		// INIに保存
-		WritePrivateProfileString("RMP_ID3V2", "AutoConvID3v2", bOptAutoConvID3v2 ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "AutoConvRMP", bOptAutoConvRMP  ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "SIFieldConvType", nOptSIFieldConvType == SIF_CONV_ALL_FIELD ? "0" : "1", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "ID3v2ID3tagAutoWrite", bOptID3v2ID3tagAutoWrite ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "RmpID3tagAutoWrite", bOptRmpID3tagAutoWrite ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "ID3v2GenreListSelect", bOptID3v2GenreListSelect ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "RmpGenreListSelect", bOptRmpGenreListSelect ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "ID3v2ID3tagAutoDelete", bOptID3v2ID3tagAutoDelete ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "ID3v2GenreAddNumber", bOptID3v2GenreAddNumber ? "1" : "0", strINI);
-		WritePrivateProfileString("RMP_ID3V2", "ChangeFileExt", bOptChangeFileExt ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("AutoConvID3v2"), bOptAutoConvID3v2 ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("AutoConvRMP"), bOptAutoConvRMP  ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("SIFieldConvType"), nOptSIFieldConvType == SIF_CONV_ALL_FIELD ? TEXT("0") : TEXT("1"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("ID3v2ID3tagAutoWrite"), bOptID3v2ID3tagAutoWrite ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("RmpID3tagAutoWrite"), bOptRmpID3tagAutoWrite ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("ID3v2GenreListSelect"), bOptID3v2GenreListSelect ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("RmpGenreListSelect"), bOptRmpGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("ID3v2ID3tagAutoDelete"), bOptID3v2ID3tagAutoDelete ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("ID3v2GenreAddNumber"), bOptID3v2GenreAddNumber ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("RMP_ID3V2"), TEXT("ChangeFileExt"), bOptChangeFileExt ? TEXT("1") : TEXT("0"), strINI);
 
-		WritePrivateProfileString("OTHER", "SoftwareTag", strOptSoftwareTag, strINI);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("SoftwareTag"), strOptSoftwareTag, strINI);
 
-		WritePrivateProfileString("OTHER", "ID3v2NotUnSync", bOptNotUnSyncAlways ? "1" : "0", strINI);
-		WritePrivateProfileString("OTHER", "ID3v2UnSyncNew", bOptUnSyncNew ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2NotUnSync"), bOptNotUnSyncAlways ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2UnSyncNew"), bOptUnSyncNew ? TEXT("1") : TEXT("0"), strINI);
 
 		CString sValue;
-		sValue.Format("%d", nId3v2Encode);
-		WritePrivateProfileString("OTHER", "ID3v2CharEncode", sValue, strINI);
-		sValue.Format("%d", nId3v2Version);
-		WritePrivateProfileString("OTHER", "ID3v2Version", sValue, strINI);
-		sValue.Format("%d", nId3v2EncodeNew);
-		WritePrivateProfileString("OTHER", "ID3v2CharEncodeNew", sValue, strINI);
-		sValue.Format("%d", nId3v2VersionNew);
-		WritePrivateProfileString("OTHER", "ID3v2VersionNew", sValue, strINI);
+		sValue.Format(TEXT("%d"), nId3v2Encode);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2CharEncode"), sValue, strINI);
+		sValue.Format(TEXT("%d"), nId3v2Version);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2Version"), sValue, strINI);
+		sValue.Format(TEXT("%d"), nId3v2EncodeNew);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2CharEncodeNew"), sValue, strINI);
+		sValue.Format(TEXT("%d"), nId3v2VersionNew);
+		WritePrivateProfileString(TEXT("OTHER"), TEXT("ID3v2VersionNew"), sValue, strINI);
 
 		STEPUpdateCellInfo();
 	}
@@ -1515,25 +1515,25 @@ STEP_API LPCTSTR WINAPI STEPGetToolTipText(UINT nID)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (nID == nIDFileConvAutoID3) {
-		return "標準MP3形式/ID3v2形式に自動変換";
+		return TEXT("標準MP3形式/ID3v2形式に自動変換");
 	}
 	if (nID == nIDFileConvMP3) {
-		return "標準MP3形式に変換";
+		return TEXT("標準MP3形式に変換");
 	}
 	if (nID == nIDFileConvID3v2) {
-		return "ID3v2形式に変換";
+		return TEXT("ID3v2形式に変換");
 	}
 	if (nID == nIDFileConvRMP) {
-		return "RIFF MP3形式に変換";
+		return TEXT("RIFF MP3形式に変換");
 	}
 //	if (nID == nIDConvSIFieldToID3Tag) {
-//		return "SI/ID3v2フィールドからID3tagに変換";
+//		return TEXT("SI/ID3v2フィールドからID3tagに変換");
 //	}
 	if (nID == nIDDeleteID3) {
-		return "ID3tagを削除";
+		return TEXT("ID3tagを削除");
 	}
 	if (nID == nIDConvID3v2Version) {
-		return "ID3v2バージョンの変換";
+		return TEXT("ID3v2バージョンの変換");
 	}
 	return NULL;
 }
@@ -1542,25 +1542,25 @@ STEP_API LPCTSTR WINAPI STEPGetStatusMessage(UINT nID)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (nID == nIDFileConvAutoID3) {
-		return "タグの入力桁数/内容によって標準MP3形式またはID3v2形式のいずれかに変換します";
+		return TEXT("タグの入力桁数/内容によって標準MP3形式またはID3v2形式のいずれかに変換します");
 	}
 	if (nID == nIDFileConvMP3) {
-		return "選択されているファイルを標準MP3形式に変換します";
+		return TEXT("選択されているファイルを標準MP3形式に変換します");
 	}
 	if (nID == nIDFileConvID3v2) {
-		return "選択されているファイルをID3v2形式に変換します";
+		return TEXT("選択されているファイルをID3v2形式に変換します");
 	}
 	if (nID == nIDFileConvRMP) {
-		return "選択されているファイルをRIFF MP3形式に変換します";
+		return TEXT("選択されているファイルをRIFF MP3形式に変換します");
 	}
 //	if (nID == nIDConvSIFieldToID3Tag) {
-//		return "SI/ID3v2フィールドからID3tagに変換します";
+//		return TEXT("SI/ID3v2フィールドからID3tagに変換します");
 //	}
 	if (nID == nIDDeleteID3) {
-		return "選択されているMP3ファイルのID3tagを削除します";
+		return TEXT("選択されているMP3ファイルのID3tagを削除します");
 	}
 	if (nID == nIDConvID3v2Version) {
-		return "ID3v2バージョン/文字エンコードの変換";
+		return TEXT("ID3v2バージョン/文字エンコードの変換");
 	}
 	return NULL;
 }
@@ -1603,39 +1603,39 @@ STEP_API bool WINAPI STEPOnCommand(UINT nID, HWND hWnd)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (nID == nIDFileConvAutoID3) {
-		static	const char *sMessage = "選択されているファイルを 標準MP3 形式 または ID3v2 形式に変換します\n\n"
-									   "変換を実行してもよろしいですか？";
-		if (/*g_bConfConvID3v2 == false || */MessageBox(hWnd, sMessage, "標準MP3 形式/ID3v2 形式に変換", MB_YESNO|MB_TOPMOST) == IDYES) {
+		static LPCTSTR sMessage = TEXT("選択されているファイルを 標準MP3 形式 または ID3v2 形式に変換します\n\n"
+									   "変換を実行してもよろしいですか？");
+		if (/*g_bConfConvID3v2 == false || */MessageBox(hWnd, sMessage, TEXT("標準MP3 形式/ID3v2 形式に変換"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			extern bool WINAPI ConvFileFormatAuto(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("標準MP3形式/ID3v2 形式に変換中.....", ConvFileFormatAuto);
+			STEPProcessSelectedFilesForUpdate(TEXT("標準MP3形式/ID3v2 形式に変換中....."), ConvFileFormatAuto);
 		}
 		return true;
 	}
 	if (nID == nIDFileConvMP3) {
-		static	const char *sMessage = "選択されているファイルを標準MP3 形式に変換します\n"
+		static LPCTSTR sMessage = TEXT("選択されているファイルを標準MP3 形式に変換します\n"
 									   "標準MP3 形式に変換すると、タグ情報の一部を失う可能性があります\n\n"
-									   "変換を実行してもよろしいですか？";
-		if (/*g_bConfConvMP3 == false || */MessageBox(hWnd, sMessage, "標準MP3 形式に変換", MB_YESNO|MB_TOPMOST) == IDYES) {
+									   "変換を実行してもよろしいですか？");
+		if (/*g_bConfConvMP3 == false || */MessageBox(hWnd, sMessage, TEXT("標準MP3 形式に変換"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			extern bool WINAPI ConvFileFormatMP3(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("標準MP3 形式に変換中.....", ConvFileFormatMP3);
+			STEPProcessSelectedFilesForUpdate(TEXT("標準MP3 形式に変換中....."), ConvFileFormatMP3);
 		}
 		return true;
 	}
 	if (nID == nIDFileConvID3v2) {
-		static	const char *sMessage = "選択されているファイルを ID3v2 形式に変換します\n\n"
-									   "変換を実行してもよろしいですか？";
-		if (/*g_bConfConvID3v2 == false || */MessageBox(hWnd, sMessage, "ID3v2 形式に変換", MB_YESNO|MB_TOPMOST) == IDYES) {
+		static LPCTSTR sMessage = TEXT("選択されているファイルを ID3v2 形式に変換します\n\n"
+									   "変換を実行してもよろしいですか？");
+		if (/*g_bConfConvID3v2 == false || */MessageBox(hWnd, sMessage, TEXT("ID3v2 形式に変換"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			extern bool WINAPI ConvFileFormatID3v2(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("ID3v2 形式に変換中.....", ConvFileFormatID3v2);
+			STEPProcessSelectedFilesForUpdate(TEXT("ID3v2 形式に変換中....."), ConvFileFormatID3v2);
 		}
 		return true;
 	}
 	if (nID == nIDFileConvRMP) {
-		static	const char *sMessage = "選択されているファイルを RIFF MP3 形式に変換します\n\n"
-									   "変換を実行してもよろしいですか？";
-		if (/*g_bConfConvRMP == false || */MessageBox(hWnd, sMessage, "RIFF MP3 形式に変換", MB_YESNO|MB_TOPMOST) == IDYES) {
+		static LPCTSTR sMessage = TEXT("選択されているファイルを RIFF MP3 形式に変換します\n\n"
+									   "変換を実行してもよろしいですか？");
+		if (/*g_bConfConvRMP == false || */MessageBox(hWnd, sMessage, TEXT("RIFF MP3 形式に変換"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			extern bool WINAPI ConvFileFormatRMP(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("RIFF MP3 形式に変換中.....", ConvFileFormatRMP);
+			STEPProcessSelectedFilesForUpdate(TEXT("RIFF MP3 形式に変換中....."), ConvFileFormatRMP);
 		}
 		return true;
 	}
@@ -1645,11 +1645,11 @@ STEP_API bool WINAPI STEPOnCommand(UINT nID, HWND hWnd)
 //		return true;
 //	}
 	if (nID == nIDDeleteID3) {
-		static	const char *sMessage = "選択されているファイルのID3v1タグを削除します\n\n"
-									   "実行してもよろしいですか？";
-		if (MessageBox(hWnd, sMessage, "ID3tag 削除", MB_YESNO|MB_TOPMOST) == IDYES) {
+		static LPCTSTR sMessage = TEXT("選択されているファイルのID3v1タグを削除します\n\n"
+									   "実行してもよろしいですか？");
+		if (MessageBox(hWnd, sMessage, TEXT("ID3tag 削除"), MB_YESNO|MB_TOPMOST) == IDYES) {
 			extern bool WINAPI DeleteId3tag(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("ID3tag を削除中.....", DeleteId3tag);
+			STEPProcessSelectedFilesForUpdate(TEXT("ID3tag を削除中....."), DeleteId3tag);
 		}
 		return true;
 	}
@@ -1661,7 +1661,7 @@ STEP_API bool WINAPI STEPOnCommand(UINT nID, HWND hWnd)
 			nId3v2EncodeConv = dlg.m_nId3v2Encode;
 			nId3v2VersionConv = dlg.m_nId3v2Version;
 			extern bool WINAPI ConvID3v2Version(FILE_INFO*, int, HWND);
-			STEPProcessSelectedFilesForUpdate("ID3v2 バージョン/文字エンコードを変換中.....", ConvID3v2Version);
+			STEPProcessSelectedFilesForUpdate(TEXT("ID3v2 バージョン/文字エンコードを変換中....."), ConvID3v2Version);
 		}
 		return true;
 	}

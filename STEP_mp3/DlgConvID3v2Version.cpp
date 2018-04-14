@@ -52,16 +52,16 @@ BOOL CDlgConvID3v2Version::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: この位置に初期化の補足処理を追加してください
-	m_cbId3v2Encode.AddString("変更しない");
-	m_cbId3v2Encode.AddString("ISO-8859-1");
-	m_cbId3v2Encode.AddString("UTF-16");
-	m_cbId3v2Encode.AddString("UTF-8");
+	m_cbId3v2Encode.AddString(TEXT("変更しない"));
+	m_cbId3v2Encode.AddString(TEXT("ISO-8859-1"));
+	m_cbId3v2Encode.AddString(TEXT("UTF-16"));
+	m_cbId3v2Encode.AddString(TEXT("UTF-8"));
 	m_cbId3v2Encode.SetCurSel(m_nId3v2Encode);
 
-	m_cbId3v2Version.AddString("変更しない");
-	m_cbId3v2Version.AddString("v2.2");
-	m_cbId3v2Version.AddString("v2.3");
-	m_cbId3v2Version.AddString("v2.4");
+	m_cbId3v2Version.AddString(TEXT("変更しない"));
+	m_cbId3v2Version.AddString(TEXT("v2.2"));
+	m_cbId3v2Version.AddString(TEXT("v2.3"));
+	m_cbId3v2Version.AddString(TEXT("v2.4"));
 	m_cbId3v2Version.SetCurSel(m_nId3v2Version);
 
 	return TRUE;  // コントロールにフォーカスを設定しないとき、戻り値は TRUE となります
@@ -75,15 +75,15 @@ void CDlgConvID3v2Version::OnSelchangeComboId3v2Version()
 	int nVer = m_cbId3v2Version.GetCurSel();
 	int nEnc = m_cbId3v2Encode.GetCurSel();
 	if (nVer != 0 && nVer != 3) {
-		if (m_cbId3v2Encode.FindStringExact(0, "UTF-8") != CB_ERR) {
+		if (m_cbId3v2Encode.FindStringExact(0, TEXT("UTF-8")) != CB_ERR) {
 			m_cbId3v2Encode.DeleteString(3);
 			if (nEnc == 3) {
 				m_cbId3v2Encode.SetCurSel(2);
 			}
 		}
 	} else {
-		if (m_cbId3v2Encode.FindStringExact(0, "UTF-8") == CB_ERR) {
-			m_cbId3v2Encode.AddString("UTF-8");
+		if (m_cbId3v2Encode.FindStringExact(0, TEXT("UTF-8")) == CB_ERR) {
+			m_cbId3v2Encode.AddString(TEXT("UTF-8"));
 		}
 	}
 	UpdateData(FALSE);

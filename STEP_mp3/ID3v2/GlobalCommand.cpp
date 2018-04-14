@@ -26,7 +26,7 @@ void mbsncpy2(unsigned char *dst,unsigned char *src,int c)
 	}
 }
 
-BOOL GetDLLVersion(IN LPSTR szDLLFileName,
+BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
 				   IN DWORD *pdwMinor,
 				   IN DWORD *pdwBuildNumber1,
@@ -36,7 +36,7 @@ BOOL GetDLLVersion(IN LPSTR szDLLFileName,
 	*pdwMinor = 0;
 	*pdwBuildNumber1 = 0;
 	*pdwBuildNumber2 = 0;
-	char fileVersion[256];
+	TCHAR fileVersion[256];
 
 	UINT len;
 	DWORD dwHandle;
@@ -46,27 +46,27 @@ BOOL GetDLLVersion(IN LPSTR szDLLFileName,
 		char *versionInfo = (char *)malloc(dwSize+1);
 		if(GetFileVersionInfo(szDLLFileName,dwHandle,dwSize,versionInfo))
 		{
-			sprintf(fileVersion,"\\VarFileInfo\\Translation");
-			void *version = NULL;
-			BOOL bRet = VerQueryValue(versionInfo,fileVersion,&version,(UINT *)&len);
+			_stprintf(fileVersion, TEXT("\\VarFileInfo\\Translation"));
+			LPTSTR version = NULL;
+			BOOL bRet = VerQueryValue(versionInfo, fileVersion, (LPVOID*)&version, &len);
 			if(bRet && len == 4)
 			{
 				DWORD dwLangD;
 				memcpy(&dwLangD,version,4);
-				sprintf(fileVersion,"\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion",
+				_stprintf(fileVersion, TEXT("\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion"),
 					(dwLangD & 0xff00)>>8,dwLangD & 0xff,(dwLangD & 0xff000000)>>24,(dwLangD & 0xff0000)>>16);
 			}
 			else
 			{
-				sprintf(fileVersion,"\\StringFileInfo\\%04X04B0\\FileVersion",GetUserDefaultLangID());
+				_stprintf(fileVersion, TEXT("\\StringFileInfo\\%04X04B0\\FileVersion"), GetUserDefaultLangID());
 			}
-			bRet = VerQueryValue(versionInfo,fileVersion,&version,(UINT *)&len);
+			bRet = VerQueryValue(versionInfo, fileVersion, (LPVOID*)&version, &len);
 			if(!bRet)
 			{
 				free(versionInfo);
 				return FALSE;
 			}
-			strncpy(fileVersion,(char *)version,255);
+			_tcsncpy(fileVersion, version, 255);
 			fileVersion[255] = '\0';
 			free(versionInfo);
 		}
@@ -83,34 +83,34 @@ BOOL GetDLLVersion(IN LPSTR szDLLFileName,
 	
 
 	//バージョン情報を数字に分解
-	char *ptr = strtok(fileVersion,",. ");
+	auto ptr = _tcstok(fileVersion, TEXT(",. "));
 	if(ptr == NULL)
 		return TRUE;
-	*pdwMajor = atoi(ptr);
+	*pdwMajor = _tstoi(ptr);
 	
-	ptr = strtok(NULL,",. ");
+	ptr = _tcstok(NULL, TEXT(",. "));
 	if(ptr == NULL)
 		return TRUE;
-	*pdwMinor = atoi(ptr);
+	*pdwMinor = _tstoi(ptr);
 	
-	ptr = strtok(NULL,",. ");
+	ptr = _tcstok(NULL, TEXT(",. "));
 	if(ptr == NULL)
 		return TRUE;
-	*pdwBuildNumber1 = atoi(ptr);
+	*pdwBuildNumber1 = _tstoi(ptr);
 	
-	ptr = strtok(NULL,",. ");
+	ptr = _tcstok(NULL, TEXT(",. "));
 	if(ptr == NULL)
 		return TRUE;
-	*pdwBuildNumber2 = atoi(ptr);
+	*pdwBuildNumber2 = _tstoi(ptr);
 
 	return TRUE;
 }
 
 //文末がYenのときTRUE
-BOOL IsTailYenSign(char *szStr)
+BOOL IsTailYenSign(LPCTSTR szStr)
 {
-	unsigned char *yen = _mbsrchr((unsigned char *)szStr,'\\');
-	if(yen && ((unsigned char *)&szStr[strlen(szStr)-1] == yen))
+	const auto yen = _tcsrchr(szStr, '\\');
+	if(yen && (&szStr[lstrlen(szStr)-1] == yen))
 	{
 		return TRUE;
 	}
@@ -118,17 +118,17 @@ BOOL IsTailYenSign(char *szStr)
 }
 
 //文末に'\\'を追加(既に'\\'のときは何もしない)
-void AddTAilYenSigne(char *szStr)
+void AddTAilYenSigne(LPTSTR szStr)
 {
 	if(!IsTailYenSign(szStr))
 	{
-		strcat(szStr,"\\");
+		lstrcat(szStr, TEXT("\\"));
 	}
 }
 
 void AddTAilYenSigne(CString &str)
 {
-	if(!IsTailYenSign((char *)(LPCSTR )str))
+	if(!IsTailYenSign(str))
 	{
 		str += "\\";
 	}
@@ -143,7 +143,7 @@ void AddTAilYenSigne(CString &str)
 //LoadStringのバグ対策(MSKB Q140452)
 CString LoadResString(HINSTANCE hInstance,UINT uID)
 {
-	char szTmp[256*2];	//UNICODEで256文字
+	TCHAR szTmp[256*2];	//UNICODEで256文字
 	CString strRet;
 
 	//必要なサイズを計算
@@ -193,9 +193,9 @@ WORD ExtractI2(unsigned char buf[2])
 	return x;
 }
 
-const char *getFileName(const char *szPath)
+LPCTSTR getFileName(LPCTSTR szPath)
 {
-	const char *szPtr = szPath;
+	auto szPtr = szPath;
 
 	while(*szPtr != '\0')
 	{
@@ -239,14 +239,14 @@ CString getFileNameExtName(CString &path)
 	return path.Right(path.GetLength() - pathOffset);
 }
 
-const char *getExtName(const char *szPath)
+LPCTSTR getExtName(LPCTSTR szPath)
 {
-	const char *szPtr = szPath;
+	auto szPtr = szPath;
 
 	//ファイル名だけを分離
 	szPtr=getFileName(szPath);
 	//拡張子を含まないときは""へのポインタ
-	szPath+=strlen(szPath);
+	szPath+=lstrlen(szPath);
 	while(*szPtr != '\0')
 	{
 		//２バイト文字の先頭はスキップ
@@ -319,15 +319,15 @@ long check2ByteLength(const char *szTag,long lLimit)
 	return i;
 }
 
-void sysError(HWND hWnd,char *mes)
+void sysError(HWND hWnd, LPTSTR mes)
 {
-	LPSTR lpBuffer;
+	LPTSTR lpBuffer;
 
 	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 			NULL,
 			GetLastError(),
 			0,
-			(LPTSTR )&lpBuffer,
+			(LPTSTR)&lpBuffer,
 			0,
 			NULL );
 	MessageBox(hWnd,lpBuffer,mes,MB_APPLMODAL | MB_ICONSTOP);
@@ -335,9 +335,9 @@ void sysError(HWND hWnd,char *mes)
 	return;
 }
 
-void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes)
+void errMessageBox(HWND hWnd, DWORD dwErrorCode, LPCTSTR mes)
 {
-	LPSTR lpBuffer;
+	LPTSTR lpBuffer;
 
 	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 			NULL,
@@ -351,9 +351,9 @@ void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes)
 	return;
 }
 
-void cutFileName(char *szPath)
+void cutFileName(LPTSTR szPath)
 {
-	char	*szEnd=szPath;
+	auto szEnd=szPath;
 	
 	while(*szPath != '\0')
 	{
