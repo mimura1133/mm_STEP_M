@@ -32,26 +32,28 @@ struct	ID3TAG	{						// <<< ID3 Tag のデータ形式 >>>
 #define ID3_LEN_YEAR			4		// リリース年号  (文字列… 4BYTE)
 
 struct	ID3TAG_V10	{							// <<< ID3 Tag v1.0 のデータ形式 >>>
-	TCHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
-	TCHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
-	TCHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
-	TCHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
-	TCHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
-	TCHAR	sComment[ID3_LEN_COMMENT];			// コメント      (文字列…30BYTE)
+	CHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
+	CHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
+	CHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
+	CHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
+	CHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
+	CHAR	sComment[ID3_LEN_COMMENT];			// コメント      (文字列…30BYTE)
 	BYTE	byGenre;							// ジャンル番号  (数字…… 1BYTE)
 };
+static_assert(sizeof(ID3TAG_V10) == 128, "sizeof(ID3TAG_V10) == 128");
 
 struct	ID3TAG_V11	{							// <<< ID3 Tag v1.1 のデータ形式 >>>
-	TCHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
-	TCHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
-	TCHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
-	TCHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
-	TCHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
-	TCHAR	sComment[ID3_LEN_COMMENT-2];		// コメント      (文字列…30BYTE)
-	TCHAR	cZero;								// '\0'          (文字列… 1BYTE)
+	CHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
+	CHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
+	CHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
+	CHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
+	CHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
+	CHAR	sComment[ID3_LEN_COMMENT-2];		// コメント      (文字列…30BYTE)
+	CHAR	cZero;								// '\0'          (文字列… 1BYTE)
 	BYTE	byTrackNumber;						// トラック番号  (数字…… 1BYTE)
 	BYTE	byGenre;							// ジャンル番号  (数字…… 1BYTE)
 };
+static_assert(sizeof(ID3TAG_V11) == 128, "sizeof(ID3TAG_V11) == 128");
 #pragma pack(pop)
 
 //
