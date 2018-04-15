@@ -11,6 +11,8 @@
 
 #include "Id3tagv2.h"
 
+#include <vector>
+
 static const unsigned long ID3V2_PADDING_SIZE = 0x0800;
 //static const unsigned char SCMPX_GENRE_NULL = 247;
 //static const unsigned char WINAMP_GENRE_NULL = 255;
@@ -28,6 +30,83 @@ extern bool		bOptId3v2UNICODE;		// mp3infp2.46以降ではBool型から変更されたのでST
 extern bool		bOptNotUnSyncAlways;
 extern bool		bOptUnSyncNew;
 
+namespace {
+	// UNICODE文字列のBE/LEを変換する(len=文字数)
+	void UTF16toUTF16BE(WCHAR *str, int len)
+	{
+		int i; for (i = 0; i<len; i++)
+		{
+			str[i] = (str[i] << 8) | (str[i] >> 8);
+		}
+	}
+
+	CString readUtf16String(unsigned char* first, unsigned char* last, bool isBe)
+	{
+		//UTF-16
+		const auto size = std::distance(first, last) / 2;
+		auto text = reinterpret_cast<LPWSTR>(first);
+		if (isBe) {
+			UTF16toUTF16BE(text, size);
+		}
+
+		auto len = wcsnlen(text, size);
+		if (len <= 0) {
+			return TEXT("");
+		}
+
+		return CStringW(text, len);
+	}
+
+	CString readUtf16String(unsigned char* first, unsigned char* last)
+	{
+		auto it = first;
+		if ((std::distance(it, last) >= 2) && (memcmp(it, "\xff\xfe", 2) == 0))
+		{
+			// UTF-16
+			std::advance(it, 2);
+			return readUtf16String(it, last, false);
+		}
+		else if ((std::distance(it, last) >= 2) && (memcmp(it, "\xfe\xff", 2) == 0))
+		{
+			// UTF-16(BE) -> UTF-16
+			std::advance(it, 2);
+			return readUtf16String(it, last, true);
+		}
+
+		return TEXT("");
+	}
+
+	CString readUtf8String(unsigned char* first, unsigned char* last)
+	{
+		//UTF-8 -> UTF-16
+		auto src = reinterpret_cast<LPCSTR>(first);
+		auto srcLength = std::distance(first, last);
+		const int size = MultiByteToWideChar(CP_UTF8, 0, src, srcLength, NULL, 0);
+		std::vector<WCHAR> buf(size);
+		MultiByteToWideChar(CP_UTF8, 0, src, srcLength, buf.data(), buf.size());
+
+		auto len = wcsnlen(buf.data(), buf.size());
+		if (len <= 0) {
+			return TEXT("");
+		}
+
+		return CStringW(buf.data(), len);
+	}
+
+	CStringA readCStringA(unsigned char* first, unsigned char* last)
+	{
+		// 終端の\0を取り除く　2002-09-16
+		const auto size = std::distance(first, last);
+		auto text = reinterpret_cast<LPCSTR>(first);
+		auto len = strnlen(text, size);
+		if (len == 0)
+		{
+			return "";
+		}
+
+		return CStringA(text, len);
+	}
+}
 //////////////////////////////////////////////////////////////////////
 // 構築/消滅
 //////////////////////////////////////////////////////////////////////
@@ -74,87 +153,17 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		data = p->second.GetData();
-		if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xff\xfe",3) == 0) )
-		{
-			//UTF-16 -> Ansi
-			int a = p->second.GetSize();
-			int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
-			size++;
-			char *buf = new char[size];
-			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
-			buf[size-1] = '\0';
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			return strRet;
-		}
-		else if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xfe\xff",3) == 0) )
-		{
-			//UTF-16(BE) -> Ansi
-			int a = p->second.GetSize();
-			UTF16toUTF16BE((WCHAR*)&data[3],(p->second.GetSize()-3)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
-			size++;
-			char *buf = new char[size];
-			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
-			buf[size-1] = '\0';
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			return strRet;
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x02) )
-		{
-			//UTF-16(BE) -> Ansi
-			int a = p->second.GetSize();
-			UTF16toUTF16BE((WCHAR*)&data[1],(p->second.GetSize()-1)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[1],(p->second.GetSize()-1)/2,0,0,NULL,NULL);
-			size++;
-			char *buf = new char[size];
-			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[1],(p->second.GetSize()-1)/2,buf,size,NULL,NULL);
-			buf[size-1] = '\0';
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			return strRet;
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x03) )
-		{
+		switch (data[0]) {
+		case 0x01:
+			return readUtf16String(data + 1, data + p->second.GetSize());
+		case 0x02:
+			//UTF-16(BE) -> UTF-16
+			return readUtf16String(data + 1, data + p->second.GetSize(), true);
+		case 0x03:
 			//UTF-8 -> USC-2(Unicode)
-			int a = p->second.GetSize();
-			int size = MultiByteToWideChar(CP_UTF8,0,(char *)&data[1],p->second.GetSize()-1,NULL,0);
-			size++;
-			WCHAR *buf = new WCHAR[size];
-			if(!buf) break;
-			MultiByteToWideChar(CP_UTF8,0,(char *)&data[1],p->second.GetSize()-1,buf,size-1);
-			buf[size-1] = L'\0';
-			
-			size = WideCharToMultiByte(CP_UTF8,0,buf,-1,0,0,NULL,NULL);
-			char *buf2 = new char[size];
-			if(!buf2)
-			{
-				delete buf;
-				break;
-			}
-			WideCharToMultiByte(CP_UTF8,0,buf,-1,buf2,size,NULL,NULL);
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			delete buf2;
-			return strRet;
-		}
-		else if((p->second.GetSize() >= 1) && (data[0] == 0))
-		{
-			// 終端の\0を取り除く　2002-09-16
-			int len = (p->second.GetSize()-1);
-			if(len == 0)
-			{
-				return "";
-			}
-			if(strlen((LPCSTR )&data[1]) < len)
-			{
-				len = strlen((LPCSTR )&data[1]);
-			}
-			return CString((LPCSTR )&data[1],len);
+			return readUtf8String(data + 1, data + p->second.GetSize());
+		case 0x00:
+			return readCStringA(data + 1, data + p->second.GetSize());
 		}
 		break;
 	case 'W':	//URLリンクフレームx
@@ -180,18 +189,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xff\xfe",2) == 0) )
-			{
-				i += 2;
-				//UNICODE -> Ansi
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size/* STEP*/);
-				delete buf;
-				return strRet;
-			}
+			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xfe\xff",3) == 0) )
 		{
@@ -208,19 +206,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xfe\xff",2) == 0) )
-			{
-				i += 2;
-				//UNICODE(BE) -> Ansi
-				UTF16toUTF16BE((WCHAR*)&data[i],(p->second.GetSize()-i)/2);
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size/* STEP*/);
-				delete buf;
-				return strRet;
-			}
+			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= 1) && (data[0] == 0x02) )
 		{
@@ -237,16 +223,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			
-			//UNICODE(BE) -> Ansi
-			UTF16toUTF16BE((WCHAR*)&data[i],(p->second.GetSize()-i)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-			char *buf = new char[size];
-			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			return strRet;
+			return readUtf16String(data + i, data + p->second.GetSize(), true);
 		}
 		else if( (p->second.GetSize() >= 1) && (data[0] == 0x03) )
 		{
@@ -263,27 +240,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			{
 				break;//本文がない場合
 			}
-			// UTF-8 -> Ansi
-			// (UTF-8 -> UNICODE)
-			int size = MultiByteToWideChar(CP_UTF8,0,(char *)&data[i],p->second.GetSize()-i,NULL,0);
-			size++;
-			WCHAR *buf = new WCHAR[size];
-			if(!buf) break;
-			MultiByteToWideChar(CP_UTF8,0,(char *)&data[i],p->second.GetSize()-i,buf,size-1);
-			buf[size-1] = L'\0';
-			// (UNICODE -> Ansi)
-			size = WideCharToMultiByte(CP_UTF8,0,buf,-1,0,0,NULL,NULL);
-			char *buf2 = new char[size];
-			if(!buf2)
-			{
-				delete buf;
-				break;
-			}
-			WideCharToMultiByte(CP_UTF8,0,buf,-1,buf2,size,NULL,NULL);
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			delete buf2;
-			return strRet;
+			return readUtf8String(data + i, data + p->second.GetSize());
 		}
 		else if((p->second.GetSize() >= 2) && (data[0] == 0))
 		{
@@ -299,13 +256,8 @@ CString CId3tagv2::GetId3String(const char szId[])
 			{
 				break;//本文がない場合
 			}
-			// 終端の\0を取り除く　2002-09-16
-			int len = (p->second.GetSize()-(i+1));
-			if(strlen((LPCSTR )&data[i+1]) < len)
-			{
-				len = strlen((LPCSTR )&data[i+1]);
-			}
-			return CString((LPCSTR )&data[i+1],len);
+			i += 1;
+			return readCStringA(data + i, data + p->second.GetSize());
 		}
 		break;
 	case 'C':
@@ -337,18 +289,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xff\xfe",2) == 0) )
-			{
-				i += 2;
-				//UNICODE -> Ansi
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size/* STEP*/);
-				delete buf;
-				return strRet;
-			}
+			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
 			(data[0] == 1) &&
@@ -367,19 +308,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xfe\xff",2) == 0) )
-			{
-				i += 2;
-				//UNICODE(BE) -> Ansi
-				UTF16toUTF16BE((WCHAR*)&data[i],(p->second.GetSize()-i)/2);
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size/* STEP*/);
-				delete buf;
-				return strRet;
-			}
+			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		/* STEP */else if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
 			(data[0] == 1) &&
@@ -392,31 +321,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xff\xfe",2) == 0) )
-			{
-				i += 2;
-				//UNICODE -> Ansi
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size);
-				delete buf;
-				return strRet;
-			}
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xfe\xff",2) == 0) )
-			{
-				i += 2;
-				//UNICODE(BE) -> Ansi
-				UTF16toUTF16BE((WCHAR*)&data[i],(p->second.GetSize()-i)/2);
-				int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-				char *buf = new char[size];
-				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-				CString strRet(buf, size);
-				delete buf;
-				return strRet;
-			}
+			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= (1+3/*Language*/+1/*0*/)) &&
 			(data[0] == 2) )
@@ -434,17 +339,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 2;
-			//UNICODE(BE) -> Ansi
-			UTF16toUTF16BE((WCHAR*)&data[i],(p->second.GetSize()-i)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
-			size++;
-			char *buf = new char[size];
-			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(LPCWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
-			buf[size-1] = '\0';
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			return strRet;
+			return readUtf16String(data + i, data + p->second.GetSize(), true);
 		}
 		else if( (p->second.GetSize() >= (1+3/*Language*/+1/*0*/)) &&
 			(data[0] == 3) )
@@ -462,27 +357,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 				break;//本文がない場合
 			}
 			i += 1;
-			//UNICODE(BE) -> Ansi
-			// (UTF-8 -> UNICODE)
-			int size = MultiByteToWideChar(CP_UTF8,0,(char *)&data[i],p->second.GetSize()-i,NULL,0);
-			size++;
-			WCHAR *buf = new WCHAR[size];
-			if(!buf) break;
-			MultiByteToWideChar(CP_UTF8,0,(char *)&data[i],p->second.GetSize()-i,buf,size-1);
-			buf[size-1] = L'\0';
-			// (UNICODE -> Ansi)
-			size = WideCharToMultiByte(CP_UTF8,0,buf,-1,0,0,NULL,NULL);
-			char *buf2 = new char[size];
-			if(!buf2)
-			{
-				delete buf;
-				break;
-			}
-			WideCharToMultiByte(CP_ACP,0,buf,-1,buf2,size,NULL,NULL);
-			CString strRet(buf, size/* STEP*/);
-			delete buf;
-			delete buf2;
-			return strRet;
+			return readUtf8String(data + i, data + p->second.GetSize());
 		}
 		else if((p->second.GetSize() >= 2+3) && (data[0] == 0))
 		{
@@ -498,123 +373,75 @@ CString CId3tagv2::GetId3String(const char szId[])
 			{
 				break;//本文がない場合
 			}
-			// 終端の\0を取り除く　2002-09-16
-			int len = p->second.GetSize()-(i+1);
-			if(strlen((LPCSTR )&data[i+1]) < len)
-			{
-				len = strlen((LPCSTR )&data[i+1]);
-			}
-			return CString((LPCSTR )&data[i+1],len);
-//			return CString((LPCSTR )&data[1],p->second.GetSize()-1);
+			i += 1;
+			return readCStringA(data + i, data + p->second.GetSize());
 		}
 		break;
 	}
 	return "";
 }
 
-void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *szDescription)
-{
-	return SetId3String(szId, CStringA(szString), szDescription);
-}
 void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szDescription)
+{
+	return SetId3String(szId, CStringW(szString), szDescription);
+}
+void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *szDescription)
 {
 	multimap<DWORD,CId3Frame>::iterator p;
 	CId3Frame *pFrame;
 	DWORD dwId;
-	memcpy(&dwId,szId,sizeof(dwId));
+	memcpy(&dwId, szId, sizeof(dwId));
 
 	//Loadしたファイルにフレームがなかった場合
-	if(strlen(szString) == 0)
+	const auto length = wcslen(szString);
+	if(length == 0)
 	{
 		m_frames.erase(dwId);	//消す(あれば)
 		return;
 	}
 	
-	unsigned char *data;
-	int size = 0;
+	std::vector<std::uint8_t> data;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
-		switch(m_encode){
+		switch (m_encode) {
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = strlen(szString)+2;
-			data = (unsigned char *)malloc(size);
-			if(!data)
 			{
-				return;
+				CStringA text = szString;
+				data.resize(strlen(text) + 2);
+				data[0] = 0;	//encoding
+				strcpy((char *)&data[1], text);
 			}
-			data[0] = 0;	//encoding
-			strcpy((char *)&data[1],szString);
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODE_UTF_16:
+			// UTF-16
+			data.resize((length * sizeof(WCHAR)) + 3);
 #ifndef UTF16_BIGENDIAN
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+3;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 0xff;	//BOM
 			data[2] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(WCHAR*)&data[3],(size-3)/sizeof(WCHAR));
-			break;
+			memcpy(&data[3], szString, length * sizeof(WCHAR));
 #else
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+3;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 0xfe;	//BOM
 			data[2] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(WCHAR*)&data[3],(size-3)/sizeof(WCHAR));
-			UTF16toUTF16BE((WCHAR*)&data[3],(size-3)/sizeof(WCHAR));
-			break;
+			memcpy(&data[3], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((WCHAR*)&data[1], length);
 #endif
+			break;
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+1;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
+			// UTF-16 -> UTF-16BE
+			data.resize((length * sizeof(WCHAR)) + 1);
 			data[0] = 0x02;	//encoding
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(WCHAR*)&data[1],(size-1)/sizeof(WCHAR));
-			UTF16toUTF16BE((WCHAR*)&data[1],(size-1)/sizeof(WCHAR));
+			memcpy(&data[1], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((WCHAR*)&data[1], length);
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
-			{
-				//Ansi -> UNICODE
-				size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-				size = size*sizeof(WCHAR);
-				unsigned char *dataUtf16 = (unsigned char *)malloc(size);
-				if(!dataUtf16)
-				{
-					return;
-				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
-				// UNICODE -> UTF-8
-				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
-				size += 1;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					free(dataUtf16);
-					return;
-				}
-				data[0] = 3;	//encoding
-				WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,(char *)&data[1],size-1,NULL,NULL);
-				free(dataUtf16);
-				break;
-			}
+			// UNICODE -> UTF-8
+			data.resize(WideCharToMultiByte(CP_UTF8, 0, szString, -1, NULL, 0, NULL, NULL) + 1);
+			data[0] = 3;	//encoding
+			WideCharToMultiByte(CP_UTF8, 0, szString, -1, (char *)&data[1], data.size() - 1, NULL, NULL);
+			break;
 		}
 		p = m_frames.find(dwId);
 		if((p == m_frames.end()) || !p->second.GetSize())
@@ -623,40 +450,31 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			CId3Frame frame;
 			frame.SetId(dwId);
 			frame.SetFlags(0);
-			frame.SetData(data,size);
+			frame.SetData(data.data(), data.size());
 			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
 			pFrame = &p->second;
-			pFrame->SetData(data,size);
+			pFrame->SetData(data.data(), data.size());
 		}
-		free(data);
 		break;
 	case 'W':	//URLリンクフレームx
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = strlen(szString)+3;
-			data = (unsigned char *)malloc(size);
-			if(!data)
 			{
-				return;
+				CStringA text = szString;
+				data.resize(strlen(text) + 3);
+				data[0] = 0;	//encoding
+				data[1] = 0;	//説明文(省略)
+				strcpy((char *)&data[2], text);
 			}
-			data[0] = 0;	//encoding
-			data[1] = 0;	//説明文(省略)
-			strcpy((char *)&data[2],szString);
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODE_UTF_16:
+			// UTF-16
+			data.resize((length * sizeof(WCHAR)) + 7);
 #ifndef UTF16_BIGENDIAN
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+7;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 0xff;	//BOM
 			data[2] = 0xfe;
@@ -664,17 +482,8 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			data[4] = 0;
 			data[5] = 0xff;	//BOM
 			data[6] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
-			break;
+			memcpy(&data[7], szString, length * sizeof(WCHAR));
 #else	// ビックエンディアン
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+7;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 0xfe;	//BOM
 			data[2] = 0xff;
@@ -682,51 +491,26 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			data[4] = 0;
 			data[5] = 0xfe;	//BOM
 			data[6] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
-			UTF16toUTF16BE((LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
-			break;
+			memcpy(&data[7], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[7], length);
 #endif
-		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+3;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
+			break;
+		case ID3V2CHARENCODE_UTF_16BE:
+			// UNICODE -> UTF-16BE
+			data.resize((length * sizeof(WCHAR)) + 3);
 			data[0] = 2;	//encoding
 			data[1] = 0;	//説明文(省略)
 			data[2] = 0;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(WCHAR*)&data[3],(size-3)/sizeof(WCHAR));
-			UTF16toUTF16BE((WCHAR*)&data[3],(size-3)/sizeof(WCHAR));
+			memcpy(&data[3], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[3], length);
 			break;
-		case ID3V2CHARENCODE_UTF_8:	// UTF-8
-			{
-				//Ansi -> UNICODE
-				size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-				size = size*sizeof(WCHAR);
-				unsigned char *dataUtf16 = (unsigned char *)malloc(size);
-				if(!dataUtf16)
-				{
-					return;
-				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
-				// UNICODE -> UTF-8
-				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
-				size += 2;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					free(dataUtf16);
-					return;
-				}
-				data[0] = 3;	//encoding
-				data[1] = 0;	//説明文(省略)
-				WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,(char *)&data[2],size-2,NULL,NULL);
-				free(dataUtf16);
-				break;
-			}
+		case ID3V2CHARENCODE_UTF_8:
+			// UNICODE -> UTF-8
+			data.resize(WideCharToMultiByte(CP_UTF8, 0, szString, -1, NULL, 0, NULL, NULL) + 2);
+			data[0] = 3;	//encoding
+			data[1] = 0;	//説明文(省略)
+			WideCharToMultiByte(CP_UTF8, 0, szString, -1, (char *)&data[2], data.size() - 2, NULL, NULL);
+			break;
 		}
 		p = m_frames.find(dwId);
 		if((p == m_frames.end()) || !p->second.GetSize())
@@ -735,15 +519,14 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			CId3Frame frame;
 			frame.SetId(dwId);
 			frame.SetFlags(0);
-			frame.SetData(data,size);
+			frame.SetData(data.data(), data.size());
 			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
 			pFrame = &p->second;
-			pFrame->SetData(data,size);
+			pFrame->SetData(data.data(), data.size());
 		}
-		free(data);
 		break;
 	case 'C':
 		if(strcmp(szId,"COMM") != 0)
@@ -753,29 +536,21 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = strlen(szString)+1+5;
-			data = (unsigned char *)malloc(size);
-			if(!data)
 			{
-				return;
+				CStringA text = szString;
+				data.resize(strlen(text) + 1 + 5);
+				data[0] = 0;	//encoding
+				data[1] = 'e';	//Language
+				data[2] = 'n';
+				data[3] = 'g';
+				data[4] = 0;	//説明文(省略)
+				strcpy((char *)&data[5], text);
 			}
-			data[0] = 0;	//encoding
-			data[1] = 'e';	//Language
-			data[2] = 'n';
-			data[3] = 'g';
-			data[4] = 0;	//説明文(省略)
-			strcpy((char *)&data[5],szString);
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODE_UTF_16:
+			// UTF-16
+			data.resize((length * sizeof(WCHAR)) + 10);
 #ifndef UTF16_BIGENDIAN
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+10;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 'e';	//Language
 			data[2] = 'n';
@@ -786,17 +561,8 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			data[7] = 0;
 			data[8] = 0xff;	//BOM
 			data[9] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
-			break;
+			memcpy(&data[10], szString, length * sizeof(WCHAR));
 #else	// ビッグエンディアン
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+10;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
 			data[0] = 1;	//encoding
 			data[1] = 'e';	//Language
 			data[2] = 'n';
@@ -807,57 +573,33 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			data[7] = 0;
 			data[8] = 0xfe;	//BOM
 			data[9] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
-			UTF16toUTF16BE((LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
-			break;
+			memcpy(&data[10], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[10], length);
 #endif
-		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			//Ansi -> UNICODE
-			size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-			size = size*sizeof(WCHAR)+6;
-			data = (unsigned char *)malloc(size);
-			if(!data)
-			{
-				return;
-			}
+			break;
+		case ID3V2CHARENCODE_UTF_16BE:
+			// UNICODE -> UTF-16BE
+			data.resize((length * sizeof(WCHAR)) + 6);
 			data[0] = 2;	//encoding
 			data[1] = 'e';	//Language
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0;	//説明文(省略)
 			data[5] = 0;	//説明文(省略)
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(WCHAR*)&data[6],(size-6)/sizeof(WCHAR));
-			UTF16toUTF16BE((WCHAR*)&data[6],(size-6)/sizeof(WCHAR));
+			memcpy(&data[6], szString, length * sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[10], length);
 			break;
-		case ID3V2CHARENCODE_UTF_8:	// UTF-8
-			{
-				//Ansi -> UNICODE
-				size = MultiByteToWideChar(CP_ACP,0,szString,-1,0,0);
-				size = size*sizeof(WCHAR);
-				unsigned char *dataUtf16 = (unsigned char *)malloc(size);
-				if(!dataUtf16)
-				{
-					return;
-				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
-				// UNICODE -> UTF-8
-				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
-				size += 5;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					free(dataUtf16);
-					return;
-				}
-				data[0] = 3;	//encoding
-				data[1] = 'e';	//Language
-				data[2] = 'n';
-				data[3] = 'g';
-				data[4] = 0;	//説明文(省略)
-				WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,(char *)&data[5],size-5,NULL,NULL);
-				free(dataUtf16);
-				break;
-			}
+		case ID3V2CHARENCODE_UTF_8:
+			// UNICODE -> UTF-8
+			data.resize(WideCharToMultiByte(CP_UTF8, 0, szString, -1, NULL, 0, NULL, NULL) + 5);
+			data[0] = 3;	//encoding
+			data[1] = 'e';	//Language
+			data[2] = 'n';
+			data[3] = 'g';
+			data[4] = 0;	//説明文(省略)
+			WideCharToMultiByte(CP_UTF8, 0, szString, -1, (char *)&data[5], data.size() - 5, NULL, NULL);
+			break;
+			
 		}
 		p = m_frames.find(dwId);
 		if((p == m_frames.end()) || !p->second.GetSize())
@@ -865,15 +607,14 @@ void CId3tagv2::SetId3String(const char szId[], LPCSTR szString, const char *szD
 			CId3Frame frame;
 			frame.SetId(dwId);
 			frame.SetFlags(0);
-			frame.SetData(data,size);
+			frame.SetData(data.data(), data.size());
 			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
 			pFrame = &p->second;
-			pFrame->SetData(data,size);
+			pFrame->SetData(data.data(), data.size());
 		}
-		free(data);
 		break;
 	}
 	return;
@@ -1075,15 +816,6 @@ void CId3tagv2::v23IDtov22ID(char *v23ID,char *v22ID)
 	{
 		// 不明
 		memcpy(v22ID,"XXX",sizeof(v22ID));
-	}
-}
-
-// UNICODE文字列のBE/LEを変換する(len=文字数)
-void CId3tagv2::UTF16toUTF16BE(WCHAR *str,int len)
-{
-	int i; for(i=0; i<len; i++)
-	{
-		str[i] = (str[i] << 8) | (str[i] >> 8);
 	}
 }
 
