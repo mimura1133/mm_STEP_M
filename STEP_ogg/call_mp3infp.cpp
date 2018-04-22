@@ -17,7 +17,7 @@ bool Load_mp3infp() {
 		return true;
 	}
 	//DLLのロード
-	hMp3infpDll = LoadLibrary("mp3infp.dll");
+	hMp3infpDll = LoadLibrary(TEXT("mp3infp.dll"));
 	if(hMp3infpDll == NULL) {
 		return false;
 	}
@@ -65,7 +65,7 @@ bool GetValues_mp3infp(FILE_INFO *pFileMP3)
 	// 音声フォーマット
 	{
 		lpmp3infp_GetValue("AFMT",&buf);
-		SetAudioFormat(pFileMP3, buf);
+		SetAudioFormat(pFileMP3, CString(buf));
 	}
     return true;
 }
