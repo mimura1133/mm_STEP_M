@@ -34,14 +34,14 @@ public:
 	void	Release();
 	BOOL	IsEnable(){return TRUE;};
 
-	BOOL	AddComment(const char *name,const char *value);
+	BOOL	AddComment(const char *name, const CString& value);
 	BOOL	ReplaceComment(const char *name,const char *value,int index);
 	BOOL	DelComment(const char *name,int index);
 	BOOL	GetComment(const char *name,int index,CString &strValue);
 	void	GetCommentNames(CStringArray &strArray);
 
-	DWORD	Load(const char *szFileName);
-	DWORD	Save(const char *szFileName);
+	DWORD	Load(LPCTSTR szFileName);
+	DWORD	Save(LPCTSTR szFileName);
 
 	CString GetAudioFormatString(){return m_strAudioFormat;};
 	CString GetTimeString(){return m_strTime;};

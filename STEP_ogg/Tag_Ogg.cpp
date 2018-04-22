@@ -48,11 +48,11 @@ void CTag_Ogg::Release()
 	m_comments.clear();
 }
 
-BOOL CTag_Ogg::AddComment(const char *name,const char *value)
+BOOL CTag_Ogg::AddComment(const char *name, const CString& value)
 {
 	CString _name(name);
 	_name.MakeUpper();
-	m_comments.insert(pair<CString,CString>(_name,CString(value)));
+	m_comments.insert(pair<CString,CString>(_name, value));
 	
 	return TRUE;
 }
@@ -115,7 +115,7 @@ void CTag_Ogg::GetCommentNames(CStringArray &strArray)
 	}
 }
 
-DWORD CTag_Ogg::Load(const char *szFileName)
+DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
@@ -378,7 +378,7 @@ static int _commentheader_out(vorbis_comment *vc, char *vendor, ogg_packet *op)
 	return 0;
 }
 
-DWORD CTag_Ogg::Save(const char *szFileName)
+DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
