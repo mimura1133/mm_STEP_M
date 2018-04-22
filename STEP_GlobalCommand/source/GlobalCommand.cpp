@@ -46,19 +46,19 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 		char *versionInfo = (char *)malloc(dwSize+1);
 		if(GetFileVersionInfo(szDLLFileName,dwHandle,dwSize,versionInfo))
 		{
-			_stprintf(fileVersion, TEXT("\\VarFileInfo\\Translation"));
+			_stprintf_s(fileVersion, TEXT("\\VarFileInfo\\Translation"));
 			LPTSTR version = NULL;
 			BOOL bRet = VerQueryValue(versionInfo, fileVersion, (LPVOID*)&version, &len);
 			if(bRet && len == 4)
 			{
 				DWORD dwLangD;
 				memcpy(&dwLangD,version,4);
-				_stprintf(fileVersion, TEXT("\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion"),
+				_stprintf_s(fileVersion, TEXT("\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion"),
 					(dwLangD & 0xff00)>>8,dwLangD & 0xff,(dwLangD & 0xff000000)>>24,(dwLangD & 0xff0000)>>16);
 			}
 			else
 			{
-				_stprintf(fileVersion, TEXT("\\StringFileInfo\\%04X04B0\\FileVersion"), GetUserDefaultLangID());
+				_stprintf_s(fileVersion, TEXT("\\StringFileInfo\\%04X04B0\\FileVersion"), GetUserDefaultLangID());
 			}
 			bRet = VerQueryValue(versionInfo, fileVersion, (LPVOID*)&version, &len);
 			if(!bRet)
@@ -66,7 +66,7 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 				free(versionInfo);
 				return FALSE;
 			}
-			_tcsncpy(fileVersion, version, 255);
+			_tcsncpy_s(fileVersion, version, 255);
 			fileVersion[255] = '\0';
 			free(versionInfo);
 		}
@@ -83,22 +83,23 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 	
 
 	//ÉoÅ[ÉWÉáÉìèÓïÒÇêîéöÇ…ï™â
-	auto ptr = _tcstok(fileVersion, TEXT(",. "));
+	LPTSTR context = nullptr;
+	auto ptr = _tcstok_s(fileVersion, TEXT(",. "), &context);
 	if(ptr == NULL)
 		return TRUE;
 	*pdwMajor = _tstoi(ptr);
 	
-	ptr = _tcstok(NULL, TEXT(",. "));
+	ptr = _tcstok_s(NULL, TEXT(",. "), &context);
 	if(ptr == NULL)
 		return TRUE;
 	*pdwMinor = _tstoi(ptr);
 	
-	ptr = _tcstok(NULL, TEXT(",. "));
+	ptr = _tcstok_s(NULL, TEXT(",. "), &context);
 	if(ptr == NULL)
 		return TRUE;
 	*pdwBuildNumber1 = _tstoi(ptr);
 	
-	ptr = _tcstok(NULL, TEXT(",. "));
+	ptr = _tcstok_s(NULL, TEXT(",. "), &context);
 	if(ptr == NULL)
 		return TRUE;
 	*pdwBuildNumber2 = _tstoi(ptr);
