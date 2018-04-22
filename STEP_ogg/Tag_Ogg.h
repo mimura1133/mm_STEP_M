@@ -12,6 +12,7 @@
 #pragma warning(disable:4786)
 #include <map>
 #include <list>
+#include <string>
 using namespace std;
 
 /*
@@ -81,10 +82,8 @@ private:
 	//COPYRIGHT
 	multimap<CString,CString> m_comments;
 
-	CString Acp2Utf8(const char *str);
-	CString Utf82Acp(const char *str);
-	void Ucs22Utf8(const WCHAR *str,char *buf,int size);
-	void Utf82Ucs2(const char *str,WCHAR *wBuf,int size);
+	std::string Ucs2ToUtf8(const CStringW& str);
+	CString Utf8ToUcs2(const char *str);
 };
 
 #endif // !defined(AFX_TAG_OGG_H__6C5D4E96_2B7C_4333_A4F8_3CF81D10E6F5__INCLUDED_)
