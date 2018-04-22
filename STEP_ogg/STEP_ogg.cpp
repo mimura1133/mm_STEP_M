@@ -79,7 +79,7 @@ bool bOptGenreListSelect;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.00 Copyright (C) 2003-2005 haseta\r\nOggVorbis形式をサポートしています";
+	return TEXT("Version 1.00 Copyright (C) 2003-2005 haseta\r\nOggVorbis形式をサポートしています");
 }
 
 STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
@@ -91,12 +91,12 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_ogg.ini";
-	bOptGenreListSelect = GetPrivateProfileInt("OGGVorbis", "GenreListSelect", 0, strINI) ? true : false;
+	bOptGenreListSelect = GetPrivateProfileInt(TEXT("OGGVorbis"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
 
 	HBITMAP hOGGBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_OGG));
 	HBITMAP hOGABitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_OGG));
-	nFileTypeOGG = STEPRegisterExt(nPluginID, "ogg", hOGGBitmap);
-	nFileTypeOGA = STEPRegisterExt(nPluginID, "oga", hOGABitmap);
+	nFileTypeOGG = STEPRegisterExt(nPluginID, TEXT("ogg"), hOGGBitmap);
+	nFileTypeOGA = STEPRegisterExt(nPluginID, TEXT("oga"), hOGABitmap);
 	DeleteObject(hOGGBitmap);
 	DeleteObject(hOGABitmap);
 
@@ -116,7 +116,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_ogg";
+	return TEXT("STEP_ogg");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -170,22 +170,22 @@ STEP_API UINT WINAPI STEPGetColumnMax(UINT nFormat, COLUMNTYPE nColumn, bool isE
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if ((stricmp(szExt, "ogg") == 0) || (stricmp(szExt, "oga") == 0)) {
+	if ((_tcsicmp(szExt, TEXT("ogg")) == 0) || (_tcsicmp(szExt, TEXT("oga")) == 0)) {
 		extern	bool LoadAttributeFileOGG(FILE_INFO *pFile);
 		if (LoadAttributeFileOGG(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "OggVorbisファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("OggVorbisファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
-			if(stricmp(szExt, "ogg") == 0){
+			if(_tcsicmp(szExt, TEXT("ogg")) == 0){
 				SetFormat(pFileMP3, nFileTypeOGG);
-				SetFileTypeName(pFileMP3, "OggVorbis");
+				SetFileTypeName(pFileMP3, TEXT("OggVorbis"));
 				return STEP_SUCCESS;
 			}
-			if(stricmp(szExt, "oga") == 0){
+			if(_tcsicmp(szExt, TEXT("oga")) == 0){
 				SetFormat(pFileMP3, nFileTypeOGA);
-				SetFileTypeName(pFileMP3, "OggVorbis");
+				SetFileTypeName(pFileMP3, TEXT("OggVorbis"));
 				return STEP_SUCCESS;
 			}
 		}
@@ -202,8 +202,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 		extern bool WriteAttributeFileOGG(FILE_INFO *pFileMP3);
 		if (WriteAttributeFileOGG(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "OggVorbisファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("OggVorbisファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -222,7 +222,7 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 	if (page.DoModal() == IDOK) {
 		bOptGenreListSelect = dlg1.m_bGenreListSelect ? true : false;
 
-		WritePrivateProfileString("OGGVorbis", "GenreListSelect", bOptGenreListSelect ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("OGGVorbis"), TEXT("GenreListSelect"), bOptGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
 	}
 }
 
