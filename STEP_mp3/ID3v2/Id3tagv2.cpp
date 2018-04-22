@@ -59,6 +59,10 @@ namespace {
 
 	CString readUtf16String(unsigned char* first, unsigned char* last)
 	{
+		if (first >= last) {
+			return TEXT("");
+		}
+
 		auto it = first;
 		if ((std::distance(it, last) >= 2) && (memcmp(it, "\xff\xfe", 2) == 0))
 		{
@@ -78,6 +82,10 @@ namespace {
 
 	CString readUtf8String(unsigned char* first, unsigned char* last)
 	{
+		if (first >= last) {
+			return TEXT("");
+		}
+
 		//UTF-8 -> UTF-16
 		auto src = reinterpret_cast<LPCSTR>(first);
 		auto srcLength = std::distance(first, last);
@@ -95,6 +103,10 @@ namespace {
 
 	CStringA readCStringA(unsigned char* first, unsigned char* last)
 	{
+		if (first >= last) {
+			return "";
+		}
+
 		// 終端の\0を取り除く　2002-09-16
 		const auto size = std::distance(first, last);
 		auto text = reinterpret_cast<LPCSTR>(first);
@@ -105,6 +117,40 @@ namespace {
 		}
 
 		return CStringA(text, len);
+	}
+
+	/// <summary>
+	/// 説明文を読み飛ばす(unicode)
+	/// </summary>
+	/// <returns>読み飛ばした後のIndex</returns>
+	int skipUnicodeDescip(int offset, const unsigned char* data, std::size_t size)
+	{
+		for (int i = offset; i < size - 1; i += 2)
+		{
+			if ((data[i] == '\0') && (data[i + 1] == '\0'))
+			{
+				return i + 2;
+			}
+		}
+
+		return size;
+	}
+
+	/// <summary>
+	/// 説明文を読み飛ばす(MBCS)
+	/// </summary>
+	/// <returns>読み飛ばした後のIndex</returns>
+	int skipMbcsDescip(int offset, const unsigned char* data, std::size_t size)
+	{
+		for (int i = offset; i < size; i++)
+		{
+			if (data[i] == '\0')
+			{
+				return i + 1;
+			}
+		}
+
+		return size;
 	}
 }
 //////////////////////////////////////////////////////////////////////
@@ -140,10 +186,9 @@ void CId3tagv2::SetEncDefault(const char *szDefaultEnc)
 
 CString CId3tagv2::GetId3String(const char szId[])
 {
-	multimap<DWORD,CId3Frame>::iterator p;
+	decltype(m_frames)::iterator p;
 	DWORD dwId;
 	unsigned char *data;
-	DWORD i;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
 		memcpy(&dwId,szId,sizeof(dwId));
@@ -176,87 +221,27 @@ CString CId3tagv2::GetId3String(const char szId[])
 		data = p->second.GetData();
 		if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xff\xfe",3) == 0) )
 		{
-			//説明文を読み飛ばす(unicode)
-			for(i=3; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(3, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xfe\xff",3) == 0) )
 		{
-			//説明文を読み飛ばす(unicode)
-			for(i=3; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(3, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= 1) && (data[0] == 0x02) )
 		{
-			//説明文を読み飛ばす(unicode)
-			for(i=1; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(1, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize(), true);
 		}
 		else if( (p->second.GetSize() >= 1) && (data[0] == 0x03) )
 		{
-			//説明文を読み飛ばす(UTF-8)
-			for(i=1; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					i++;
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
+			auto i = skipMbcsDescip(1, data, p->second.GetSize());
 			return readUtf8String(data + i, data + p->second.GetSize());
 		}
 		else if((p->second.GetSize() >= 2) && (data[0] == 0))
 		{
-			//説明文を読み飛ばす
-			for(i=1; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 1;
+			auto i = skipMbcsDescip(1, data, p->second.GetSize());
 			return readCStringA(data + i, data + p->second.GetSize());
 		}
 		break;
@@ -276,38 +261,14 @@ CString CId3tagv2::GetId3String(const char szId[])
 			(data[0] == 1) &&
 			(memcmp(&data[1+3/*Language*/],"\xff\xfe",2) == 0))
 		{
-			//説明文を読み飛ばす
-			for(i=3+3/*Language*/-2/* STEP */; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(3 + 3/*Language*/ - 2/* STEP */, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		else if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
 			(data[0] == 1) &&
 			(memcmp(&data[1+3/*Language*/],"\xfe\xff",2) == 0))
 		{
-			//説明文を読み飛ばす
-			for(i=3+3/*Language*/-2/* STEP */; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(3 + 3/*Language*/ - 2/* STEP */, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize());
 		}
 		/* STEP */else if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
@@ -315,7 +276,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			(memcmp(&data[1+3/*Language*/],"\x00\x00",2) == 0) )
 		{
 			//説明文を読み飛ばす
-			i = 1+3;
+			auto i = 1+3;
 			if(i >= p->second.GetSize())
 			{
 				break;//本文がない場合
@@ -326,54 +287,18 @@ CString CId3tagv2::GetId3String(const char szId[])
 		else if( (p->second.GetSize() >= (1+3/*Language*/+1/*0*/)) &&
 			(data[0] == 2) )
 		{
-			//説明文を読み飛ばす
-			for(i=1+3/*Language*/; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
+			auto i = skipUnicodeDescip(1 + 3/*Language*/, data, p->second.GetSize());
 			return readUtf16String(data + i, data + p->second.GetSize(), true);
 		}
 		else if( (p->second.GetSize() >= (1+3/*Language*/+1/*0*/)) &&
 			(data[0] == 3) )
 		{
-			//説明文を読み飛ばす
-			for(i=1+3/*Language*/; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 1;
+			auto i = skipMbcsDescip(1 + 3/*Language*/, data, p->second.GetSize());
 			return readUtf8String(data + i, data + p->second.GetSize());
 		}
 		else if((p->second.GetSize() >= 2+3) && (data[0] == 0))
 		{
-			//説明文を読み飛ばす
-			for(i=1+3/*Language*/; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 1;
+			auto i = skipMbcsDescip(1 + 3/*Language*/, data, p->second.GetSize());
 			return readCStringA(data + i, data + p->second.GetSize());
 		}
 		break;
