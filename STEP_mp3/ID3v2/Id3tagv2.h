@@ -445,7 +445,6 @@ private:
 	void SetId3String(const char szId[], LPCSTR szString, const char *szDescription = NULL);
 	DWORD GetTotalFrameSize();
 	void v23IDtov22ID(char *v23ID,char *v22ID);
-	void UTF16toUTF16BE(WCHAR *str,int len);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2Ç™ñ≥Ç¢èÍçáÇÕFALSE

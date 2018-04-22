@@ -10,6 +10,7 @@
 #include "DlgFileRmpID3v2.h"
 #include "DlgDefaultValue.h"
 #include "DlgConvID3v2Version.h"
+#include <algorithm>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,33 +26,35 @@ struct	ID3TAG	{						// <<< ID3 Tag のデータ形式 >>>
 	BYTE	byData[128];				// 128バイトデータ
 };
 
-#define ID3_LEN_TRACK_NAME		30		// トラック名    (文字列…30BYTE)
-#define ID3_LEN_ARTIST_NAME		30		// アーティスト名(文字列…30BYTE)
-#define ID3_LEN_ALBUM_NAME		30		// アルバム名    (文字列…30BYTE)
-#define ID3_LEN_COMMENT			30		// コメント      (文字列…30BYTE)
-#define ID3_LEN_YEAR			4		// リリース年号  (文字列… 4BYTE)
+#define ID3_LEN_TRACK_NAME		30u		// トラック名    (文字列…30BYTE)
+#define ID3_LEN_ARTIST_NAME		30u		// アーティスト名(文字列…30BYTE)
+#define ID3_LEN_ALBUM_NAME		30u		// アルバム名    (文字列…30BYTE)
+#define ID3_LEN_COMMENT			30u		// コメント      (文字列…30BYTE)
+#define ID3_LEN_YEAR			4u		// リリース年号  (文字列… 4BYTE)
 
 struct	ID3TAG_V10	{							// <<< ID3 Tag v1.0 のデータ形式 >>>
-	TCHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
-	TCHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
-	TCHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
-	TCHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
-	TCHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
-	TCHAR	sComment[ID3_LEN_COMMENT];			// コメント      (文字列…30BYTE)
+	CHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
+	CHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
+	CHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
+	CHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
+	CHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
+	CHAR	sComment[ID3_LEN_COMMENT];			// コメント      (文字列…30BYTE)
 	BYTE	byGenre;							// ジャンル番号  (数字…… 1BYTE)
 };
+static_assert(sizeof(ID3TAG_V10) == 128, "sizeof(ID3TAG_V10) == 128");
 
 struct	ID3TAG_V11	{							// <<< ID3 Tag v1.1 のデータ形式 >>>
-	TCHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
-	TCHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
-	TCHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
-	TCHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
-	TCHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
-	TCHAR	sComment[ID3_LEN_COMMENT-2];		// コメント      (文字列…30BYTE)
-	TCHAR	cZero;								// '\0'          (文字列… 1BYTE)
+	CHAR	sTAG[3];							// "TAG"         (文字列… 3BYTE)
+	CHAR	sTrackName[ID3_LEN_TRACK_NAME];		// トラック名    (文字列…30BYTE)
+	CHAR	sArtistName[ID3_LEN_ARTIST_NAME];	// アーティスト名(文字列…30BYTE)
+	CHAR	sAlbumName[ID3_LEN_ALBUM_NAME];		// アルバム名    (文字列…30BYTE)
+	CHAR	sYear[4];							// リリース年号  (文字列… 4BYTE)
+	CHAR	sComment[ID3_LEN_COMMENT-2];		// コメント      (文字列…30BYTE)
+	CHAR	cZero;								// '\0'          (文字列… 1BYTE)
 	BYTE	byTrackNumber;						// トラック番号  (数字…… 1BYTE)
 	BYTE	byGenre;							// ジャンル番号  (数字…… 1BYTE)
 };
+static_assert(sizeof(ID3TAG_V11) == 128, "sizeof(ID3TAG_V11) == 128");
 #pragma pack(pop)
 
 //
@@ -542,14 +545,14 @@ static	bool	IsID3Tag11(const ID3TAG *data) {
 #ifndef iskanji
 #define iskanji(c)		((unsigned char)(c) >= 0x81 && (unsigned char)(c) <= 0x9f || (unsigned char)(c) >= 0xe0 && (unsigned char)(c) <= 0xfc)
 #endif
-void	StringCopyN(LPTSTR, LPCTSTR, int, BOOL = TRUE);
-void	StringCopyN2(LPTSTR, LPCTSTR, int, BOOL = TRUE);
-void StringCopyN(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
+void	StringCopyN(LPSTR, LPCSTR, int, BOOL = TRUE);
+void	StringCopyN2(LPSTR, LPCSTR, int, BOOL = TRUE);
+void StringCopyN(LPSTR sDest, LPCSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (lstrlen(sSrc) < (unsigned int)nLen) {
-		if (bTerm) lstrcpy(sDest, sSrc);
-		else       memcpy(sDest, sSrc, lstrlen(sSrc));
+	if (strlen(sSrc) < (unsigned int)nLen) {
+		if (bTerm) strcpy(sDest, sSrc);
+		else       memcpy(sDest, sSrc, strlen(sSrc));
 		return;
 	}
 	while(nLen > 0) {
@@ -567,7 +570,7 @@ void StringCopyN(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 		}
 	}
 }
-void StringCopyN2(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
+void StringCopyN2(LPSTR sDest, LPCSTR sSrc, int nLen, BOOL bTerm)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	bool bCR = false;
@@ -597,11 +600,20 @@ void StringCopyN2(LPTSTR sDest, LPCTSTR sSrc, int nLen, BOOL bTerm)
 	}
 }
 
-void DeleteLineEndSpace(TCHAR *sBuffer)
+void DeleteLineEndSpace(WCHAR *sBuffer)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	int		nPos = lstrlen(sBuffer) - 1;
-	while(nPos >= 0 && sBuffer[nPos] == ' ') {
+	int		nPos = lstrlenW(sBuffer) - 1;
+	while(nPos >= 0 && sBuffer[nPos] == L' ') {
+		sBuffer[nPos] = L'\0';
+		nPos--;
+	}
+}
+void DeleteLineEndSpace(CHAR *sBuffer)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	int		nPos = strlen(sBuffer) - 1;
+	while (nPos >= 0 && sBuffer[nPos] == ' ') {
 		sBuffer[nPos] = '\0';
 		nPos--;
 	}
@@ -674,34 +686,34 @@ bool ReadTagID3(LPCTSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 			if (IsID3Tag(&tag) == true) {
 				// ID3 tag が存在する
 				ID3TAG_V11	*pTag = (ID3TAG_V11 *)&tag;
-				TCHAR	sBuffer[30+1];
+				CHAR	sBuffer[30+1];
 				// トラック名
 				StringCopyN(sBuffer, pTag->sTrackName, ID3_LEN_TRACK_NAME);
 				sBuffer[ID3_LEN_TRACK_NAME] = '\0';
 				DeleteLineEndSpace(sBuffer);
-				SetTrackName(pFileMP3, sBuffer);
+				SetTrackName(pFileMP3, CString(sBuffer));
 				// アーティスト名
 				StringCopyN(sBuffer, pTag->sArtistName, ID3_LEN_ARTIST_NAME);
 				sBuffer[ID3_LEN_ARTIST_NAME] = '\0';
 				DeleteLineEndSpace(sBuffer);
-				SetArtistName(pFileMP3, sBuffer);
+				SetArtistName(pFileMP3, CString(sBuffer));
 				// アルバム名
 				StringCopyN(sBuffer, pTag->sAlbumName, ID3_LEN_ALBUM_NAME);
 				sBuffer[ID3_LEN_ALBUM_NAME] = '\0';
 				DeleteLineEndSpace(sBuffer);
-				SetAlbumName(pFileMP3, sBuffer);
+				SetAlbumName(pFileMP3, CString(sBuffer));
 				// リリース年号
 				StringCopyN(sBuffer, pTag->sYear, ID3_LEN_YEAR);
 				sBuffer[ID3_LEN_YEAR] = '\0';
 				DeleteLineEndSpace(sBuffer);
-				SetYear(pFileMP3, sBuffer);
+				SetYear(pFileMP3, CString(sBuffer));
 				// コメント
 				if (IsID3Tag11(&tag) == true) {
 					// ID3 tag Ver 1.1
 					StringCopyN(sBuffer, pTag->sComment, ID3_LEN_COMMENT-2);
 					sBuffer[28] = '\0';
 					DeleteLineEndSpace(sBuffer);
-					SetComment(pFileMP3, sBuffer);
+					SetComment(pFileMP3, CString(sBuffer));
 					// トラック番号
 					SetBTrackNumber(pFileMP3, pTag->byTrackNumber);
 					if (GetBTrackNumber(pFileMP3) == 0x00) {
@@ -714,7 +726,7 @@ bool ReadTagID3(LPCTSTR sFileName, FILE_INFO *pFileMP3, char *sHead)
 					StringCopyN(sBuffer, pTag->sComment, ID3_LEN_COMMENT);
 					sBuffer[30] = '\0';
 					DeleteLineEndSpace(sBuffer);
-					SetComment(pFileMP3, sBuffer);
+					SetComment(pFileMP3, CString(sBuffer));
 					// トラック番号
 					SetBTrackNumber(pFileMP3, 0xff);
 					SetFormat(pFileMP3, nFileTypeMP3V1);	// ファイル形式：MP3V1.0
@@ -906,33 +918,35 @@ bool WriteTagID3(FILE_INFO *pFileMP3)
 			pTag->sTAG[2] = 'G';
 
 			int		nLen;
+			CStringA text;
+
 			// トラック名
-			nLen = lstrlen(GetTrackName(pFileMP3));
-			if (nLen > ID3_LEN_TRACK_NAME) nLen = ID3_LEN_TRACK_NAME;
-			StringCopyN(&pTag->sTrackName[0], GetTrackName(pFileMP3), nLen, FALSE);
+			text = GetTrackName(pFileMP3);
+			nLen = (std::min)(strlen(text), ID3_LEN_TRACK_NAME);
+			StringCopyN(&pTag->sTrackName[0], text, nLen, FALSE);
 
 			// アーティスト名
-			nLen = lstrlen(GetArtistName(pFileMP3));
-			if (nLen > ID3_LEN_ARTIST_NAME) nLen = ID3_LEN_ARTIST_NAME;
-			StringCopyN(&pTag->sArtistName[0], GetArtistName(pFileMP3), nLen, FALSE);
+			text = GetArtistName(pFileMP3);
+			nLen = (std::min)(strlen(text), ID3_LEN_ARTIST_NAME);
+			StringCopyN(&pTag->sArtistName[0], text, nLen, FALSE);
 
 			// アルバム名
-			nLen = lstrlen(GetAlbumName(pFileMP3));
-			if (nLen > ID3_LEN_ALBUM_NAME) nLen = ID3_LEN_ALBUM_NAME;
-			StringCopyN(&pTag->sAlbumName[0], GetAlbumName(pFileMP3), nLen, FALSE);
+			text = GetAlbumName(pFileMP3);
+			nLen = (std::min)(strlen(text), ID3_LEN_ALBUM_NAME);
+			StringCopyN(&pTag->sAlbumName[0], text, nLen, FALSE);
 
 			// リリース年号
-			nLen = lstrlen(GetYear(pFileMP3));
-			if (nLen > ID3_LEN_YEAR) nLen = ID3_LEN_YEAR;
-			StringCopyN(&pTag->sYear[0], GetYear(pFileMP3), nLen, FALSE);
+			text = GetYear(pFileMP3);
+			nLen = (std::min)(strlen(text), ID3_LEN_YEAR);
+			StringCopyN(&pTag->sYear[0], text, nLen, FALSE);
 
 			if (GetBTrackNumber(pFileMP3) == 0xff) {
 				// ID3 tag Ver 1.0
 				// コメント
-				nLen = lstrlen(GetComment(pFileMP3));
-				if (nLen > ID3_LEN_COMMENT) nLen = ID3_LEN_COMMENT;
+				text = GetComment(pFileMP3);
+				nLen = (std::min)(strlen(text), ID3_LEN_COMMENT);
 				memset(&pTag->sComment[0], 0x00, ID3_LEN_COMMENT);
-				StringCopyN2(&pTag->sComment[0], GetComment(pFileMP3), nLen, FALSE);
+				StringCopyN2(&pTag->sComment[0], text, nLen, FALSE);
 
 				// 再設定
 				SetFormat(pFileMP3, nFileTypeMP3V1);	// ファイル形式：MP3V1.0
@@ -940,10 +954,10 @@ bool WriteTagID3(FILE_INFO *pFileMP3)
 			} else {
 				// ID3 tag Ver 1.1
 				// コメント
-				nLen = lstrlen(GetComment(pFileMP3));
-				if (nLen > ID3_LEN_COMMENT-2) nLen = ID3_LEN_COMMENT-2;
-				memset(&pTag->sComment[0], 0x00, ID3_LEN_COMMENT-2);
-				StringCopyN2(&pTag->sComment[0], GetComment(pFileMP3), nLen, FALSE);
+				text = GetComment(pFileMP3);
+				nLen = (std::min)(strlen(text), ID3_LEN_COMMENT - 2);
+				memset(&pTag->sComment[0], 0x00, ID3_LEN_COMMENT - 2);
+				StringCopyN2(&pTag->sComment[0], text, nLen, FALSE);
 
 				pTag->cZero = '\0';
 				// トラック番号
@@ -984,12 +998,13 @@ bool ConvID3tagToSIField(FILE_INFO *pFileMP3)
 	SetCommentSI(pFileMP3, GetComment(pFileMP3));		// コメント文字列
 	SetYearSI(pFileMP3, GetYear(pFileMP3));				// リリース年号
 
-#define LIMIT_TEXT_LENGTH(strID3, nLen)	{			\
-	TCHAR	sWorkBuffer[nLen+1];					\
-	StringCopyN(sWorkBuffer, GetValue(pFileMP3, strID3), nLen);			\
-	sWorkBuffer[nLen] = '\0';						\
-	SetValue(pFileMP3, strID3, sWorkBuffer);			\
-}
+	auto LIMIT_TEXT_LENGTH = [pFileMP3] (FIELDTYPE strID3, std::size_t nLen) {
+		CHAR sWorkBuffer[30 + 1];
+		StringCopyN(sWorkBuffer, CStringA(GetValue(pFileMP3, strID3)), nLen);
+		sWorkBuffer[nLen] = '\0';
+		SetValue(pFileMP3, strID3, CString(sWorkBuffer));
+	};
+
 	// ID3 tag の文字数を調整(自動変換の為の対処)
 	LIMIT_TEXT_LENGTH(FIELD_TRACK_NAME		, ID3_LEN_TRACK_NAME);
 	LIMIT_TEXT_LENGTH(FIELD_ARTIST_NAME		, ID3_LEN_ARTIST_NAME);
@@ -1000,7 +1015,7 @@ bool ConvID3tagToSIField(FILE_INFO *pFileMP3)
 	} else {
 		LIMIT_TEXT_LENGTH(FIELD_COMMENT, ID3_LEN_COMMENT);
 	}
-#undef LIMIT_TEXT_LENGTH
+
 	// ソフトウェアの設定
 	UINT nFormat = GetFormat(pFileMP3);
 	if (!(nFormat == nFileTypeMP3 || nFormat == nFileTypeMP3V1 || nFormat == nFileTypeMP3V11)) {
@@ -1025,7 +1040,6 @@ bool ConvID3tagToSIField(FILE_INFO *pFileMP3)
 void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TCHAR	sBuffer[256+1];
 
 	if (GetFormat(pFileMP3) != nFileTypeID3V2 && GetFormat(pFileMP3) != nFileTypeRMP) {
 		return;
@@ -1033,23 +1047,25 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 
 	SetModifyFlag(pFileMP3, TRUE);				// 変更されたフラグをセット
 
-// コピー対象のフィールドかどうかをチェックして、必要な場合だけコピーします
-#define COPY_FIELD(strID3, strSIF, len)	{			\
-	if (nOptSIFieldConvType == SIF_CONV_ALL_FIELD	\
-	|| lstrlen(strSIF) <= (len)) {					\
-		StringCopyN(sBuffer, strSIF, len);			\
-		sBuffer[len] = '\0';						\
-		SetValue(pFileMP3, strID3, sBuffer);		\
-	}												\
-}
-#define COPY_FIELD2(strID3, strSIF, len)	{			\
-	if (nOptSIFieldConvType == SIF_CONV_ALL_FIELD	\
-	|| lstrlen(strSIF) <= (len)) {					\
-		StringCopyN2(sBuffer, strSIF, len);			\
-		sBuffer[len] = '\0';						\
-		SetValue(pFileMP3, strID3, sBuffer);		\
-	}												\
-}
+	// コピー対象のフィールドかどうかをチェックして、必要な場合だけコピーします
+	auto COPY_FIELD = [pFileMP3](auto strID3, CStringA strSIF, std::size_t len) {
+		if ((nOptSIFieldConvType == SIF_CONV_ALL_FIELD) || (strlen(strSIF) <= len)) {
+			CHAR sBuffer[256 + 1];
+			StringCopyN(sBuffer, strSIF, len);
+			sBuffer[len] = '\0';
+			SetValue(pFileMP3, strID3, CString(sBuffer));
+		}
+	};
+
+	auto COPY_FIELD2 = [pFileMP3](auto strID3, CStringA strSIF, std::size_t len) {
+		if ((nOptSIFieldConvType == SIF_CONV_ALL_FIELD) || (strlen(strSIF) <= len)) {
+			CHAR sBuffer[256 + 1];
+			StringCopyN2(sBuffer, strSIF, len);
+			sBuffer[len] = '\0';
+			SetValue(pFileMP3, strID3, CString(sBuffer));
+		}
+	};
+
 	// 曲名
 	COPY_FIELD(FIELD_TRACK_NAME, GetTrackNameSI(pFileMP3), ID3_LEN_TRACK_NAME);
 	// アーティスト名
@@ -1085,7 +1101,6 @@ void ConvSIFieldToID3tag(FILE_INFO *pFileMP3)
 	// ジャンル
 	SetBGenre(pFileMP3, STEPGetGenreCode(GetGenreSI(pFileMP3)));
 	SetGenre(pFileMP3, STEPGetGenreNameSIF(GetBGenre(pFileMP3)));
-#undef COPY_FIELD
 #undef COPY_FIELD2
 
 	return;
