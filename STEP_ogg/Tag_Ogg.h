@@ -83,7 +83,7 @@ private:
 	multimap<CString,CString> m_comments;
 
 	std::string Ucs2ToUtf8(const CStringW& str);
-	CString Utf8ToUcs2(const char *str);
+	CStringW Utf8ToUcs2(const char *str);
 };
 
 #endif // !defined(AFX_TAG_OGG_H__6C5D4E96_2B7C_4333_A4F8_3CF81D10E6F5__INCLUDED_)

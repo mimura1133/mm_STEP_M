@@ -269,7 +269,7 @@ DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 			int index = str.Find("=");
 			if(index != -1)
 			{
-				AddComment(CStringA(str, index), Utf8ToUcs2(&((*ptr)[index+1])));
+				AddComment(CStringA(str, index), static_cast<CString>(Utf8ToUcs2(&((*ptr)[index+1]))));
 			}
 			++ptr;
 		}
@@ -565,8 +565,8 @@ DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 			{
 				break;
 			}
-			vorbis_comment_add_tag(&_vc, strName, Ucs2ToUtf8(strValue).c_str());
-			TRACE("vorbis_comment_add_tag(%s=%s)\n", strName, Ucs2ToUtf8(strValue));
+			vorbis_comment_add_tag(&_vc, strName, Ucs2ToUtf8(static_cast<CStringW>(strValue)).c_str());
+			TRACE("vorbis_comment_add_tag(%s=%s)\n", strName, Ucs2ToUtf8(static_cast<CStringW>(strValue)));
 		}
 	}
 
