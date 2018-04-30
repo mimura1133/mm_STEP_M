@@ -13,10 +13,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E18DA30E-6AC6-4BD5-A16A-32420644345F}</ProjectGuid>
@@ -42,9 +38,6 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v141</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -231,14 +224,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Debug/SuperTagEditor.bsc</OutputFile>
     </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <Link>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-    </Link>
-    <ClCompile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mp3infp\call_mp3infp.cpp">
