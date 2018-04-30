@@ -14,12 +14,12 @@ bool LoadAttributeFileWAV(FILE_INFO *pFileMP3)
 	CRiffSIF riff;
 	TCHAR ext[_MAX_EXT];
 	_tsplitpath(GetFullPath(pFileMP3), NULL, NULL, NULL, ext);
-    if(_strcmpi(ext, ".wav") == 0){
+    if(_tcsicmp(ext, TEXT(".wav")) == 0){
         if(riff.Load(GetFullPath(pFileMP3),'W','A','V','E') != ERROR_SUCCESS){
             return false;
         }
     }
-    else if(_strcmpi(ext, ".avi") == 0){
+    else if(_tcsicmp(ext, TEXT(".avi")) == 0){
         if(riff.Load(GetFullPath(pFileMP3),'A','V','I',' ') != ERROR_SUCCESS){
             return false;
         }
@@ -32,7 +32,7 @@ bool LoadAttributeFileWAV(FILE_INFO *pFileMP3)
     //INAM/ISBJ タイトル
     //ISBJ よりも INAM を優先
     SetTrackNameSI(pFileMP3, riff.GetField('I','N','A','M'));
-    if(strlen(GetTrackNameSI(pFileMP3)) == 0){
+    if(lstrlen(GetTrackNameSI(pFileMP3)) == 0){
         SetTrackNameSI(pFileMP3, riff.GetField('I','S','B','J'));
     }
 	//IART アーティスト名
@@ -66,12 +66,12 @@ bool WriteAttributeFileWAV(FILE_INFO *pFileMP3)
 	CRiffSIF riff;
 	TCHAR ext[_MAX_EXT];
 	_tsplitpath(GetFullPath(pFileMP3), NULL, NULL, NULL, ext);
-    if(_strcmpi(ext, ".wav") == 0){
+    if(_tcsicmp(ext, TEXT(".wav")) == 0){
         if(riff.Load(GetFullPath(pFileMP3),'W','A','V','E') != ERROR_SUCCESS){
             return false;
         }
     }
-    else if(_strcmpi(ext, ".avi") == 0){
+    else if(_tcsicmp(ext, TEXT(".avi")) == 0){
         if(riff.Load(GetFullPath(pFileMP3),'A','V','I',' ') != ERROR_SUCCESS){
             return false;
         }
@@ -81,7 +81,7 @@ bool WriteAttributeFileWAV(FILE_INFO *pFileMP3)
     }
     //INAM タイトル
 	riff.SetField('I','N','A','M', GetTrackNameSI(pFileMP3));
-	riff.SetField('I','S','B','J', ""); /* 2005.12.26 mp3infpと同様に ISBJを削除 */
+	riff.SetField('I','S','B','J', TEXT("")); /* 2005.12.26 mp3infpと同様に ISBJを削除 */
 	//IART アーティスト名
 	riff.SetField('I','A','R','T', GetArtistNameSI(pFileMP3));
 	//IPRD アルバム名
