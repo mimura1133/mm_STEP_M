@@ -1,8 +1,10 @@
 .vs
 obj
 Debug
+DebugMBCS
 Release
 /SuperTagEditor/DebugPlugin
+/SuperTagEditor/DebugMBCSPlugin
 /SuperTagEditor/Plugin
 
 !.gitkeep
