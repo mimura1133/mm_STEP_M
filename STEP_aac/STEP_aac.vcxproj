@@ -111,7 +111,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy Debug\STEP_aac.dll ..\SuperTagEditor\DebugPlugin\STEP_aac.ste
+      <Command>copy $(TargetPath) ..\SuperTagEditor\DebugPlugin\$(TargetName).ste
 copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
 </Command>
     </PostBuildEvent>
@@ -157,7 +157,7 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\STEP_aac.ste
+      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\$(TargetName).ste
 copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\$(Configuration)Plugin\mp4v2.dll
 </Command>
     </PostBuildEvent>

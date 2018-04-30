@@ -156,7 +156,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\STEP_riff.ste</Command>
+      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\$(TargetName).ste</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">
@@ -200,7 +200,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\STEP_riff.ste</Command>
+      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\$(TargetName).ste</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
