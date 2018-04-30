@@ -80,7 +80,7 @@ bool bOptWavSupportTrackNumber;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.02 Copyright (C) 2003-2006 haseta\r\nRIFF WAV/AVI形式をサポートしています";
+	return TEXT("Version 1.02 Copyright (C) 2003-2006 haseta\r\nRIFF WAV/AVI形式をサポートしています");
 }
 
 STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
@@ -92,15 +92,15 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_riff.ini";
-	bOptWavGenreListSelect = GetPrivateProfileInt("WAV", "GenreListSelect", 0, strINI) ? true : false;
-	bOptAviGenreListSelect = GetPrivateProfileInt("AVI", "GenreListSelect", 0, strINI) ? true : false;
-	bOptWavSupportTrackNumber = GetPrivateProfileInt("WAV", "SupportTrackNumber", 0, strINI) ? true : false;
+	bOptWavGenreListSelect = GetPrivateProfileInt(TEXT("WAV"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
+	bOptAviGenreListSelect = GetPrivateProfileInt(TEXT("AVI"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
+	bOptWavSupportTrackNumber = GetPrivateProfileInt(TEXT("WAV"), TEXT("SupportTrackNumber"), 0, strINI) ? true : false;
 
 	HBITMAP hWAVBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_WAV));
-	nFileTypeWAV = STEPRegisterExt(nPluginID, "wav", hWAVBitmap);
+	nFileTypeWAV = STEPRegisterExt(nPluginID, TEXT("wav"), hWAVBitmap);
 	DeleteObject(hWAVBitmap);
 	HBITMAP hAVIBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_AVI));
-	nFileTypeAVI = STEPRegisterExt(nPluginID, "avi", hAVIBitmap);
+	nFileTypeAVI = STEPRegisterExt(nPluginID, TEXT("avi"), hAVIBitmap);
 	DeleteObject(hAVIBitmap);
 
 	return true;
@@ -119,7 +119,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_riff";
+	return TEXT("STEP_riff");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -211,27 +211,27 @@ STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	extern	bool LoadAttributeFileWAV(FILE_INFO *pFile);
-	if (stricmp(szExt, "wav") == 0) {
+	if (_tcsicmp(szExt, TEXT("wav")) == 0) {
 		if (LoadAttributeFileWAV(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "WAVファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("WAVファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
 			SetFormat(pFileMP3, nFileTypeWAV);
-			SetFileTypeName(pFileMP3, "WAV");
+			SetFileTypeName(pFileMP3, TEXT("WAV"));
 			return STEP_SUCCESS;
 		}
 	}
-	if (stricmp(szExt, "avi") == 0) {
+	if (_tcsicmp(szExt, TEXT("avi")) == 0) {
 		if (LoadAttributeFileWAV(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "AVIファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("AVIファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
 			SetFormat(pFileMP3, nFileTypeAVI);
-			SetFileTypeName(pFileMP3, "AVI");
+			SetFileTypeName(pFileMP3, TEXT("AVI"));
 			return STEP_SUCCESS;
 		}
 	}
@@ -247,8 +247,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 	if (nFormat == nFileTypeWAV) {
 		if (WriteAttributeFileWAV(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "WAVファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("WAVファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -256,8 +256,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 	if (nFormat == nFileTypeAVI) {
 		if (WriteAttributeFileWAV(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "AVIファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("AVIファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -281,9 +281,9 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 		bOptAviGenreListSelect = dlg1.m_bAviGenreListSelect ? true : false;
 		bOptWavSupportTrackNumber = dlg1.m_bWavSupportTrackNumber ? true : false;
 
-		WritePrivateProfileString("WAV", "GenreListSelect", bOptWavGenreListSelect ? "1" : "0", strINI);
-		WritePrivateProfileString("AVI", "GenreListSelect", bOptAviGenreListSelect ? "1" : "0", strINI);
-		WritePrivateProfileString("WAV", "SupportTrackNumber", bOptWavSupportTrackNumber ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("WAV"), TEXT("GenreListSelect"), bOptWavGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("AVI"), TEXT("GenreListSelect"), bOptAviGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("WAV"), TEXT("SupportTrackNumber"), bOptWavSupportTrackNumber ? TEXT("1") : TEXT("0"), strINI);
 
 		STEPUpdateCellInfo();
 	}
