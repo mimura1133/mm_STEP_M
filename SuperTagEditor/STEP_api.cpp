@@ -83,7 +83,8 @@ PSTEPlugin STEPluginLoadFile(LPCTSTR strPluginFile)
 		}
 
 		// https://support.microsoft.com/help/2389418/secure-loading-of-libraries-to-prevent-dll-preloading-attacks
-		hLib = LoadLibrary(full);
+		SetDllDirectory(TEXT(""));
+		hLib = LoadLibraryEx(full, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 		if (!hLib) {
 			return nullptr;
 		}
