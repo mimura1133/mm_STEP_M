@@ -58,14 +58,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">.\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">.\Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">.\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">.\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugMBCS|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -87,10 +87,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Debug/STEP_aac.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
-      <ObjectFileName>.\Debug/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -101,11 +97,9 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>mp4v2\Debug\mp4v2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/STEP_aac.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\STEP_aac.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/STEP_aac.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -115,7 +109,6 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug/STEP_aac.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Command>copy Debug\STEP_aac.dll ..\SuperTagEditor\DebugPlugin\STEP_aac.ste
@@ -142,10 +135,6 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Debug/STEP_aac.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
-      <ObjectFileName>.\Debug/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -155,26 +144,21 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>mp4v2\Debug\mp4v2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/STEP_aac.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\STEP_aac.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/STEP_aac.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>.\Debug/STEP_aac.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug/STEP_aac.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy Debug\STEP_aac.dll ..\SuperTagEditor\DebugPlugin\STEP_aac.ste
-copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
+      <Command>copy $(TargetPath) ..\SuperTagEditor\$(Configuration)Plugin\STEP_aac.ste
+copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\$(Configuration)Plugin\mp4v2.dll
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -200,10 +184,6 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Release/STEP_aac.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
-      <ObjectFileName>.\Release/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
@@ -215,10 +195,8 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>mp4v2\Release\mp4v2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/STEP_aac.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\STEP_aac.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release/STEP_aac.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -228,7 +206,6 @@ copy mp4v2\Debug\mp4v2.dll ..\SuperTagEditor\DebugPlugin\mp4v2.dll
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release/STEP_aac.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Command>copy Release\STEP_aac.dll ..\SuperTagEditor\Plugin\STEP_aac.ste
@@ -305,6 +282,7 @@ copy mp4v2\Release\mp4v2.dll ..\SuperTagEditor\Plugin\mp4v2.dll
     <ProjectReference Include="mp4v2\mp4v2.vcxproj">
       <Project>{f6feb880-93cd-4451-a7d5-6c5c37e9a5b6}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
