@@ -10,6 +10,7 @@ platform: x86
 configuration:
 - Release
 - Debug
+- DebugMBCS
 
 build:
   project: SuperTagEditor.sln

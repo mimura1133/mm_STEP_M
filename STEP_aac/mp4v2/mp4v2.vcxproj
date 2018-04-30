@@ -90,7 +90,6 @@
       <ModuleDefinitionFile>mp4v2.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release/mp4v2.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\mp4v2.map</MapFileName>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
