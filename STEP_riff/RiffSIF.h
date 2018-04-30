@@ -40,7 +40,7 @@ protected:
 private:
 	FOURCC m_type;
 	DWORD GetInfoChunkSize();
-	map<FOURCC,CString> m_fields;
+	map<FOURCC, CStringA> m_fields;
 	DWORD m_dwStreamSize;
 	CString m_strJunkHeader;
 };
