@@ -54,9 +54,7 @@ bool LoadAttributeFileWMA(FILE_INFO *pFileMP3)
 {
 	HRESULT hr = S_OK;
 
-	LPWSTR	pwszInFile = NULL;
-	hr = ConvertMBtoWC(GetFullPath(pFileMP3), &pwszInFile);
-	if (FAILED(hr)) return(false);
+	CStringW pwszInFile = GetFullPath(pFileMP3);
 
 	CoInitialize(NULL);
 
@@ -74,7 +72,7 @@ bool LoadAttributeFileWMA(FILE_INFO *pFileMP3)
 
 		hr = pEditor->Open(pwszInFile);
 		if (FAILED(hr)) {
-			TRACE( _T( "Could not open outfile %ws (hr=0x%08x).\n" ), pwszInFile, hr );
+			TRACE( _T( "Could not open outfile %ws (hr=0x%08x).\n" ), static_cast<CString>(pwszInFile).GetBuffer(), hr );
 			break ;
 		}
 
@@ -91,7 +89,7 @@ bool LoadAttributeFileWMA(FILE_INFO *pFileMP3)
 
 		hr = pEditor->Close();
 		if (FAILED(hr)) {
-			TRACE( _T( "Could not close the file %ws (hr=0x%08x).\n" ), pwszInFile, hr) ;
+			TRACE( _T( "Could not close the file %ws (hr=0x%08x).\n" ), static_cast<CString>(pwszInFile).GetBuffer(), hr) ;
 			break;
 		}
 	}
@@ -101,10 +99,7 @@ bool LoadAttributeFileWMA(FILE_INFO *pFileMP3)
 	SAFE_RELEASE( pEditor ) ;
 
 	CoUninitialize();
-
-	delete[] pwszInFile;
-	pwszInFile = NULL;
-
+	
 	extern bool GetValues_mp3infp(FILE_INFO *pFileMP3);
 	GetValues_mp3infp(pFileMP3);
 
@@ -125,9 +120,7 @@ bool WriteAttributeFileWMA(FILE_INFO *pFileMP3)
 {
 	HRESULT hr = S_OK;
 
-	LPWSTR	pwszInFile = NULL;
-	hr = ConvertMBtoWC((LPCSTR)GetFullPath(pFileMP3), &pwszInFile);
-	if (FAILED(hr)) return(false);
+	CStringW pwszInFile = GetFullPath(pFileMP3);
 
 	CoInitialize(NULL);
 
@@ -150,7 +143,7 @@ bool WriteAttributeFileWMA(FILE_INFO *pFileMP3)
 
 		hr = pEditor->Open( pwszInFile ) ;
 		if (FAILED(hr)) {
-			TRACE( _T( "Could not open the file %ws (hr=0x%08x).\n" ), pwszInFile, hr );
+			TRACE( _T( "Could not open the file %ws (hr=0x%08x).\n" ), static_cast<CString>(pwszInFile).GetBuffer(), hr );
 			break ;
 		}
 		hr = pEditor->QueryInterface( IID_IWMHeaderInfo3, ( void ** ) &pHeaderInfo );
@@ -159,9 +152,9 @@ bool WriteAttributeFileWMA(FILE_INFO *pFileMP3)
 			break ;
 		}
 		// ƒ^ƒOî•ñ‚Ìo—Í
-		if (strlen(GetTrackNumberSI(pFileMP3)) > 0 && atoi(GetTrackNumberSI(pFileMP3)) > 0) {
-			WriteAttributeDWORD(pHeaderInfo, L"WM/Track", atoi(GetTrackNumberSI(pFileMP3)) - 1);
-			WriteAttributeDWORD(pHeaderInfo, L"WM/TrackNumber", atoi(GetTrackNumberSI(pFileMP3)));
+		if (lstrlen(GetTrackNumberSI(pFileMP3)) > 0 && _tstoi(GetTrackNumberSI(pFileMP3)) > 0) {
+			WriteAttributeDWORD(pHeaderInfo, L"WM/Track", _tstoi(GetTrackNumberSI(pFileMP3)) - 1);
+			WriteAttributeDWORD(pHeaderInfo, L"WM/TrackNumber", _tstoi(GetTrackNumberSI(pFileMP3)));
 		}
 		WriteAttributeStr(pHeaderInfo, L"WM/PartOfSet" , GetDiskNumberSI(pFileMP3));
 		WriteAttributeStr(pHeaderInfo, L"WM/AlbumTitle", GetAlbumNameSI(pFileMP3));
@@ -188,7 +181,7 @@ bool WriteAttributeFileWMA(FILE_INFO *pFileMP3)
 
 		hr = pEditor->Close();
 		if (FAILED(hr)) {
-			TRACE( _T( "Could not close the file %ws (hr=0x%08x).\n" ), pwszInFile, hr) ;
+			TRACE( _T( "Could not close the file %ws (hr=0x%08x).\n" ), static_cast<CString>(pwszInFile).GetBuffer(), hr) ;
 			break;
 		}
 	}
@@ -198,9 +191,6 @@ bool WriteAttributeFileWMA(FILE_INFO *pFileMP3)
 	SAFE_RELEASE( pEditor ) ;
 
 	CoUninitialize();
-
-	delete[] pwszInFile;
-	pwszInFile = NULL;
 
 	return(FAILED(hr) ? false : true);
 }
