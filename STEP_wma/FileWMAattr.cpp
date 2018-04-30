@@ -23,39 +23,34 @@
 
 void SetAttribute(LPCWSTR pwszName, WMT_ATTR_DATATYPE type, BYTE* pValue, DWORD cbLength, FILE_INFO *pFileMP3, BOOL *pIsProtected, BOOL bAppend)
 {
-	char	sBuffer[1024];
-	CString	strName;
+	CStringA strName = pwszName;
 	CString	strData;
-	wsprintf(sBuffer, "%ls", pwszName);
-	strName = sBuffer;
     switch(type) {
     case WMT_TYPE_DWORD:
-		strData.Format("%u", *((DWORD *)pValue));
+		strData.Format(TEXT("%u"), *((DWORD *)pValue));
         //TRACE( _T("%ws:  %u\n" ), pwszName, *((DWORD *)pValue) );
         break;
     case WMT_TYPE_STRING:
-		/* RockDance 131 *///wsprintf(sBuffer, "%ls", (WCHAR *)pValue);
-		WideCharToMultiByte(CP_ACP,0,(LPWSTR )pValue,-1,sBuffer,sizeof(sBuffer),NULL,NULL); /* RockDance 131 */
-		strData = sBuffer;
+		strData = (LPCWSTR)pValue;
         //TRACE( _T("%ws:   %ws\n" ), pwszName, (WCHAR *)pValue );
         break;
     case WMT_TYPE_BINARY:
         //TRACE( _T("%ws:   Type = Binary of Length %u\n" ), pwszName, cbLength );
         break;
     case WMT_TYPE_BOOL:
-		strData.Format("%d", *((BOOL *)pValue) ? 1 : 0);
+		strData.Format(TEXT("%d"), *((BOOL *)pValue) ? 1 : 0);
         //TRACE( _T("%ws:   %s\n" ), pwszName, ( * ( ( BOOL * ) pValue) ? _T( "true" ) : _T( "false" ) ) );
         break;
     case WMT_TYPE_WORD:
-		strData.Format("%hu", *((WORD *)pValue));
+		strData.Format(TEXT("%hu"), *((WORD *)pValue));
         //TRACE( _T("%ws:  %hu\n" ), pwszName, *((WORD *) pValue) );
         break;
     case WMT_TYPE_QWORD:
-		strData.Format("%I64u", *((QWORD *)pValue));
+		strData.Format(TEXT("%I64u"), *((QWORD *)pValue));
         //TRACE( _T("%ws:  %I64u\n" ), pwszName, *((QWORD *) pValue) );
         break;
     case WMT_TYPE_GUID:
-		strData.Format("%I64x%I64x", *((QWORD *)pValue), *((QWORD *)pValue+1));
+		strData.Format(TEXT("%I64x%I64x"), *((QWORD *)pValue), *((QWORD *)pValue+1));
         //TRACE( _T("%ws:  %I64x%I64x\n" ), pwszName, *((QWORD *) pValue), *((QWORD *) pValue + 1) );
         break;
     default:
@@ -70,28 +65,28 @@ void SetAttribute(LPCWSTR pwszName, WMT_ATTR_DATATYPE type, BYTE* pValue, DWORD 
 //			pFileMP3->nPlayTime = (int)((*((QWORD *)pValue) / (QWORD)10000000));
 //		} else if (strcmp(strName, "Bitrate") == 0) {
 //			// ビットレート
-//			pFileMP3->nBitRate = atoi(strData) / 1000;
+//			pFileMP3->nBitRate = _tstoi(strData) / 1000;
 		} else if (_strcmpi(strName, "WM/Track") == 0) {
 			// トラック番号
-			//SetBTrackNumber(pFileMP3, (BYTE)atoi(strData) + 1);
+			//SetBTrackNumber(pFileMP3, (BYTE)_tstoi(strData) + 1);
 			CString strTrack;
-			strTrack.Format("%d", atoi(strData) + 1);
+			strTrack.Format(TEXT("%d"), _tstoi(strData) + 1);
 			SetTrackNumberSI(pFileMP3, strTrack);
 		} else if (_strcmpi(strName, "WM/TrackNumber") == 0) {
 			// トラック番号
-			if (atoi(strData) == 0) {
+			if (_tstoi(strData) == 0) {
 				//SetBTrackNumber(pFileMP3, (BYTE)0xFF);
-				SetTrackNumberSI(pFileMP3, "");
+				SetTrackNumberSI(pFileMP3, TEXT(""));
 			} else {
-				//SetBTrackNumber(pFileMP3, (BYTE)atoi(strData));
+				//SetBTrackNumber(pFileMP3, (BYTE)_tstoi(strData));
 				CString strTrack;
-				strTrack.Format("%d", atoi(strData));
+				strTrack.Format(TEXT("%d"), _tstoi(strData));
 				SetTrackNumberSI(pFileMP3, strTrack);
 			}
 		} else if (_strcmpi(strName, "WM/PartOfSet") == 0) {
 			// ディスク番号
 			CString strDisk;
-			strDisk.Format("%d", atoi(strData));
+			strDisk.Format(TEXT("%d"), _tstoi(strData));
 			SetDiskNumberSI(pFileMP3, strDisk);
 		}  else if (_strcmpi(strName, "WM/Year") == 0) {
 			// リリース
@@ -164,7 +159,7 @@ void SetAttribute(LPCWSTR pwszName, WMT_ATTR_DATATYPE type, BYTE* pValue, DWORD 
 			SetOther(pFileMP3, strData);
 		} else if (_strcmpi(strName, "Is_Protected") == 0) {
 			// DRM が有効なデータ
-			*pIsProtected = (atoi(strData) == 1) ? TRUE : FALSE;
+			*pIsProtected = (_tstoi(strData) == 1) ? TRUE : FALSE;
 		} else if (_strcmpi(strName, "WM/OriginalArtist") == 0) {
 			if (bAppend) {
 				strPrev = GetOrigArtistSI(pFileMP3);
@@ -311,18 +306,12 @@ void DeleteAttribute(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName)
 	}
 }
 
-bool WriteAttributeStr(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR sValue, BOOL /*bSeparate*/)
+bool WriteAttributeStr(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, LPCTSTR sValue, BOOL /*bSeparate*/)
 {
-	HRESULT hr = S_OK;
-	LPWSTR	pwszValue = NULL;
-	hr = ConvertMBtoWC(sValue, &pwszValue);
-	if (FAILED(hr)) return(false);
+	CStringW pwszValue = sValue;
 
-	hr = pHeaderInfo->SetAttribute(0, pwszAttrName, WMT_TYPE_STRING,
-									(LPBYTE)pwszValue, (wcslen(pwszValue)+1) * sizeof(WCHAR));
-
-	delete[] pwszValue;
-	pwszValue = NULL;
+	HRESULT hr = pHeaderInfo->SetAttribute(0, pwszAttrName, WMT_TYPE_STRING,
+									reinterpret_cast<LPBYTE>(pwszValue.GetBuffer()), (wcslen(pwszValue)+1) * sizeof(WCHAR));
 
 	if (FAILED(hr)) {
 		TRACE( _T( "SetAttribute failed for Attribute name %ws (hr=0x%08x).\n" ), pwszAttrName, hr) ;
@@ -331,7 +320,7 @@ bool WriteAttributeStr(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR 
 	return(true);
 }
 
-bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR sValue, BOOL bSeparate)
+bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCTSTR sValue, BOOL bSeparate)
 {
 	//DeleteAttribute(pHeaderInfo, pwszAttrName);
 
@@ -352,15 +341,13 @@ bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR
 	CString strData = sValue;
 	int nIndex = 0;
 	while (strData.GetLength() > 0) {
-		CString strToken;
+		CStringW strToken;
 		if (bSeparate) {
-			strToken = strData.SpanExcluding(";");
+			strToken = strData.SpanExcluding(TEXT(";"));
 		} else {
 			strToken = strData;
 		}
-		LPWSTR	pwszValue = NULL;
-		hr = ConvertMBtoWC(strToken, &pwszValue);
-		if (FAILED(hr)) return(false);
+		LPCWSTR	pwszValue = strToken;
 
 		if (wCount > nIndex) {
 			hr = pHeaderInfo->ModifyAttribute(STREAM_NUM, wIndices[nIndex], WMT_TYPE_STRING, 0,
@@ -374,7 +361,6 @@ bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR
 																pwszAttrName, strToken, hr) ;
 		}
 
-		delete[] pwszValue;
 		pwszValue = NULL;
 
 		if (FAILED(hr)) {
