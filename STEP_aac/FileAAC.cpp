@@ -9,7 +9,7 @@ typedef struct {
 	u_int32_t size;
 } MetaData;
 
-CStringW UTF8toString(const char* UTF8)
+CString UTF8toString(const char* UTF8)
 {
 	auto size = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, nullptr, 0);
 	std::vector<wchar_t> buff(size);
@@ -300,10 +300,10 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		int t1 = 0, t2 = 0;
 		LPCTSTR strTrackNo = GetTrackNumberSI(pFile);
 		if (_tcsstr(strTrackNo, TEXT("/")) != NULL) {
-			_tcscanf(strTrackNo, TEXT("%d/%d"), &t1, &t2);
+			_stscanf(strTrackNo, TEXT("%d/%d"), &t1, &t2);
 			trkn = t1, tot = t2;
 		} else {
-			_tcscanf(strTrackNo, TEXT("%d"), &t1);
+			_stscanf(strTrackNo, TEXT("%d"), &t1);
 			trkn = t1;
 		}
 		if (trkn > 0) {
@@ -315,10 +315,10 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		int t1 = 0, t2 = 0;
 		LPCTSTR strDiskNo = GetDiskNumberSI(pFile);
 		if (_tcsstr(strDiskNo, TEXT("/")) != NULL) {
-			_tcscanf(strDiskNo, TEXT("%d/%d"), &t1, &t2);
+			_stscanf(strDiskNo, TEXT("%d/%d"), &t1, &t2);
 			trkn = t1, tot = t2;
 		} else {
-			_tcscanf(strDiskNo, TEXT("%d"), &t1);
+			_stscanf(strDiskNo, TEXT("%d"), &t1);
 			trkn = t1;
 		}
 		if (trkn > 0) {
