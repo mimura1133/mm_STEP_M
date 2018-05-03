@@ -4,3 +4,6 @@
 [submodule "STEP_modules/ogg"]
 	path = STEP_modules/ogg
 	url = https://git.xiph.org/ogg.git
+[submodule "STEP_modules/yolib"]
+	path = STEP_modules/yolib
+	url = git://github.com/Y-YoL/yolib.git
