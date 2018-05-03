@@ -75,7 +75,7 @@ bool bOptGenreListSelect;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.00 Copyright (C) 2004-2005 haseta\r\nVersion 1.02M Copyright (C) 2008-2010 Mimura\r\nMP4(mp4,m4v,m4a)形式をサポートしています\r\nタグ更新はmp4v2.dllを使用していますが、STEP用にカスタマイズしたものです";
+	return TEXT("Version 1.00 Copyright (C) 2004-2005 haseta\r\nVersion 1.02M Copyright (C) 2008-2010 Mimura\r\nMP4(mp4,m4v,m4a)形式をサポートしています\r\nタグ更新はmp4v2.dllを使用していますが、STEP用にカスタマイズしたものです");
 }
 
 STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
@@ -87,14 +87,14 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_aac.ini";
-	bOptGenreListSelect = GetPrivateProfileInt("AAC", "GenreListSelect", 0, strINI) ? true : false;
+	bOptGenreListSelect = GetPrivateProfileInt(TEXT("AAC"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
 
 	HBITMAP hM4VBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_AAC));
 	HBITMAP hM4ABitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_AAC));
 	HBITMAP hMP4Bitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_AAC));
-	nFileTypeM4A = STEPRegisterExt(nPluginID, "m4a", hM4ABitmap);
-	nFileTypeMP4 = STEPRegisterExt(nPluginID, "mp4", hMP4Bitmap);
-	nFileTypeM4V = STEPRegisterExt(nPluginID, "m4v", hM4VBitmap);
+	nFileTypeM4A = STEPRegisterExt(nPluginID, TEXT("m4a"), hM4ABitmap);
+	nFileTypeMP4 = STEPRegisterExt(nPluginID, TEXT("mp4"), hMP4Bitmap);
+	nFileTypeM4V = STEPRegisterExt(nPluginID, TEXT("m4v"), hM4VBitmap);
 	DeleteObject(hM4VBitmap);
 	DeleteObject(hM4ABitmap);
 	DeleteObject(hMP4Bitmap);
@@ -115,7 +115,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_aac";
+	return TEXT("STEP_aac");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -180,27 +180,27 @@ STEP_API UINT WINAPI STEPGetColumnMax(UINT nFormat, COLUMNTYPE nColumn, bool isE
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if ((stricmp(szExt, "m4a") == 0)|(stricmp(szExt, "m4v") == 0)|(stricmp(szExt, "mp4") == 0)) {
+	if ((_tcsicmp(szExt, TEXT("m4a")) == 0)|(_tcsicmp(szExt, TEXT("m4v")) == 0)|(_tcsicmp(szExt, TEXT("mp4")) == 0)) {
 		extern	bool LoadFileAAC(FILE_INFO *pFile);
 		if (LoadFileAAC(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "AACファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("AACファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
-			if(stricmp(szExt, "m4a") == 0){
+			if(_tcsicmp(szExt, TEXT("m4a")) == 0){
 				SetFormat(pFileMP3, nFileTypeM4A);
-				SetFileTypeName(pFileMP3, "MP4(Audio)");
+				SetFileTypeName(pFileMP3, TEXT("MP4(Audio)"));
 				return STEP_SUCCESS;
 			}
-			if(stricmp(szExt, "m4v") == 0){
+			if(_tcsicmp(szExt, TEXT("m4v")) == 0){
 				SetFormat(pFileMP3, nFileTypeM4V);
-				SetFileTypeName(pFileMP3, "MP4(Video)");
+				SetFileTypeName(pFileMP3, TEXT("MP4(Video)"));
 				return STEP_SUCCESS;
 			}
-			if(stricmp(szExt, "mp4") == 0){
+			if(_tcsicmp(szExt, TEXT("mp4")) == 0){
 				SetFormat(pFileMP3, nFileTypeMP4);
-				SetFileTypeName(pFileMP3, "MP4");
+				SetFileTypeName(pFileMP3, TEXT("MP4"));
 				return STEP_SUCCESS;
 			}
 		}
@@ -217,8 +217,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 		extern bool WriteFileAAC(FILE_INFO *pFileMP3);
 		if (WriteFileAAC(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "AACファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("AACファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -237,7 +237,7 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 	if (page.DoModal() == IDOK) {
 		bOptGenreListSelect = dlg1.m_bGenreListSelect ? true : false;
 
-		WritePrivateProfileString("AAC", "GenreListSelect", bOptGenreListSelect ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("AAC"), TEXT("GenreListSelect"), bOptGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
 	}
 }
 
@@ -246,11 +246,11 @@ STEP_API LPCTSTR WINAPI STEPGetColumnName(UINT nFormatType, COLUMNTYPE nColumn)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	switch (nColumn) {
 	case COLUMN_KEYWORD:
-		return "分類";
+		return TEXT("分類");
 	case COLUMN_TRACK_NUMBER:
-		return "TrackNo/Total";
+		return TEXT("TrackNo/Total");
 	case COLUMN_DISK_NUMBER:
-		return "DiskNo/Total";
+		return TEXT("DiskNo/Total");
 	}
 	return NULL;
 }
