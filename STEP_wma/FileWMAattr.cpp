@@ -10,16 +10,14 @@
 #include "wmsdk.h"
 #include "FileWMA.h"
 
-#ifndef SAFE_RELEASE
+#include "split_string.h"
 
-#define SAFE_RELEASE( x )  \
-    if( NULL != x )        \
-    {                      \
-        x->Release( );     \
-        x = NULL;          \
-    }
-
-#endif // SAFE_RELEASE
+namespace yol {
+	auto make_string_view(const CStringW& text) -> std::basic_string_view<wchar_t>
+	{
+		return { static_cast<LPCWSTR>(text) };
+	}
+}
 
 void SetAttribute(LPCWSTR pwszName, WMT_ATTR_DATATYPE type, BYTE* pValue, DWORD cbLength, FILE_INFO *pFileMP3, BOOL *pIsProtected, BOOL bAppend)
 {
@@ -338,42 +336,40 @@ bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCTST
 		}
 	}
 
-	CString strData = sValue;
+	CStringW strData = sValue;
 	int nIndex = 0;
-	while (strData.GetLength() > 0) {
-		CStringW strToken;
-		if (bSeparate) {
-			strToken = strData.SpanExcluding(TEXT(";"));
-		} else {
-			strToken = strData;
-		}
-		LPCWSTR	pwszValue = strToken;
-
+	for (auto strToken : yol::split_string(strData, bSeparate ? L';' : L'\0')) {
 		if (wCount > nIndex) {
-			hr = pHeaderInfo->ModifyAttribute(STREAM_NUM, wIndices[nIndex], WMT_TYPE_STRING, 0,
-											(LPBYTE)pwszValue, (wcslen(pwszValue)+1) * sizeof(WCHAR));
-			TRACE( _T( "ModifyAttribute #%d for Attribute name %ws value %s #%02x (hr=0x%08x).\n" ), nIndex+1,
-																pwszAttrName, strToken, wIndices[nIndex], hr) ;
+			hr = pHeaderInfo->ModifyAttribute(
+				STREAM_NUM,
+				wIndices[nIndex],
+				WMT_TYPE_STRING,
+				0,
+				reinterpret_cast<const BYTE*>(strToken.data()),
+				strToken.length() * sizeof(WCHAR));
+			TRACE(_T("ModifyAttribute #%d for Attribute name %ws value %s #%02x (hr=0x%08x).\n"), nIndex + 1,
+				pwszAttrName, strToken, wIndices[nIndex], hr);
 		} else {
-			hr = pHeaderInfo->AddAttribute(STREAM_NUM, pwszAttrName, NULL, WMT_TYPE_STRING, 0,
-											(LPBYTE)pwszValue, (wcslen(pwszValue)+1) * sizeof(WCHAR));
-			TRACE( _T( "AddAttribute #%d for Attribute name %ws value %s (hr=0x%08x).\n" ), nIndex+1, 
-																pwszAttrName, strToken, hr) ;
+			hr = pHeaderInfo->AddAttribute(
+				STREAM_NUM,
+				pwszAttrName,
+				nullptr,
+				WMT_TYPE_STRING,
+				0,
+				reinterpret_cast<const BYTE*>(strToken.data()),
+				strToken.length() * sizeof(WCHAR));
+			TRACE(_T("AddAttribute #%d for Attribute name %ws value %s (hr=0x%08x).\n"), nIndex + 1,
+				pwszAttrName, strToken, hr);
 		}
-
-		pwszValue = NULL;
 
 		if (FAILED(hr)) {
-			TRACE( _T( "AddAttribute/ModifyAttribute failed for Attribute name %ws (hr=0x%08x).\n" ), pwszAttrName, hr) ;
+			TRACE(_T("AddAttribute/ModifyAttribute failed for Attribute name %ws (hr=0x%08x).\n"), pwszAttrName, hr);
 			break;
 		}
-		if (strData == strToken) {
-			strData.Empty();
-		} else {
-			strData = strData.Mid(strToken.GetLength() + 1);
-		}
+
 		nIndex++;
 	}
+
 	if (!FAILED(hr)) {
 		int i; for (int i=nIndex;i<wCount;i++) {
 			HRESULT hr = pHeaderInfo->DeleteAttribute(STREAM_NUM, wIndices[i]);
