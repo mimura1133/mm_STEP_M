@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <vector>
 #include "FileAAC.h"
 #include "mp4.h"
 
@@ -8,61 +9,25 @@ typedef struct {
 	u_int32_t size;
 } MetaData;
 
-bool UTF8toSJIS(const char* UTF8, char** SJIS)
+CStringW UTF8toString(const char* UTF8)
 {
-	unsigned char* data;
-	char* buff;
-	int size1, size2;
-	size1 = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, 0, 0);
-	size1 = size1*sizeof(WCHAR);
-	data = (unsigned char*)malloc(size1);
-	if(data) {
-		MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, (LPWSTR)data,size1/sizeof(WCHAR));
-
-		size2 = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)data, size1/sizeof(WCHAR),0,0,NULL,NULL);
-		size2++;
-		buff = (char*)malloc(size2);
-		if (buff) {
-			WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)data, size1/sizeof(WCHAR), buff, size2, NULL, NULL);
-			buff[size2-1] = '\0';
-			*SJIS = buff;
-		} else {
-			*SJIS = NULL;
-		}
-		delete data;
-	}
-	return *SJIS != NULL;
+	auto size = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, nullptr, 0);
+	std::vector<wchar_t> buff(size);
+	MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, buff.data(), buff.size());
+	return buff.data();
 }
 
-bool SJIStoUTF8(const char* SJIS, char** UTF8)
+std::vector<char> StringtoUTF8(CStringW text)
 {
-	unsigned char* data;
-	char* buff;
-	int size1, size2;
-	size1 = MultiByteToWideChar(CP_ACP, 0, SJIS, -1, 0, 0);
-	size1 = size1*sizeof(WCHAR);
-	data = (unsigned char*)malloc(size1);
-	if(data) {
-		MultiByteToWideChar(CP_ACP, 0, SJIS, -1, (LPWSTR)data,size1/sizeof(WCHAR));
-
-		size2 = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)data, size1/sizeof(WCHAR),0,0,NULL,NULL);
-		size2++;
-		buff = (char*)malloc(size2);
-		if (buff) {
-			WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)data, size1/sizeof(WCHAR), buff, size2, NULL, NULL);
-			buff[size2-1] = '\0';
-			*UTF8 = buff;
-		} else {
-			*UTF8 = NULL;
-		}
-		delete data;
-	}
-	return *UTF8 != NULL && strlen(*UTF8) > 0;
+	auto size = WideCharToMultiByte(CP_UTF8, 0, text, -1, nullptr, 0, nullptr, nullptr);
+	std::vector<char> buff(size);
+	WideCharToMultiByte(CP_UTF8, 0, text, -1, buff.data(), buff.size(), nullptr, nullptr);
+	return buff;
 }
 
 bool LoadFileAAC(FILE_INFO *pFile)
 {
-    MP4FileHandle h = MP4Read(GetFullPath(pFile), 0);
+    MP4FileHandle h = MP4Read(static_cast<CStringA>(GetFullPath(pFile)), 0);
     if (h == MP4_INVALID_FILE_HANDLE) {
 		return false;
 	}
@@ -70,82 +35,62 @@ bool LoadFileAAC(FILE_INFO *pFile)
 	char* buff;
 	u_int16_t no, total;
 	if (MP4GetMetadataName(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetTrackNameSI(pFile, buff);
-			free(buff);
-		}
+		SetTrackNameSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataArtist(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetArtistNameSI(pFile, buff);
-			free(buff);
-		}
+		SetArtistNameSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataWriter(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetComposerSI(pFile, buff);
-			free(buff);
-		}
+		SetComposerSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataComment(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetCommentSI(pFile, buff);
-			free(buff);
-		}
+		SetCommentSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataTool(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetSoftwareSI(pFile, buff);
-			free(buff);
-		}
+		SetSoftwareSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataYear(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetYearSI(pFile, buff);
-			free(buff);
-		}
+		SetYearSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataAlbum(h, &value) == true) {
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetAlbumNameSI(pFile, buff);
-			free(buff);
-		}
+		SetAlbumNameSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataAlbumArtist(h, &value) == true) { /* éÊìæÇ≈Ç´ÇÈÇÊÇ§Ç…mp4v2.dllÇïœçX */
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetAlbumArtistSI(pFile, buff);
-			free(buff);
-		}
+		SetAlbumArtistSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataTrack(h, &no, &total) == true) {
-		char trackNo[10];
+		TCHAR trackNo[10];
 		if (total > 0) {
-			sprintf(trackNo, "%d/%d", no, total);
+			_stprintf(trackNo, TEXT("%d/%d"), no, total);
 		} else {
-			sprintf(trackNo, "%d", no);
+			_stprintf(trackNo, TEXT("%d"), no);
 		}
 		SetTrackNumberSI(pFile, trackNo);
 	}
 	if (MP4GetMetadataDisk(h, &no, &total) == true) {
-		char diskNo[10];
+		TCHAR diskNo[10];
 		if (total > 0) {
-			sprintf(diskNo, "%d/%d", no, total);
+			_stprintf(diskNo, TEXT("%d/%d"), no, total);
 		} else {
-			sprintf(diskNo, "%d", no);
+			_stprintf(diskNo, TEXT("%d"), no);
 		}
 		SetDiskNumberSI(pFile, diskNo);
 	}
 	if (MP4GetMetadataGenre(h, &value) == true) { /* éÊìæÇ≈Ç´ÇÈÇÊÇ§Ç…mp4v2.dllÇïœçX */
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetGenreSI(pFile, buff);
-			free(buff);
-		}
+		SetGenreSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	if (MP4GetMetadataGrouping(h, &value) == true) { /* éÊìæÇ≈Ç´ÇÈÇÊÇ§Ç…mp4v2.dllÇ…í«â¡ */
-		if (UTF8toSJIS(value, &buff) == true) {
-			SetKeywordSI(pFile, buff);
-			free(buff);
-		}
+		SetKeywordSI(pFile, UTF8toString(value));
+		MP4Free(value);
 	}
 	CString strOther = "";
 	{
@@ -279,7 +224,7 @@ bool LoadFileAAC(FILE_INFO *pFile)
 	// type duration avgBitrate samplingFrequency
 	char format[256];
 	sprintf(format, "%s %ukbps %uHz", typeName, (avgBitRate + 500) / 1000, timeScale);
-	SetAudioFormat(pFile, format);
+	SetAudioFormat(pFile, static_cast<CString>(format));
 	SetPlayTime(pFile, (int)(msDuration / 1000.0));
 	SetOther(pFile, strOther);
 
@@ -289,7 +234,7 @@ bool LoadFileAAC(FILE_INFO *pFile)
 
 bool WriteFileAAC(FILE_INFO *pFile)
 {
-    MP4FileHandle h = MP4Read(GetFullPath(pFile), 0/*MP4_DETAILS_ALL*/);
+    MP4FileHandle h = MP4Read(static_cast<CStringA>(GetFullPath(pFile)), 0/*MP4_DETAILS_ALL*/);
     if (h == MP4_INVALID_FILE_HANDLE) {
       return false;
     }
@@ -343,7 +288,7 @@ bool WriteFileAAC(FILE_INFO *pFile)
 	}
 	
 	MP4Close(h);
-    h = MP4Modify(GetFullPath(pFile), 0/*MP4_DETAILS_ALL*/, 0);
+    h = MP4Modify(static_cast<CStringA>(GetFullPath(pFile)), 0/*MP4_DETAILS_ALL*/, 0);
     if (h == MP4_INVALID_FILE_HANDLE) {
       return false;
     }
@@ -354,11 +299,11 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		unsigned __int16 trkn = 0, tot = 0;
 		int t1 = 0, t2 = 0;
 		LPCTSTR strTrackNo = GetTrackNumberSI(pFile);
-		if (strstr(strTrackNo, "/") != NULL) {
-			sscanf(strTrackNo, "%d/%d", &t1, &t2);
+		if (_tcsstr(strTrackNo, TEXT("/")) != NULL) {
+			_tcscanf(strTrackNo, TEXT("%d/%d"), &t1, &t2);
 			trkn = t1, tot = t2;
 		} else {
-			sscanf(strTrackNo, "%d", &t1);
+			_tcscanf(strTrackNo, TEXT("%d"), &t1);
 			trkn = t1;
 		}
 		if (trkn > 0) {
@@ -369,11 +314,11 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		unsigned __int16 trkn = 0, tot = 0;
 		int t1 = 0, t2 = 0;
 		LPCTSTR strDiskNo = GetDiskNumberSI(pFile);
-		if (strstr(strDiskNo, "/") != NULL) {
-			sscanf(strDiskNo, "%d/%d", &t1, &t2);
+		if (_tcsstr(strDiskNo, TEXT("/")) != NULL) {
+			_tcscanf(strDiskNo, TEXT("%d/%d"), &t1, &t2);
 			trkn = t1, tot = t2;
 		} else {
-			sscanf(strDiskNo, "%d", &t1);
+			_tcscanf(strDiskNo, TEXT("%d"), &t1);
 			trkn = t1;
 		}
 		if (trkn > 0) {
@@ -381,64 +326,16 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		}
 	}
 	{
-		if (SJIStoUTF8(GetArtistNameSI(pFile), &buff) == true) { 
-			MP4SetMetadataArtist(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetComposerSI(pFile), &buff) == true) { 
-			MP4SetMetadataWriter(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetTrackNameSI(pFile), &buff) == true) { 
-			MP4SetMetadataName(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetAlbumNameSI(pFile), &buff) == true) { 
-			MP4SetMetadataAlbum(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetAlbumArtistSI(pFile), &buff) == true) { 
-			MP4SetMetadataAlbumArtist(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetYearSI(pFile), &buff) == true) { 
-			MP4SetMetadataYear(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetCommentSI(pFile), &buff) == true) { 
-			MP4SetMetadataComment(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetGenreSI(pFile), &buff) == true) { 
-			MP4SetMetadataGenre(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetSoftwareSI(pFile), &buff) == true) { 
-			MP4SetMetadataTool(h, buff);
-			free(buff);
-		}
-	}
-	{
-		if (SJIStoUTF8(GetKeywordSI(pFile), &buff) == true) { 
-			MP4SetMetadataGrouping(h, buff);
-			free(buff);
-		}
+		MP4SetMetadataArtist(h, StringtoUTF8(GetArtistNameSI(pFile)).data());
+		MP4SetMetadataWriter(h, StringtoUTF8(GetComposerSI(pFile)).data());
+		MP4SetMetadataName(h, StringtoUTF8(GetTrackNameSI(pFile)).data());
+		MP4SetMetadataAlbum(h, StringtoUTF8(GetAlbumNameSI(pFile)).data());
+		MP4SetMetadataAlbumArtist(h, StringtoUTF8(GetAlbumArtistSI(pFile)).data());
+		MP4SetMetadataYear(h, StringtoUTF8(GetYearSI(pFile)).data());
+		MP4SetMetadataComment(h, StringtoUTF8(GetCommentSI(pFile)).data());
+		MP4SetMetadataGenre(h, StringtoUTF8(GetGenreSI(pFile)).data());
+		MP4SetMetadataTool(h, StringtoUTF8(GetSoftwareSI(pFile)).data());
+		MP4SetMetadataGrouping(h, StringtoUTF8(GetKeywordSI(pFile)).data());
 	}
 
 	for (int i=0;i<tag.GetSize();i++) {
@@ -482,7 +379,7 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		delete meta;
 	}
 	MP4Close(h);
-	MP4Optimize(GetFullPath(pFile), NULL, 0/*MP4_DETAILS_ALL*/);
+	MP4Optimize(static_cast<CStringA>(GetFullPath(pFile)), NULL, 0/*MP4_DETAILS_ALL*/);
 
 	return true;
 }
