@@ -9,26 +9,48 @@ typedef struct {
 	u_int32_t size;
 } MetaData;
 
-CString UTF8toString(const char* UTF8)
-{
-	auto size = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, nullptr, 0);
-	std::vector<wchar_t> buff(size);
-	MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, buff.data(), buff.size());
-	return buff.data();
-}
+namespace {
+	CString UTF8toString(const char* UTF8)
+	{
+		auto size = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, nullptr, 0);
+		std::vector<wchar_t> buff(size);
+		MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, buff.data(), buff.size());
+		return buff.data();
+	}
 
-std::vector<char> StringtoUTF8(CStringW text)
-{
-	auto size = WideCharToMultiByte(CP_UTF8, 0, text, -1, nullptr, 0, nullptr, nullptr);
-	std::vector<char> buff(size);
-	WideCharToMultiByte(CP_UTF8, 0, text, -1, buff.data(), buff.size(), nullptr, nullptr);
-	return buff;
+	std::vector<char> StringtoUTF8(CStringW text)
+	{
+		auto size = WideCharToMultiByte(CP_UTF8, 0, text, -1, nullptr, 0, nullptr, nullptr);
+		std::vector<char> buff(size);
+		WideCharToMultiByte(CP_UTF8, 0, text, -1, buff.data(), buff.size(), nullptr, nullptr);
+		return buff;
+	}
+
+	/// <summary>
+	/// charで扱えないパスが含まれないように調整されたフルパスを取得
+	/// </summary>
+	/// <returns>調整が行われたFullPath</returns>
+	CStringA GetCheckedFullPath(FILE_INFO *pFile)
+	{
+		const auto filePath = GetFullPath(pFile);
+#if UNICODE
+		BOOL usedDefaultChar = FALSE;
+		WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, filePath, -1, nullptr, 0, nullptr, &usedDefaultChar);
+		if (usedDefaultChar) {
+			TCHAR shortPath[MAX_PATH];
+			if (GetShortPathName(filePath, shortPath, MAX_PATH)) {
+				return shortPath;
+			}
+		}
+#endif
+		return filePath;
+	}
 }
 
 bool LoadFileAAC(FILE_INFO *pFile)
 {
-    MP4FileHandle h = MP4Read(static_cast<CStringA>(GetFullPath(pFile)), 0);
-    if (h == MP4_INVALID_FILE_HANDLE) {
+    MP4FileHandle h = MP4Read(GetCheckedFullPath(pFile), 0);
+	if (h == MP4_INVALID_FILE_HANDLE) {
 		return false;
 	}
 	char* value;
@@ -234,10 +256,11 @@ bool LoadFileAAC(FILE_INFO *pFile)
 
 bool WriteFileAAC(FILE_INFO *pFile)
 {
-    MP4FileHandle h = MP4Read(static_cast<CStringA>(GetFullPath(pFile)), 0/*MP4_DETAILS_ALL*/);
-    if (h == MP4_INVALID_FILE_HANDLE) {
-      return false;
-    }
+	CStringA filePath = GetCheckedFullPath(pFile);
+    MP4FileHandle h = MP4Read(filePath, 0/*MP4_DETAILS_ALL*/);
+	if (h == MP4_INVALID_FILE_HANDLE) {
+		return false;
+	}
 
 	u_int32_t index = 0;
 	CPtrArray tag;
@@ -288,7 +311,7 @@ bool WriteFileAAC(FILE_INFO *pFile)
 	}
 	
 	MP4Close(h);
-    h = MP4Modify(static_cast<CStringA>(GetFullPath(pFile)), 0/*MP4_DETAILS_ALL*/, 0);
+    h = MP4Modify(filePath, 0/*MP4_DETAILS_ALL*/, 0);
     if (h == MP4_INVALID_FILE_HANDLE) {
       return false;
     }
@@ -379,7 +402,7 @@ bool WriteFileAAC(FILE_INFO *pFile)
 		delete meta;
 	}
 	MP4Close(h);
-	MP4Optimize(static_cast<CStringA>(GetFullPath(pFile)), NULL, 0/*MP4_DETAILS_ALL*/);
+	MP4Optimize(filePath, NULL, 0/*MP4_DETAILS_ALL*/);
 
 	return true;
 }
