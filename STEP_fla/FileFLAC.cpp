@@ -172,7 +172,7 @@ char* convert_to_utf8(const char* SJIS)
  * Note:
  *  - if field is found but contains no info (strlen(str)==0), we don't read it
  */
-boolean Flac_Tag_Read_File_Tag (const char *filename, File_Tag *FileTag)
+boolean Flac_Tag_Read_File_Tag(LPCTSTR filename, File_Tag *FileTag)
 {
     FLAC__Metadata_SimpleIterator               *iter;
     FLAC__StreamMetadata                        *vc_block;
@@ -554,7 +554,7 @@ boolean Flac_Tag_Read_File_Tag (const char *filename, File_Tag *FileTag)
     return TRUE;
 }
 
-unsigned long Get_File_Size (const char *filename)
+unsigned long Get_File_Size (LPCTSTR filename)
 {
     struct _stat statbuf;
     FLAC__Metadata_SimpleIterator               *iter;
@@ -585,7 +585,7 @@ unsigned long Get_File_Size (const char *filename)
     }
 }
 
-boolean Flac_Header_Read_File_Info (const char *filename, File_Tag *FileTag)
+boolean Flac_Header_Read_File_Info(LPCTSTR filename, File_Tag *FileTag)
 {
     FILE *file;
     double duration = 0;
@@ -595,7 +595,7 @@ boolean Flac_Header_Read_File_Info (const char *filename, File_Tag *FileTag)
     file_info_struct tmp_file_info;
 
 
-    if ( (file=fopen(filename,"r"))==NULL )
+    if ( (file= _tfopen(filename, TEXT("r")))==NULL )
     {
         //g_print(_("ERROR while opening file: '%s' (%s)\n\a"),filename,g_strerror(errno));
         return FALSE;
@@ -649,7 +649,7 @@ boolean Flac_Header_Read_File_Info (const char *filename, File_Tag *FileTag)
     return TRUE;
 }
 
-boolean Flac_Tag_Write_File_Tag (const char *filename, File_Tag *FileTag)
+boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 {
     const char                                       *filename_in = filename;
     FLAC__Metadata_SimpleIterator               *iter;

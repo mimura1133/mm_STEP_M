@@ -41,20 +41,20 @@ typedef struct {
 typedef struct _File_Tag File_Tag;
 struct _File_Tag
 {
-    unsigned int key;             /* Incremented value */
-    boolean saved;        /* Set to TRUE if this tag had been saved */
-    char *title;          /* Title of track */
-    char *artist;         /* Artist name */
-    char *album;          /* Album name */
-    char *year;           /* Year of track */
-    char *track;          /* Position of track in the album */
-    char *track_total;    /* The number of tracks for the album (ex: 12/20) */
-	char *str_track;      /* For write tag (ex. 12/20) */
-    char *genre;          /* Genre of song */
-    char *comment;        /* Comment */
-	char *composer;       /* Composer */
-	char *performer;      /* Performer */
-    CPtrArray *other;     /* List of unsupported fields (used for ogg only) */
+    unsigned int key;		/* Incremented value */
+    boolean saved;			/* Set to TRUE if this tag had been saved */
+    CString title;			/* Title of track */
+    CString artist;			/* Artist name */
+    CString album;			/* Album name */
+    CString year;			/* Year of track */
+    CString track;			/* Position of track in the album */
+    CString track_total;	/* The number of tracks for the album (ex: 12/20) */
+	CString str_track;		/* For write tag (ex. 12/20) */
+    CString genre;			/* Genre of song */
+    CString comment;		/* Comment */
+	CString composer;		/* Composer */
+	CString performer;		/* Performer */
+    CPtrArray *other;		/* List of unsupported fields (used for ogg only) */
 
     int samplerate;       /* Samplerate (Hz) */
     int mode;             /* Stereo, ... or channels for ogg */
