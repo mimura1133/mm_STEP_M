@@ -109,7 +109,7 @@ namespace {
 	CStringA convert_short_path(LPCWSTR path)
 	{
 		WCHAR shortPath[MAX_PATH];
-		if (GetShortPathName(path, shortPath, MAX_PATH)) {
+		if (GetShortPathNameW(path, shortPath, MAX_PATH)) {
 			return shortPath;
 		}
 
@@ -570,8 +570,6 @@ boolean Flac_Header_Read_File_Info(LPCTSTR filename, File_Tag *FileTag)
 
 
     filesize = Get_File_Size(filename);
-	struct _stat _stat;
-	_tstat(filename, &_stat);
 	//duration = (int)tmp_file_info.length_in_msec/1000;
 
     //if (tmp_file_info.length_in_msec/1000.0 > 0) {
@@ -638,7 +636,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "title");
 	if (FileTag->title && FileTag->title->GetLength() > 0)
 	{
-		CString string = TEXT("title=");
+		CStringW string = L"title=";
 		string += *FileTag->title;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -652,7 +650,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "artist");
 	if (FileTag->artist && FileTag->artist->GetLength() > 0)
 	{
-		CString string = TEXT("artist=");
+		CStringW string = L"artist=";
 		string += *FileTag->artist;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -666,7 +664,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "album");
 	if (FileTag->album && FileTag->album->GetLength() > 0)
 	{
-		CString string = TEXT("album=");
+		CStringW string = L"album=";
 		string += *FileTag->album;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -680,7 +678,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "date");
 	if (FileTag->year && FileTag->year->GetLength() > 0)
 	{
-		CString string = TEXT("date=");
+		CStringW string = L"date=";
 		string += *FileTag->year;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -694,7 +692,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "tracknumber");
 	if (FileTag->str_track /*FileTag->track*/ && FileTag->str_track->GetLength() > 0)
 	{
-		CString string = TEXT("tracknumber=");
+		CStringW string = L"tracknumber=";
 		string += *FileTag->str_track;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -708,7 +706,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "genre");
 	if (FileTag->genre && FileTag->genre->GetLength() > 0)
 	{
-		CString string = TEXT("genre=");
+		CStringW string = L"genre=";
 		string += *FileTag->genre;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -723,7 +721,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "comment");
 	if (FileTag->comment && FileTag->comment->GetLength() > 0)
 	{
-		CString string = TEXT("comment=");
+		CStringW string = L"comment=";
 		string += *FileTag->comment;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -737,7 +735,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "composer");
 	if (FileTag->composer && FileTag->composer->GetLength() > 0)
 	{
-		CString string = TEXT("composer=");
+		CStringW string = L"composer=";
 		string += *FileTag->composer;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
@@ -751,7 +749,7 @@ boolean Flac_Tag_Write_File_Tag (LPCTSTR filename, File_Tag *FileTag)
 	FLAC__metadata_object_vorbiscomment_remove_entry_matching(vc_block, "performer");
 	if (FileTag->performer && FileTag->performer->GetLength() > 0)
 	{
-		CString string = TEXT("performer=");
+		CStringW string = L"performer=";
 		string += *FileTag->performer;
 		auto string1 = convert_to_utf8(string);
 		field.entry = (unsigned char*)string1.data();
