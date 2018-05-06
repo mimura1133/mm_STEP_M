@@ -6,6 +6,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <vector>
 
 static FLAC__byte reservoir_[FLAC__MAX_BLOCK_SIZE * 2 * 2 * 2]; /* *2 for max bytes-per-sample, *2 for max channels, another *2 for overflow */
 static unsigned reservoir_samples_ = 0;
@@ -88,27 +89,12 @@ char * strndup(char* string, int size) {
 	return buff;
 }
 
-char* convert_from_utf8(const char* UTF8)
+CString convert_from_utf8(const char* UTF8)
 {
-	unsigned char* data;
-	char* buff = NULL;
-	int size1, size2;
-	size1 = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, 0, 0);
-	size1 = size1*sizeof(WCHAR);
-	data = (unsigned char*)malloc(size1);
-	if(data) {
-		MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, (LPWSTR)data,size1/sizeof(WCHAR));
-
-		size2 = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)data, size1/sizeof(WCHAR),0,0,NULL,NULL);
-		size2++;
-		buff = (char*)malloc(size2);
-		if (buff) {
-			WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)data, size1/sizeof(WCHAR), buff, size2, NULL, NULL);
-			buff[size2-1] = '\0';
-		}
-		delete data;
-	}
-	return buff;
+	auto size = MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, 0, 0);
+	std::vector<wchar_t> buff(size);
+	MultiByteToWideChar(CP_UTF8, 0, UTF8, -1, buff.data(), buff.size());
+	return buff.data();
 }
 
 char* convert_to_utf8(const char* SJIS)
