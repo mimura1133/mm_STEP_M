@@ -92,13 +92,13 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_fla.ini";
-	bOptGenreListSelect = GetPrivateProfileInt("FLAC", "GenreListSelect", 0, strINI) ? true : false;
+	bOptGenreListSelect = GetPrivateProfileInt(TEXT("FLAC"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
 
 	HBITMAP hFLACBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_FLAC));
-	nFileTypeFLAC = STEPRegisterExt(nPluginID, "flac", hFLACBitmap);
+	nFileTypeFLAC = STEPRegisterExt(nPluginID, TEXT("flac"), hFLACBitmap);
 	DeleteObject(hFLACBitmap);
 	HBITMAP hFLABitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_FLAC));
-	nFileTypeFLAC = STEPRegisterExt(nPluginID, "fla", hFLABitmap);
+	nFileTypeFLAC = STEPRegisterExt(nPluginID, TEXT("fla"), hFLABitmap);
 	DeleteObject(hFLABitmap);
 
 	return true;
@@ -117,7 +117,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_fla";
+	return TEXT("STEP_fla");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -174,16 +174,16 @@ STEP_API UINT WINAPI STEPGetColumnMax(UINT nFormat, COLUMNTYPE nColumn, bool isE
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (stricmp(szExt, "flac") == 0 || stricmp(szExt, "fla") == 0) {
+	if (_tcsicmp(szExt, TEXT("flac")) == 0 || _tcsicmp(szExt, TEXT("fla")) == 0) {
 		extern	bool LoadFileFLAC(FILE_INFO *pFile);
 		if (LoadFileFLAC(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "FLACファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("FLACファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
 			SetFormat(pFileMP3, nFileTypeFLAC);
-			SetFileTypeName(pFileMP3, "FLAC");
+			SetFileTypeName(pFileMP3, TEXT("FLAC"));
 			return STEP_SUCCESS;
 		}
 	}
@@ -199,8 +199,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 		extern bool WriteFileFLAC(FILE_INFO *pFileMP3);
 		if (WriteFileFLAC(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "FLACファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("FLACファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -219,7 +219,7 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 	if (page.DoModal() == IDOK) {
 		bOptGenreListSelect = dlg1.m_bGenreListSelect ? true : false;
 
-		WritePrivateProfileString("FLAC", "GenreListSelect", bOptGenreListSelect ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("FLAC"), TEXT("GenreListSelect"), bOptGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
 	}
 }
 
@@ -228,7 +228,7 @@ STEP_API LPCTSTR WINAPI STEPGetColumnName(UINT nFormatType, COLUMNTYPE nColumn)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	switch (nColumn) {
 	case COLUMN_ORIG_ARTIST:
-		return "パフォーマー";
+		return TEXT("パフォーマー");
 	}
 	return NULL;
 }
