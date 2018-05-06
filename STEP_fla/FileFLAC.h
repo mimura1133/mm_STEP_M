@@ -3,6 +3,8 @@
 
 #include "STEPlugin.h"
 
+#include <optional>
+
 #ifdef __cplusplus
 extern "C" {
 #endif 
@@ -38,23 +40,27 @@ typedef struct {
 	int eosin;
 } vcedit_state;
 
+#ifdef __cplusplus
+}
+#endif 
+
 typedef struct _File_Tag File_Tag;
 struct _File_Tag
 {
-    unsigned int key;		/* Incremented value */
-    boolean saved;			/* Set to TRUE if this tag had been saved */
-    CString title;			/* Title of track */
-    CString artist;			/* Artist name */
-    CString album;			/* Album name */
-    CString year;			/* Year of track */
-    CString track;			/* Position of track in the album */
-    CString track_total;	/* The number of tracks for the album (ex: 12/20) */
-	CString str_track;		/* For write tag (ex. 12/20) */
-    CString genre;			/* Genre of song */
-    CString comment;		/* Comment */
-	CString composer;		/* Composer */
-	CString performer;		/* Performer */
-    CPtrArray *other;		/* List of unsupported fields (used for ogg only) */
+    unsigned int key;					/* Incremented value */
+    boolean saved;						/* Set to TRUE if this tag had been saved */
+    std::optional<CString> title;		/* Title of track */
+    std::optional<CString> artist;		/* Artist name */
+    std::optional<CString> album;		/* Album name */
+    std::optional<CString> year;		/* Year of track */
+    std::optional<CString> track;		/* Position of track in the album */
+    std::optional<CString> track_total;	/* The number of tracks for the album (ex: 12/20) */
+	std::optional<CString> str_track;	/* For write tag (ex. 12/20) */
+    std::optional<CString> genre;		/* Genre of song */
+    std::optional<CString> comment;		/* Comment */
+	std::optional<CString> composer;	/* Composer */
+	std::optional<CString> performer;	/* Performer */
+    CPtrArray *other;					/* List of unsupported fields (used for ogg only) */
 
     int samplerate;       /* Samplerate (Hz) */
     int mode;             /* Stereo, ... or channels for ogg */
@@ -63,6 +69,10 @@ struct _File_Tag
     int bitrate;          /* Bitrate (kb/s) */
 
 };
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 const char *flac_error_msg;
 
