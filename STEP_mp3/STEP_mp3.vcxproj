@@ -80,7 +80,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;$(ProjectDir)..\STEP_ID3v2\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;RECONVERT_ID3V2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -126,7 +126,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;$(ProjectDir)..\STEP_ID3v2\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;RECONVERT_ID3V2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -175,7 +175,7 @@
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\STEP_SDK;$(ProjectDir)..\STEP_GlobalCommand\header;$(ProjectDir)..\STEP_ID3v2\header;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -214,8 +214,6 @@
     <ClCompile Include="DlgDefaultValue.cpp" />
     <ClCompile Include="DlgDefaultValue1.cpp" />
     <ClCompile Include="DlgFileRmpID3v2.cpp" />
-    <ClCompile Include="ID3v2\Id3tagv1.cpp" />
-    <ClCompile Include="ID3v2\Id3tagv2.cpp" />
     <ClCompile Include="ID3v2\RMP.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -247,8 +245,6 @@
     <ClInclude Include="DlgDefaultValue.h" />
     <ClInclude Include="DlgDefaultValue1.h" />
     <ClInclude Include="DlgFileRmpID3v2.h" />
-    <ClInclude Include="ID3v2\Id3tagv1.h" />
-    <ClInclude Include="ID3v2\Id3tagv2.h" />
     <ClInclude Include="mp3infp_ExportFunc.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ID3v2\RMP.h" />
@@ -256,8 +252,8 @@
     <ClInclude Include="STEP_mp3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\STEP_GlobalCommand\STEP_GlobalCommand.vcxproj">
-      <Project>{dbbb9b16-2475-4661-a8aa-a72282a2792e}</Project>
+    <ProjectReference Include="..\STEP_ID3v2\STEP_ID3v2.vcxproj">
+      <Project>{b8410905-7f96-4d4f-94cd-0e37d43882f5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

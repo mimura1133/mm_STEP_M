@@ -5,11 +5,9 @@
 #include "stdafx.h"
 //#include "mp3infp_res/resource.h"		// メイン シンボル
 #include "GlobalCommand.h"
-#include "ClassID.h"
-//#include "Id3tagv1.h"
-#include "Id3tagv1.h"  // STEP INVALID_SET_FILE_POINTERのため
-
-#include "Id3tagv2.h"
+//#include "ClassID.h"
+#include "ID3v2/Id3tagv1.h"
+#include "ID3v2/Id3tagv2.h"
 
 #include <vector>
 
@@ -101,7 +99,7 @@ namespace {
 		return CStringW(buf.data(), len);
 	}
 
-	CStringA readCStringA(unsigned char* first, unsigned char* last)
+	CString readCStringA(unsigned char* first, unsigned char* last)
 	{
 		if (first >= last) {
 			return "";
@@ -116,7 +114,7 @@ namespace {
 			return "";
 		}
 
-		return CStringA(text, len);
+		return static_cast<CString>(CStringA(text, len));
 	}
 
 	/// <summary>
@@ -335,7 +333,7 @@ void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *sz
 				CStringA text = szString;
 				data.resize(strlen(text) + 2);
 				data[0] = 0;	//encoding
-				strcpy((char *)&data[1], text);
+				strcpy_s((char *)&data[1], data.size() - 1, text);
 			}
 			break;
 		case ID3V2CHARENCODE_UTF_16:
@@ -393,7 +391,7 @@ void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *sz
 				data.resize(strlen(text) + 3);
 				data[0] = 0;	//encoding
 				data[1] = 0;	//説明文(省略)
-				strcpy((char *)&data[2], text);
+				strcpy_s((char *)&data[2], data.size() - 2, text);
 			}
 			break;
 		case ID3V2CHARENCODE_UTF_16:
@@ -469,7 +467,7 @@ void CId3tagv2::SetId3String(const char szId[], LPCWSTR szString, const char *sz
 				data[2] = 'n';
 				data[3] = 'g';
 				data[4] = 0;	//説明文(省略)
-				strcpy((char *)&data[5], text);
+				strcpy_s((char *)&data[5], data.size() - 5, text);
 			}
 			break;
 		case ID3V2CHARENCODE_UTF_16:
@@ -835,7 +833,7 @@ void CId3tagv2::SetYear(LPCTSTR year)
 CString CId3tagv2::GetGenre()
 {
 	//ジャンル
-	CStringA strGenre = GetId3String("TCON");
+	CStringA strGenre = static_cast<CStringA>(GetId3String("TCON"));
 	unsigned char *data = (unsigned char *)(LPCSTR )strGenre;
 	//最初の()を読み飛ばす処理	Fix 2001-05-20
 	while(1)
@@ -863,7 +861,7 @@ CString CId3tagv2::GetGenre()
 					strGenreFromCode.Delete(0);
 					strGenreFromCode = id3tagv1.GenreNum2String(atoi(strGenreFromCode));
 					if (strGenreFromCode.GetLength() > 0) {
-						return strGenreFromCode;
+						return static_cast<CString>(strGenreFromCode);
 					}
 				}
 				continue;	//Fix 2001-10-24
@@ -871,7 +869,7 @@ CString CId3tagv2::GetGenre()
 		}
 		break;
 	}
-	return strGenre;
+	return static_cast<CString>(strGenre);
 }
 
 void CId3tagv2::SetGenre(LPCTSTR szGenre)

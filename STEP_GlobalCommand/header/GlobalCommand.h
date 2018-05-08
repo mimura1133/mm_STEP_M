@@ -26,10 +26,10 @@ CString LoadResString(HINSTANCE hInstance,UINT uID);
 DWORD ExtractI4(unsigned char buf[4]);
 WORD ExtractI2(unsigned char buf[2]);
 
-CString getFileNameExtName(CString &path);
+CString getFileNameExtName(const CString& path);
 CString getExtName(CString &path);
 CString getPathName(CString &path);
-CString getFileName(CString &path);
+CString getFileName(const CString& path);
 
 //////////////////////////////////////////////////////////////////////////////
 //getFileName
@@ -60,8 +60,8 @@ const char *getExtName(const char *szPath);
 long check2ByteLength(const char *szTag,long lLimit);
 
 //システムエラーメッセージボックスを表示
-void sysError(HWND hWnd,char *mes = "Error");
-void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes = "Error");
+void sysError(HWND hWnd, LPCTSTR mes = TEXT("Error"));
+void errMessageBox(HWND hWnd, DWORD dwErrorCode, LPCTSTR mes = TEXT("Error"));
 
 //////////////////////////////////////////////////////////////////////////////
 //cutFileName
