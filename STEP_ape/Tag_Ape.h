@@ -44,8 +44,8 @@ public:
 
 	DWORD	Load(LPCTSTR szFileName);
 	DWORD	Save(LPCTSTR szFileName);
-	DWORD	DelTag(const char *szFileName);
-	DWORD	MakeTag(const char *szFileName);
+	DWORD	DelTag(LPCTSTR szFileName);
+	DWORD	MakeTag(LPCTSTR szFileName);
 
 	static const int CTag_Ape::CURRENT_APE_TAG_VERSION;
 	static const char *CTag_Ape::APE_TAG_FIELD_TITLE;
@@ -60,13 +60,13 @@ private:
 	void _GetId3tagString(char *szTag);
 //	DWORD _MakeId3Tag(const char *szFileName);
 //	DWORD _MakeApeTag(const char *szFileName);
-	DWORD _LoadId3Tag(const char *szFileName);
+	DWORD _LoadId3Tag(LPCTSTR szFileName);
 	DWORD _LoadApeTagV1(HANDLE hFile);
 	DWORD _LoadApeTagV2(HANDLE hFile);
-	DWORD _SaveId3TagV1(const char *szFileName);
-	DWORD _SaveApeTagV2(const char *szFileName);
+	DWORD _SaveId3TagV1(LPCTSTR szFileName);
+	DWORD _SaveApeTagV2(LPCTSTR szFileName);
 //	DWORD _SaveId3V1(HANDLE hFile);
-	DWORD _DelTag(const char *szFileName);
+	DWORD _DelTag(LPCTSTR szFileName);
 
 #pragma pack(1)
 	typedef struct _ID3_TAG
@@ -98,7 +98,7 @@ private:
 	int m_apeVersion;
 	BOOL m_bDoNotSaveId3v1;	// ID3v1‚ð•Û‘¶‚µ‚È‚¢
 
-	map<CString,CString> m_comments;
+	map<CStringA, CString> m_comments;
 
 public:
 	BOOL isApetagV1() { return (m_footer.version < 2000) ? TRUE : FALSE; }; // Add STEP
