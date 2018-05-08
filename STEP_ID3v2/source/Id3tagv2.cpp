@@ -52,7 +52,7 @@ namespace {
 			return TEXT("");
 		}
 
-		return CStringW(text, len);
+		return static_cast<CString>(CStringW(text, len));
 	}
 
 	CString readUtf16String(unsigned char* first, unsigned char* last)
@@ -96,7 +96,7 @@ namespace {
 			return TEXT("");
 		}
 
-		return CStringW(buf.data(), len);
+		return static_cast<CString>(CStringW(buf.data(), len));
 	}
 
 	CString readCStringA(unsigned char* first, unsigned char* last)
