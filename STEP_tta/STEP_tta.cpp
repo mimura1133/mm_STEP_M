@@ -73,6 +73,9 @@ bool bOptID3TagAutoDelete;
 UINT nPluginID;
 UINT nFileTypeTTA;
 
+// STEP - TTA‚Å‚Í”ñ“¯Šú‰»‚µ‚È‚¢
+bool bOptNotUnSyncAlways = true;
+bool bOptUnSyncNew = true;
 //CString strINI;
 
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)

@@ -33,12 +33,6 @@
     <ClCompile Include="..\STEP_SDK\STEPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ID3v2\Id3tagv1.cpp">
-      <Filter>ID3v2</Filter>
-    </ClCompile>
-    <ClCompile Include="ID3v2\Id3tagv2.cpp">
-      <Filter>ID3v2</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="STEP_tta.def">
@@ -74,12 +68,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ID3v2\classID.h">
-      <Filter>ID3v2</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\Id3tagv1.h">
-      <Filter>ID3v2</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\Id3tagv2.h">
       <Filter>ID3v2</Filter>
     </ClInclude>
   </ItemGroup>
