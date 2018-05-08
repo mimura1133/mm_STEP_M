@@ -8,6 +8,7 @@
 #include "GlobalCommand.h"
 
 #include "Tag_Ape.h"
+#include <vector>
 
 #define APE_FLAG_TAG_HAS_HEADER			0x80000000
 #define APE_FLAG_TAG_NOT_HAS_FOOTER		0x40000000
@@ -92,11 +93,11 @@ void CTag_Ape::Release()
 	m_comments.clear();
 }
 
-BOOL CTag_Ape::SetComment(const char *name,const char *value)
+BOOL CTag_Ape::SetComment(const char *name, LPCTSTR value)
 {
 	m_bHasApetag = TRUE;
 	m_comments.erase(name);
-	if(strlen(value) == 0)
+	if(lstrlen(value) == 0)
 	{
 		return TRUE;	// 空はセットしない
 	}
@@ -110,13 +111,12 @@ BOOL CTag_Ape::SetComment(const char *name,const char *value)
 BOOL CTag_Ape::GetComment(const char *name,CString &strValue)
 {
 	strValue = "";
-	map<CString,CString>::iterator p;
-	p = m_comments.find(name);
+	auto p = m_comments.find(name);
 	if(p == m_comments.end())
 	{
 		return FALSE;
 	}
-	strValue = (LPCSTR )p->second;
+	strValue = p->second;
 
 	return TRUE;
 }
@@ -124,16 +124,13 @@ BOOL CTag_Ape::GetComment(const char *name,CString &strValue)
 void CTag_Ape::GetCommentNames(CStringArray &strArray)
 {
 	//nameリストを返す
-	map<CString,CString>::iterator it = m_comments.begin();
-	
-	while(it != m_comments.end())
+	for (auto& item : m_comments)
 	{
-		strArray.Add(it->first);
-		it++;
+		strArray.Add(static_cast<CString>(item.first));
 	}
 }
 
-DWORD CTag_Ape::_LoadId3Tag(const char *szFileName)
+DWORD CTag_Ape::_LoadId3Tag(LPCTSTR szFileName)
 {
 	DWORD dwRet;
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
@@ -252,7 +249,7 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 		pFieldBuffer[fieldValueSize] = '\0';
 		rawTagOffset += fieldValueSize;
 		// S-JISと仮定して処理する
-		SetComment(nameBuffer,pFieldBuffer);
+		SetComment(nameBuffer, static_cast<CString>(pFieldBuffer));
 		TRACE("APE:%s:%s\n",nameBuffer,pFieldBuffer);
 		free(pFieldBuffer);
 	}
@@ -378,7 +375,7 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::Load(const char *szFileName)
+DWORD CTag_Ape::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	TRACE("CTag_Ape::Load(%s)\n",szFileName);
@@ -456,7 +453,7 @@ DWORD CTag_Ape::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::_SaveId3TagV1(const char *szFileName)
+DWORD CTag_Ape::_SaveId3TagV1(LPCTSTR szFileName)
 {
 	DWORD dwWritten;
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
@@ -494,7 +491,7 @@ DWORD CTag_Ape::_SaveId3TagV1(const char *szFileName)
 }
 
 // id3V1はあらかじめ除去しておくこと
-DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
+DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD dwRet;
@@ -514,7 +511,6 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 		return dwWin32errorCode;
 	}
 
-	map<CString,CString>::iterator it = m_comments.begin();
 	APE_TAG_FOOTER footer;
 	// ApeTag header を構築
 	APE_TAG_FOOTER header;
@@ -537,49 +533,34 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 	SetFilePointer(hFile,0,NULL,FILE_END);
 	DWORD dwHeaderPtr = SetFilePointer(hFile,0,NULL,FILE_CURRENT);
 	WriteFile(hFile,&header,sizeof(header),&dwRet,NULL);
-	it = m_comments.begin();
-	while(it != m_comments.end())
+	for (auto& item : m_comments)
 	{
-		TRACE("APE(save):%s:%s\n",(it->first),it->second);
+		TRACE("APE(save):%s:%s\n", item.first, item.second);
 		int utf8len = 0;
-		unsigned char *dataUtf8 = NULL;
+		std::vector<char> dataUtf8;
 		{
-			//Ansi -> UNICODE
-			int utf16len = MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),0,0);
-			utf16len = utf16len*sizeof(WCHAR);
-			unsigned char *dataUtf16 = (unsigned char *)malloc(utf16len);
-			if(!dataUtf16)
-			{
-				continue;
-			}
-			MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),(LPWSTR)dataUtf16,utf16len/sizeof(WCHAR));
+			CStringW dataUtf16 = item.second;
+
 			// UNICODE -> UTF-8
-			utf8len = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,utf16len/sizeof(WCHAR),NULL,0,NULL,NULL);
-			dataUtf8 = (unsigned char *)malloc(utf8len);
-			if(!dataUtf8)
-			{
-				free(dataUtf16);
-				continue;
-			}
-			WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,utf16len/sizeof(WCHAR),(char *)dataUtf8,utf8len,NULL,NULL);
-			free(dataUtf16);
+			utf8len = WideCharToMultiByte(CP_UTF8, 0, dataUtf16, -1, NULL, 0, NULL, NULL);
+			dataUtf8.resize(utf8len);
+			WideCharToMultiByte(CP_UTF8, 0, dataUtf16, -1, dataUtf8.data(), utf8len, NULL, NULL);
+			utf8len = strlen(dataUtf8.data());
 		}
 		DWORD size = utf8len;
 		DWORD flag = 0x00000000;
-		WriteFile(hFile,&size,sizeof(size),&dwRet,NULL);
+		WriteFile(hFile, &size, sizeof(size), &dwRet, NULL);
 		header.size += 4;
 		footer.size += 4;
-		WriteFile(hFile,&flag,sizeof(flag),&dwRet,NULL);
+		WriteFile(hFile, &flag, sizeof(flag), &dwRet, NULL);
 		header.size += 4;
 		footer.size += 4;
-		WriteFile(hFile,it->first,strlen(it->first) + 1,&dwRet,NULL);
-		header.size += strlen(it->first) + 1;
-		footer.size += strlen(it->first) + 1;
-		WriteFile(hFile,dataUtf8,utf8len,&dwRet,NULL);
+		WriteFile(hFile, item.first, strlen(item.first) + 1, &dwRet, NULL);
+		header.size += strlen(item.first) + 1;
+		footer.size += strlen(item.first) + 1;
+		WriteFile(hFile, dataUtf8.data(), utf8len, &dwRet, NULL);
 		header.size += utf8len;
 		footer.size += utf8len;
-		free(dataUtf8);
-		it++;
 	}
 
 	WriteFile(hFile,&footer,sizeof(footer),&dwRet,NULL);
@@ -601,7 +582,7 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::Save(const char *szFileName)
+DWORD CTag_Ape::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
@@ -640,7 +621,7 @@ DWORD CTag_Ape::Save(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::DelTag(const char *szFileName)
+DWORD CTag_Ape::DelTag(LPCTSTR szFileName)
 {
 	// ID3v1をバックアップ
 	DWORD dwWin32errorCode = _LoadId3Tag(szFileName);
@@ -667,7 +648,7 @@ DWORD CTag_Ape::DelTag(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::_DelTag(const char *szFileName)
+DWORD CTag_Ape::_DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
@@ -743,7 +724,7 @@ DWORD CTag_Ape::_DelTag(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::MakeTag(const char *szFileName)
+DWORD CTag_Ape::MakeTag(LPCTSTR szFileName)
 {
 	// ID3v1をバックアップ
 	DWORD dwWin32errorCode = _LoadId3Tag(szFileName);
