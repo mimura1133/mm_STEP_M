@@ -33,9 +33,6 @@
     <ClCompile Include="..\STEP_SDK\STEPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ID3v2\GlobalCommand.cpp">
-      <Filter>ID3v2</Filter>
-    </ClCompile>
     <ClCompile Include="ID3v2\Id3tagv1.cpp">
       <Filter>ID3v2</Filter>
     </ClCompile>
@@ -77,9 +74,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ID3v2\classID.h">
-      <Filter>ID3v2</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\GlobalCommand.h">
       <Filter>ID3v2</Filter>
     </ClInclude>
     <ClInclude Include="ID3v2\Id3tagv1.h">
