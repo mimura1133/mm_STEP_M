@@ -85,7 +85,7 @@ bool bOptGenreListSelect;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.01 Copyright (C) 2003-2006 haseta\r\nMonkey's Audio形式をサポートしています";
+	return TEXT("Version 1.01 Copyright (C) 2003-2006 haseta\r\nMonkey's Audio形式をサポートしています");
 }
 
 
@@ -98,11 +98,11 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_ape.ini";
-	bOptGenreListSelect = GetPrivateProfileInt("APE", "GenreListSelect", 0, strINI) ? true : false;
+	bOptGenreListSelect = GetPrivateProfileInt(TEXT("APE"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
 
 	HBITMAP hAPEBitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_APE));
-	nFileTypeAPE = STEPRegisterExt(nPluginID, "ape", hAPEBitmap);
-	nFileTypeAPEID3 = STEPRegisterExt(nPluginID, "ape", hAPEBitmap);
+	nFileTypeAPE = STEPRegisterExt(nPluginID, TEXT("ape"), hAPEBitmap);
+	nFileTypeAPEID3 = STEPRegisterExt(nPluginID, TEXT("ape"), hAPEBitmap);
 	DeleteObject(hAPEBitmap);
 
 	return true;
@@ -121,7 +121,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_ape";
+	return TEXT("STEP_ape");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -230,17 +230,17 @@ bool ReadTagAPE(FILE_INFO *pFileMP3)
 	ape.GetComment("Performer", buff);
 	SetOrigArtistSI(pFileMP3, buff);
 	// ファイル形式：APE
-	SetFileTypeName(pFileMP3, "Monkey's Audio");
+	SetFileTypeName(pFileMP3, TEXT("Monkey's Audio"));
 	if (!ape.HasApetag() && ape.HasId3tag()) {
 		SetFormat(pFileMP3, nFileTypeAPEID3);
-		SetFileTypeName(pFileMP3, "Monkey's Audio(ID3)");
+		SetFileTypeName(pFileMP3, TEXT("Monkey's Audio(ID3)"));
 	} else {
 		SetFormat(pFileMP3, nFileTypeAPE);
 		if (ape.HasApetag()) {
 			if (ape.isApetagV1()) {
-				SetFileTypeName(pFileMP3, "Monkey's Audio(APE)");
+				SetFileTypeName(pFileMP3, TEXT("Monkey's Audio(APE)"));
 			} else {
-				SetFileTypeName(pFileMP3, "Monkey's Audio(APEv2)");
+				SetFileTypeName(pFileMP3, TEXT("Monkey's Audio(APEv2)"));
 			}
 		}
 	}
@@ -251,11 +251,11 @@ bool ReadTagAPE(FILE_INFO *pFileMP3)
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (stricmp(szExt, "ape") == 0) {
+	if (_tcsicmp(szExt, TEXT("ape")) == 0) {
 		if (ReadTagAPE(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "Monkey's Audioファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("Monkey's Audioファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
 			return STEP_SUCCESS;
@@ -305,8 +305,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 	if (nFormat == nFileTypeAPE || nFormat == nFileTypeAPEID3) {
 		if (WriteTagAPE(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "Monkey's Audioファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("Monkey's Audioファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -325,7 +325,7 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 	if (page.DoModal() == IDOK) {
 		bOptGenreListSelect = dlg1.m_bGenreListSelect ? true : false;
 
-		WritePrivateProfileString("APE", "GenreListSelect", bOptGenreListSelect ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("APE"), TEXT("GenreListSelect"), bOptGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
 	}
 }
 
@@ -334,7 +334,7 @@ STEP_API LPCTSTR WINAPI STEPGetColumnName(UINT nFormatType, COLUMNTYPE nColumn)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	switch (nColumn) {
 	case COLUMN_ORIG_ARTIST:
-		return "パフォーマー";
+		return TEXT("パフォーマー");
 	}
 	return NULL;
 }

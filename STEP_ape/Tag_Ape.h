@@ -38,12 +38,12 @@ public:
 //	CString GenreNum2String(unsigned char cGenre);
 //	void	SetScmpxGenre(BOOL bSwitch);
 
-	BOOL	SetComment(const char *name,const char *value);
+	BOOL	SetComment(const char *name, LPCTSTR value);
 	BOOL	GetComment(const char *name,CString &strValue);
 	void	GetCommentNames(CStringArray &strArray);
 
-	DWORD	Load(const char *szFileName);
-	DWORD	Save(const char *szFileName);
+	DWORD	Load(LPCTSTR szFileName);
+	DWORD	Save(LPCTSTR szFileName);
 	DWORD	DelTag(const char *szFileName);
 	DWORD	MakeTag(const char *szFileName);
 
