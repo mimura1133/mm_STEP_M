@@ -50,7 +50,7 @@ public:
 	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,const char *szFileName);
 	DWORD DelTag(HWND hWnd, LPCTSTR szFileName);
-	void GetId3tagString(char *szTag);
+	void GetId3tagString(char(&szTag)[128]);
 	DWORD MakeTag(HWND hWnd, LPCTSTR szFileName);
 
 private:

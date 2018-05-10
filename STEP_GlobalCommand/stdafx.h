@@ -3,12 +3,7 @@
 //            プロジェクト専用のインクルード ファイルを記述します。
 //
 
-#if !defined(AFX_STDAFX_H__864C440E_CCF1_4452_847C_9C052AADDC23__INCLUDED_)
-#define AFX_STDAFX_H__864C440E_CCF1_4452_847C_9C052AADDC23__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #define VC_EXTRALEAN		// Windows ヘッダーから殆ど使用されないスタッフを除外します。
 
@@ -38,5 +33,3 @@
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ は前行の直前に追加の宣言を挿入します。
-
-#endif // !defined(AFX_STDAFX_H__864C440E_CCF1_4452_847C_9C052AADDC23__INCLUDED_)

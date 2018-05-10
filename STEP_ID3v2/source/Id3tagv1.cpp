@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "GlobalCommand.h"
-#include "Id3tagv1.h"
+#include "ID3v2/Id3tagv1.h"
 #include <io.h>
 #include <algorithm>
 
@@ -245,7 +245,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 	FILE *fp;
-	if((fp= _tfopen(szFileName, TEXT("rb"))) == NULL)
+	if(_tfopen_s(&fp, szFileName, TEXT("rb")) != 0)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -410,13 +410,11 @@ DWORD CId3tagv1::Save(HWND, const char *szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
-	char	szTmp[128];
+	std::array<char, 128> szTmp = {};
 	char	szTagTmp[4];
-	char	*p;
 
 	//èÓïÒÇÃï€ë∂
-	p = szTmp;
-	memset(p, 0x00, 128-3);
+	auto p = szTmp.begin();
 	std::copy_n(m_szTitle.begin(), 30, p);
 	p += 30;
 	std::copy_n(m_szArtist.begin(), 30, p);
@@ -435,7 +433,7 @@ DWORD CId3tagv1::Save(HWND, const char *szFileName)
 	p += 2;
 	*p = m_cGenre;
 
-	if((fp = fopen(szFileName,"r+b")) == NULL)
+	if(fopen_s(&fp, szFileName,"r+b") != 0)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -471,7 +469,7 @@ DWORD CId3tagv1::Save(HWND, const char *szFileName)
 		fclose(fp);
 		return dwWin32errorCode;
 	}
-	if(fwrite(szTmp,1,128-3,fp) < 128-3)
+	if(fwrite(szTmp.data(),1,128-3,fp) < 128-3)
 	{
 		dwWin32errorCode = GetLastError();
 		fclose(fp);
@@ -493,7 +491,7 @@ DWORD CId3tagv1::DelTag(HWND hWnd, LPCTSTR szFileName)
 	char	szTag[4];
 
 	//äJÇ≠
-	if((fp= _tfopen(szFileName, TEXT("r+b"))) == NULL)
+	if(_tfopen_s(&fp, szFileName, TEXT("r+b")) != 0)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -525,7 +523,7 @@ DWORD CId3tagv1::DelTag(HWND hWnd, LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	//êÿÇËÇ¬Çﬂ
-	if(_chsize(fileno(fp),ftell(fp)) == -1)
+	if(_chsize(_fileno(fp),ftell(fp)) == -1)
 	{
 		dwWin32errorCode = GetLastError();
 		fclose(fp);
@@ -543,10 +541,10 @@ DWORD CId3tagv1::DelTag(HWND hWnd, LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-void CId3tagv1::GetId3tagString(char *szTag)
+void CId3tagv1::GetId3tagString(char (&szTag)[128])
 {
 	memset(szTag,0x00,128);
-	strncpy(szTag,"TAG",3);
+	strncpy_s(szTag,"TAG",3);
 	if(m_bScmpxGenre)
 		szTag[127] = (char )SCMPX_GENRE_NULL;
 	else
@@ -584,8 +582,8 @@ DWORD CId3tagv1::MakeTag(HWND, LPCTSTR szFileName)
 	}
 	//ID3É^ÉOÇçÏê¨
 	GetId3tagString(szTag);
-	strcpy(szDefaultName,static_cast<CStringA>(getFileName(CString(szFileName))));
-	strncpy(szTag+3,szDefaultName,30);
+	strcpy_s(szDefaultName,static_cast<CStringA>(getFileName(CString(szFileName))));
+	strncpy_s(szTag + 3, 128 - 3, szDefaultName, 30);
 	if(WriteFile(hFile,szTag,128,&dwWritten,NULL) == 0)
 	{
 		dwWin32errorCode = GetLastError();

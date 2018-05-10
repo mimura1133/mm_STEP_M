@@ -215,7 +215,7 @@ LPCTSTR getFileName(LPCTSTR szPath)
 	return szPath;
 }
 
-CString getFileNameExtName(CString &path)
+CString getFileNameExtName(const CString& path)
 {
 	int i = 0;
 	int pathOffset = 0;
@@ -320,7 +320,7 @@ long check2ByteLength(const char *szTag,long lLimit)
 	return i;
 }
 
-void sysError(HWND hWnd, LPTSTR mes)
+void sysError(HWND hWnd, LPCTSTR mes)
 {
 	LPTSTR lpBuffer;
 
@@ -445,7 +445,7 @@ void cutExtName(char *szFileName)
 	*pEnd='\0';
 }
 
-CString getFileName(CString &path)
+CString getFileName(const CString& path)
 {
 	CString fName = getFileNameExtName(path);
 	
