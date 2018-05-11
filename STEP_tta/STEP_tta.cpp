@@ -81,7 +81,7 @@ bool bOptUnSyncNew = true;
 STEP_API LPCTSTR WINAPI STEPGetPluginInfo(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "Version 1.00 Copyright (C) 2005-2006 haseta\r\nTTA形式をサポートしています";
+	return TEXT("Version 1.00 Copyright (C) 2005-2006 haseta\r\nTTA形式をサポートしています");
 }
 
 STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
@@ -93,12 +93,12 @@ STEP_API bool WINAPI STEPInit(UINT pID, LPCTSTR szPluginFolder)
 	// INIファイルの読み込み
 	strINI = szPluginFolder;
 	strINI += "STEP_tta.ini";
-	bOptGenreListSelect = GetPrivateProfileInt("TTA", "GenreListSelect", 0, strINI) ? true : false;
-	bOptID3TagAutoWrite = GetPrivateProfileInt("TTA", "ID3TagAutoWrite", 0, strINI) ? true : false;
-	bOptID3TagAutoDelete = GetPrivateProfileInt("TTA", "ID3TagAutoDelete", 0, strINI) ? true : false;
+	bOptGenreListSelect = GetPrivateProfileInt(TEXT("TTA"), TEXT("GenreListSelect"), 0, strINI) ? true : false;
+	bOptID3TagAutoWrite = GetPrivateProfileInt(TEXT("TTA"), TEXT("ID3TagAutoWrite"), 0, strINI) ? true : false;
+	bOptID3TagAutoDelete = GetPrivateProfileInt(TEXT("TTA"), TEXT("ID3TagAutoDelete"), 0, strINI) ? true : false;
 
 	HBITMAP hTTABitmap = LoadBitmap(theApp.m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_TTA));
-	nFileTypeTTA = STEPRegisterExt(nPluginID, "tta", hTTABitmap);
+	nFileTypeTTA = STEPRegisterExt(nPluginID, TEXT("tta"), hTTABitmap);
 	DeleteObject(hTTABitmap);
 
 	return true;
@@ -117,7 +117,7 @@ STEP_API UINT WINAPI STEPGetAPIVersion(void)
 STEP_API LPCTSTR WINAPI STEPGetPluginName(void)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	return "STEP_tta";
+	return TEXT("STEP_tta");
 }
 
 STEP_API bool WINAPI STEPSupportSIF(UINT nFormat) {
@@ -204,16 +204,16 @@ STEP_API UINT WINAPI STEPGetColumnMax(UINT nFormat, COLUMNTYPE nColumn, bool isE
 STEP_API UINT WINAPI STEPLoad(FILE_INFO *pFileMP3, LPCTSTR szExt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (stricmp(szExt, "tta") == 0) {
+	if (_tcsicmp(szExt, TEXT("tta")) == 0) {
 		extern	bool LoadAttributeFileTTA(FILE_INFO *pFile);
 		if (LoadAttributeFileTTA(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の読み込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "TTAファイルの読み込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の読み込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("TTAファイルの読み込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		} else {
 			SetFormat(pFileMP3, nFileTypeTTA);
-			SetFileTypeName(pFileMP3, "True Audio");
+			SetFileTypeName(pFileMP3, TEXT("True Audio"));
 			return STEP_SUCCESS;
 		}
 	}
@@ -229,8 +229,8 @@ STEP_API UINT WINAPI STEPSave(FILE_INFO *pFileMP3)
 		extern bool WriteAttributeFileTTA(FILE_INFO *pFileMP3);
 		if (WriteAttributeFileTTA(pFileMP3) == false) {
 			CString	strMsg;
-			strMsg.Format("%s の書き込みに失敗しました", GetFullPath(pFileMP3));
-			MessageBox(NULL, strMsg, "TTAファイルの書き込み失敗", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			strMsg.Format(TEXT("%s の書き込みに失敗しました"), GetFullPath(pFileMP3));
+			MessageBox(NULL, strMsg, TEXT("TTAファイルの書き込み失敗"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return STEP_ERROR;
 		}
 		return STEP_SUCCESS;
@@ -253,9 +253,9 @@ STEP_API void WINAPI STEPShowOptionDialog(HWND hWnd)
 		bOptID3TagAutoDelete = dlg1.m_bID3TagAutoDelete ? true : false;
 		bOptID3TagAutoWrite = dlg1.m_bID3TagAutoWrite ? true : false;
 
-		WritePrivateProfileString("TTA", "GenreListSelect", bOptGenreListSelect ? "1" : "0", strINI);
-		WritePrivateProfileString("TTA", "ID3TagAutoDelete", bOptID3TagAutoDelete ? "1" : "0", strINI);
-		WritePrivateProfileString("TTA", "ID3TagAutoWrite", bOptID3TagAutoWrite ? "1" : "0", strINI);
+		WritePrivateProfileString(TEXT("TTA"), TEXT("GenreListSelect"), bOptGenreListSelect ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("TTA"), TEXT("ID3TagAutoDelete"), bOptID3TagAutoDelete ? TEXT("1") : TEXT("0"), strINI);
+		WritePrivateProfileString(TEXT("TTA"), TEXT("ID3TagAutoWrite"), bOptID3TagAutoWrite ? TEXT("1") : TEXT("0"), strINI);
 		STEPUpdateCellInfo();
 	}
 }
