@@ -90,9 +90,9 @@ public:		// ======================================
 	inline	static	bool	GetEnableSubDirButton(void) {return(m_bEnableSubDirButton);}
 	inline	static	void	SetSearchSubDirState(bool bFlag) {m_bSearchSubDirState = bFlag;}
 	inline	static	bool	GetSearchSubDirState(void) {return(GetEnableSubDirButton() ? m_bSearchSubDirState : false);}
-			bool		Exec(char *);
-	inline	static	void	SetCheckBoxTitle(const char* title) {pCheckBoxTitle = title;}
-	inline	static	const char* GetCheckBoxTitle(void) {return (pCheckBoxTitle);}
+			bool		Exec(LPTSTR);
+	inline	static	void	SetCheckBoxTitle(LPCTSTR title) {pCheckBoxTitle = title;}
+	inline	static	LPCTSTR GetCheckBoxTitle(void) {return (pCheckBoxTitle);}
 
 
 private:	// ======================================
@@ -101,7 +101,7 @@ private:	// ======================================
 	static	bool	m_bEnableSubDirButton;
 	static	bool	m_bSearchSubDirState;
 	static	WNDPROC	m_VSSelectOrgProc;
-	static	const char* pCheckBoxTitle;
+	static	LPCTSTR pCheckBoxTitle;
 
 	static	LRESULT CALLBACK VSSelectFolderSubProc(HWND, UINT, WPARAM, LPARAM);
 	static	int CALLBACK CallbackSelectDir(HWND, UINT, LPARAM, LPARAM);

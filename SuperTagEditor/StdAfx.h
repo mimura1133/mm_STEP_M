@@ -24,5 +24,15 @@
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ は前行の直前に追加の宣言を挿入します。
 #include <afxtempl.h>
+#include <utility>
+
+template<class To>
+auto implicit_cast(typename std::remove_reference<To>::type&& x)
+{
+	return std::forward<To>(x);
+}
+
+#include <string>
+using tstring = std::basic_string<TCHAR>;
 
 #endif // !defined(AFX_STDAFX_H__D67B6446_BFAB_11D3_9459_00402641B29B__INCLUDED_)

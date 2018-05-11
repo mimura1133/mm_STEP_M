@@ -84,7 +84,7 @@ public:
 
 public:
 	void UpdatePluginButton();
-	BOOL InsertButton( int nIndex, LPTBBUTTON lpButton, char* lpszRegName);
+	BOOL InsertButton(int nIndex, LPTBBUTTON lpButton, LPCTSTR lpszRegName);
 	void Customize();
 	void UpdateButtonImage();
 	int				nDyImageIndex;

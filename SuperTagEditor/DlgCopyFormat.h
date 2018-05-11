@@ -57,7 +57,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
-	void OutputFormatString(const char *sText);
+	void OutputFormatString(LPCTSTR sText);
 };
 
 //{{AFX_INSERT_LOCATION}}

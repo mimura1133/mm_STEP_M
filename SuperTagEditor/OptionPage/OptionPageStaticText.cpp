@@ -18,14 +18,14 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(COptionPageStaticText, COptionPage)
 
 COptionPageStaticText::COptionPageStaticText(UINT captionID,
-											 LPCSTR lpszText,
+											 LPCTSTR lpszText,
 											 BOOL bIsHText) : COptionPage((UINT)0, captionID)
 {
 	//{{AFX_DATA_INIT(COptionPageStaticText)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	if(TRUE == bIsHText) {
-		m_Display.SetSMLText((char*)lpszText);
+		m_Display.SetSMLText(lpszText);
 	} else {
 		m_Display.SetPlainText(lpszText);
 	}

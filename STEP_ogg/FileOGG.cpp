@@ -136,7 +136,7 @@ bool LoadAttributeFileOGG(FILE_INFO *pFileMP3)
 		long items = 0;
 		int i; for(i=0; i<strArray.GetSize(); i++)
 		{
-			CString strName = strArray.GetAt(i);
+			CStringA strName = strArray.GetAt(i);
 			CString strValue;
 			CString _strValue;
 			int j = 0;
@@ -165,7 +165,7 @@ bool LoadAttributeFileOGG(FILE_INFO *pFileMP3)
 				} else {
 					strDisp += "\r\n";
 				}
-				strDisp += "[" + strName + "] " + strValue;
+				strDisp += "[" + CString(strName) + "] " + strValue;
 				items++;
 			}
 		}
@@ -210,7 +210,7 @@ bool WriteAttributeFileOGG(FILE_INFO *pFileMP3)
     int i = 0;
     while(VC[i].szField){
 		fileOGG->DelComment(VC[i].szField, 0);
-		if (strlen(*VC[i].pstrContents) > 0) {
+		if (lstrlen(*VC[i].pstrContents) > 0) {
 			fileOGG->AddComment(VC[i].szField, *VC[i].pstrContents);
 		}
 		//fileOGG->ReplaceComment(VC[i].szField, *VC[i].pstrContents, 0);

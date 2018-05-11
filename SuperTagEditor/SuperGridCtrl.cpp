@@ -2229,8 +2229,8 @@ CSuperGridCtrl::CTreeItem* CSuperGridCtrl::InsertItem(CTreeItem *pParent, CItemI
 		// ディレクトリ(フォルダ同士でソートして追加)
 		{
 			POSITION	pos;
-			const char *sItemText = GetData(pItem)->GetItemText();
-			if (sItemText == NULL || strlen(sItemText) == 0) {
+			const auto& sItemText = GetData(pItem)->GetItemText();
+			if (sItemText.GetLength() == 0) {
 				// 項目名が空
 				pos = NULL;
 			} else {
@@ -2242,9 +2242,9 @@ CSuperGridCtrl::CTreeItem* CSuperGridCtrl::InsertItem(CTreeItem *pParent, CItemI
 				CTreeItem	*pTarget = (CTreeItem *)pParent->m_listChild.GetNext(pos);
 				if (pTarget != NULL) {
 					CItemInfo *pItemInfo = GetData(pTarget);
-					const char *sTargetText = pItemInfo->GetItemText();
+					const auto& sTargetText = pItemInfo->GetItemText();
 					if (pItemInfo->GetLParam() < 0		// フォルダ
-					&&  _mbsicmp((const unsigned char *)sTargetText, (const unsigned char *)sItemText) > 0) {
+					&&  sTargetText.Compare(sItemText) > 0) {
 						// この位置に挿入
 						pParent->m_listChild.InsertBefore(posTarget, pItem);
 						bAddItem = true;
@@ -3849,7 +3849,7 @@ int CSuperGridCtrl::MyDrawText(CDC* pDC, LPCTSTR lpszString, int nCount, LPRECT 
 {
 	CString strText = lpszString;
 	if (g_bOptShowZenSpace && (nFormat & (DT_CENTER | DT_RIGHT)) == 0/* RockDance 125 */ &&
-			((strText.Find("\r\n") != -1 || strText.Find("　") != -1)/* Misirlou 147 */ || strText.Find("\t")/* Baja 156 */)) { /* 2003.06.26 change */
+			((strText.Find(TEXT("\r\n")) != -1 || strText.Find(TEXT("　")) != -1)/* Misirlou 147 */ || strText.Find(TEXT("\t"))/* Baja 156 */)) { /* 2003.06.26 change */
 		COLORREF	colOrg;
 		CString strChar = "";
 		CString strNormal = "";

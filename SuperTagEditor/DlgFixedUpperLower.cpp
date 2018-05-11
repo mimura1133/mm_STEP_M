@@ -79,7 +79,7 @@ BOOL CDlgFixedUpperLower::OnInitDialog()
 	
 	RECT	rect;
 	m_listUpperLower.GetClientRect(&rect);
-	m_listUpperLower.InsertColumn(1, "固定単語", LVCFMT_LEFT, rect.right-rect.left-16, -1);
+	m_listUpperLower.InsertColumn(1, TEXT("固定単語"), LVCFMT_LEFT, rect.right-rect.left-16, -1);
 	m_listUpperLower.DeleteAllItems();					// クリア
 	for (int i=0;i<m_arFixedWords.GetSize();i++) {
 		m_listUpperLower.InsertItem(i, m_arFixedWords.GetAt(i));

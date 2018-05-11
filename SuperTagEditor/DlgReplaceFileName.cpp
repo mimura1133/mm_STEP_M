@@ -124,18 +124,18 @@ void CDlgReplaceFileName::OnBtResetPage()
 	((CWnd *)GetDlgItem(IDC_ED_AFTER12))->SetWindowText(g_sRepTable[11][1]);
 
 	/* FreeFall 050 */
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE1))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE2))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE3))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE4))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE5))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE6))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER1))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER2))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER3))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER4))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER5))->SetWindowText("");
-	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER6))->SetWindowText("");
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE1))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE2))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE3))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE4))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE5))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_BEFORE6))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER1))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER2))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER3))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER4))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER5))->SetWindowText(TEXT(""));
+	((CWnd *)GetDlgItem(IDC_ED_USER_AFTER6))->SetWindowText(TEXT(""));
 
 	m_nFileUnifyAlpha = 0;
 	m_nFileUnifyHiraKata = 0;

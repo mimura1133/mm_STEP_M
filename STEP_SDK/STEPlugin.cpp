@@ -13,13 +13,13 @@ HMENU (WINAPI *STEPGetMenu)(UINT);
 void (WINAPI *STEPAddToolBarButton)(HBITMAP, UINT, char*);
 UINT (WINAPI *STEPRegisterExt)(UINT, LPCTSTR, HBITMAP);
 UINT (WINAPI *STEPKeyAssign)(UINT, LPCTSTR, LPCTSTR);
-const char* (WINAPI *STEPGetGenreNameSIF)(BYTE byGenre);
-BYTE (WINAPI *STEPGetGenreCode)(const char* szGenre);
-bool (WINAPI *STEPIsUserGenre)(const char* szGenre);
+LPCTSTR (WINAPI *STEPGetGenreNameSIF)(BYTE byGenre);
+BYTE (WINAPI *STEPGetGenreCode)(LPCTSTR szGenre);
+bool (WINAPI *STEPIsUserGenre)(LPCTSTR szGenre);
 int (WINAPI *STEPGetNumericTrackNumber)(const char* szTrackNumber, char* szNumericNumber, int size); /* STEP 037 */
-int (WINAPI *STEPGetIntegerTrackNumber)(const char* szTrackNumber); /* STEP 037 */
+int (WINAPI *STEPGetIntegerTrackNumber)(LPCTSTR szTrackNumber); /* STEP 037 */
 int (WINAPI *STEPGetNumericDiskNumber)(const char* szDiskNumber, char* szNumericNumber, int size); /* STEP 037 */
-int (WINAPI *STEPGetIntegerDiskNumber)(const char* szDiskNumber); /* STEP 037 */
+int (WINAPI *STEPGetIntegerDiskNumber)(LPCTSTR szDiskNumber); /* STEP 037 */
 
 bool (WINAPI *STEPGetBooleanValue)(FILE_INFO*, UINT);
 void (WINAPI *STEPSetBooleanValue)(FILE_INFO*, UINT, bool);
@@ -45,7 +45,7 @@ void (WINAPI *STEPChangeSubItemText)(int nItem, int nColumn, LPCTSTR szText);
 const char* (WINAPI *STEPGetSubItemText)(int nItem, int nColumn);
 void (WINAPI *STEPGetFileInfo)(int nItem, FILE_INFO* info);
 UINT (WINAPI *STEPGETColumnType)(int nColumn);
-bool (WINAPI *STEPIsNumeric)(const char* szText); /* STEP 037 */
+bool (WINAPI *STEPIsNumeric)(LPCTSTR szText); /* STEP 037 */
 void (WINAPI *STEPConvSiFieldToId3tag)(FILE_INFO* pFileInfo); /* STEP 037 */
 
 void (WINAPI *STEPInitDataSIF)(FILE_INFO* info);
@@ -59,7 +59,7 @@ bool (WINAPI *STEPUpdateCellInfo)(void);
 
 bool Initialize(void)
 {
-	hLib = LoadLibrary("SuperTagEditor.exe");
+	hLib = LoadLibrary(TEXT("SuperTagEditor.exe"));
 	if(hLib == NULL)	return false;
 	(FARPROC&)STEPGetCommandID = GetProcAddress(hLib, "_STEPGetCommandID@0");
 	(FARPROC&)STEPGetMenu = GetProcAddress(hLib, "_STEPGetMenu@4");

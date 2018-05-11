@@ -30,15 +30,6 @@
     <ClCompile Include="DlgFileRmpID3v2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ID3v2\GlobalCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ID3v2\Id3tagv1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ID3v2\Id3tagv2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ID3v2\RMP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -104,15 +95,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DlgFileRmpID3v2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\GlobalCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\Id3tagv1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID3v2\Id3tagv2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mp3infp_ExportFunc.h">

@@ -28,10 +28,10 @@ void CRiffSIF::Release()
 	m_fields.clear();
 }
 
-BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4,const char *szData)
+BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4, LPCTSTR szData)
 {
 	m_fields.erase(mmioFOURCC(id1,id2,id3,id4));
-	if(strlen(szData))
+	if(lstrlen(szData))
 	{
 		m_fields.insert(pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
 	}
@@ -40,24 +40,23 @@ BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4,const char *szData)
 
 CString CRiffSIF::GetField(char id1,char id2,char id3,char id4)
 {
-	map<FOURCC,CString>::iterator p;
-	p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
+	auto p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
-		return "";
+		return TEXT("");
 	}
-	return (LPCSTR )p->second;
+	return p->second;
 }
 
 DWORD CRiffSIF::GetTotalFieldSize()
 {
 	DWORD dwSize = 0;
-	map<FOURCC,CString>::iterator p;
+	decltype(m_fields)::iterator p;
 
 	p = m_fields.begin();
 	while(p != m_fields.end())
 	{
-		CString *pStr = &p->second;
+		auto pStr = &p->second;
 		DWORD len = pStr->GetLength() + 1;
 		dwSize += len + (len&0x1)?1:0;	//WORD境界合わせ
 		p++;
@@ -178,11 +177,11 @@ BOOL CRiffSIF::FindChunk(HANDLE hFile,DWORD dwFileSize,UINT flag,FOURCC type,DWO
 DWORD CRiffSIF::GetInfoChunkSize()
 {
 	DWORD dwSize = 0; 
-	map<FOURCC,CString>::iterator p = m_fields.begin();
+	auto p = m_fields.begin();
 	while(p != m_fields.end())
 	{
 		FOURCC id = p->first;
-		CString *pStr = &p->second;
+		auto pStr = &p->second;
 		DWORD len = pStr->GetLength() + 1;
 		dwSize += len + 8 + ((len%2)?1:0);
 		p++;
@@ -194,7 +193,7 @@ DWORD CRiffSIF::GetInfoChunkSize()
 	ret:	-1 = ロード失敗
 			-2 = ファイルサイズが2Gを超過している
 */
-DWORD CRiffSIF::Load(const char *szFileName,char id1,char id2,char id3,char id4)
+DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
@@ -344,7 +343,7 @@ exit:
 	ret:	-1 = 更新失敗
 			-2 = ファイルサイズが2Gを超過している
 */
-DWORD CRiffSIF::Save(HWND hWnd,const char *szFileName)
+DWORD CRiffSIF::Save(HWND hWnd, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
@@ -360,7 +359,7 @@ DWORD CRiffSIF::Save(HWND hWnd,const char *szFileName)
 	DWORD dwOffset;
 	DWORD dwListInfoHead;
 
-	map<FOURCC,CString>::iterator p;
+	decltype(m_fields)::iterator p;
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//ファイルを開く
@@ -484,7 +483,7 @@ DWORD CRiffSIF::Save(HWND hWnd,const char *szFileName)
 	while(p != m_fields.end())
 	{
 		FOURCC id = p->first;
-		CString *pStr = &p->second;
+		auto pStr = &p->second;
 		DWORD len = pStr->GetLength() + 1;
 		if(len > 1)
 		{

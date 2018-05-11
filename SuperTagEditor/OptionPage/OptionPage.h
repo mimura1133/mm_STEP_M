@@ -338,7 +338,7 @@ public:
 	/*!
 		\brief	Retrieves the option pages dialog template name
 	*/
-	LPCSTR GetTemplateName() {
+	LPCTSTR GetTemplateName() {
 		return m_lpszTemplateName;
 	}
 

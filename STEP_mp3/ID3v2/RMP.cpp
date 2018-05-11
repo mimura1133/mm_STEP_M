@@ -67,7 +67,7 @@ void CRMP::SetSftDefault(const char *szDefaultSoft)
 
 CString CRMP::ReadChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id)
 {
-	CString retString;
+	CStringA retString;
 	MMCKINFO	mmckOutinfoSubchunk;
 	memset(&mmckOutinfoSubchunk,0,sizeof(mmckOutinfoSubchunk));
 	mmckOutinfoSubchunk.ckid = id;
@@ -88,13 +88,13 @@ CString CRMP::ReadChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id)
 	return retString;
 }
 
-DWORD CRMP::Load(const char *szFileName)
+DWORD CRMP::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((char *)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName), NULL, MMIO_COMPAT);
 	if(!hmmio)
 	{
 		dwWin32errorCode = GetLastError();
@@ -206,7 +206,7 @@ DWORD CRMP::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::Save(HWND hWnd,const char *szFileName)
+DWORD CRMP::Save(HWND hWnd, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD		mp3Size;
@@ -219,7 +219,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	DWORD		dwWritten;
 
 	//予想される増加サイズ
-	dwNewSize = lstrlen("LIST----INFO");
+	dwNewSize = strlen("LIST----INFO");
 	dwNewSize += m_strNAM.GetLength()+2+4+4;//+2はワードアラインメントを考慮しての数値
 	dwNewSize += m_strART.GetLength()+2+4+4;
 	dwNewSize += m_strPRD.GetLength()+2+4+4;
@@ -267,7 +267,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 				id3tag[127] = (char )SCMPX_GENRE_NULL;
 			else
 				id3tag[127] = (char )WINAMP_GENRE_NULL;
-			strcpy(szDefaultName,getFileName(szFileName));
+			strcpy(szDefaultName, static_cast<CStringA>(getFileName(CString(szFileName))));
 			cutExtName(szDefaultName);
 			strncpy(id3tag+3,szDefaultName,30);
 		}
@@ -302,7 +302,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((LPSTR )szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName), NULL, MMIO_COMPAT);
 	if(!hmmio)
 	{
 		dwWin32errorCode = GetLastError();
@@ -345,7 +345,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	mmioClose(hmmio,0);
 
 	//後ろを切り取る
-	if((fp=fopen(szFileName,"r+b")) == NULL)
+	if((fp = _tfopen(szFileName, TEXT("r+b"))) == NULL)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -369,7 +369,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	fclose(fp);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	if((hmmio = mmioOpen((LPSTR )szFileName,NULL,MMIO_COMPAT | MMIO_READWRITE)) == NULL)
+	if((hmmio = mmioOpen(const_cast<LPTSTR>(szFileName), NULL, MMIO_COMPAT | MMIO_READWRITE)) == NULL)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -459,11 +459,11 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
+DWORD CRMP::DelTag(HWND hWnd, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((char *)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName), NULL, MMIO_COMPAT);
 	if(hmmio == NULL)
 	{
 		dwWin32errorCode = GetLastError();
@@ -539,11 +539,11 @@ DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	lstrcpy(szTempPath, szFileName);
 	cutFileName(szTempPath);
-	char szTempFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	TCHAR szTempFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -597,8 +597,8 @@ DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
 	}
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);
@@ -680,7 +680,7 @@ BOOL CRMP::WriteChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,const char *pData,
 	return TRUE;
 }
 
-DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
+DWORD CRMP::MakeTag(HWND hWnd, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
@@ -743,11 +743,11 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	lstrcpy(szTempPath, szFileName);
 	cutFileName(szTempPath);
-	char szTempFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	TCHAR szTempFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -853,7 +853,7 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	{
 		//デフォルト曲名(ファイル名)
 		char szDefaultName[MAX_PATH];
-		strcpy(szDefaultName,getFileName(szFileName));
+		strcpy(szDefaultName, static_cast<CStringA>(getFileName(CString(szFileName))));
 		cutExtName(szDefaultName);
 		m_strNAM = szDefaultName;
 	}
@@ -921,8 +921,8 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	}
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath, TEXT("tms"), 0, szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);

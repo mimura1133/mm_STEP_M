@@ -490,6 +490,9 @@
     <ClInclude Include="..\STEP_SDK\STEPlugin.h">
       <Filter>Plugin</Filter>
     </ClInclude>
+    <ClInclude Include="strcnv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\a1.bin">

@@ -74,8 +74,8 @@ BOOL CDlgEditShowColumn::OnInitDialog()
 	RECT	rect;
 	m_listColumn.GetClientRect(&rect);
 
-	m_listColumn.InsertColumn(0, "項目名", LVCFMT_LEFT, rect.right-rect.left-16-48);
-	m_listColumn.InsertColumn(1, "最大幅", LVCFMT_LEFT, 48, 1);
+	m_listColumn.InsertColumn(0, TEXT("項目名"), LVCFMT_LEFT, rect.right-rect.left-16-48);
+	m_listColumn.InsertColumn(1, TEXT("最大幅"), LVCFMT_LEFT, 48, 1);
 	m_listColumn.DeleteAllItems();					// クリア
 
 	bool bFoundFormat = false; /* Conspiracy 198 */
@@ -83,10 +83,10 @@ BOOL CDlgEditShowColumn::OnInitDialog()
 		for (int nType = COLUMN_TREE_ITEM; nType < COLUMN_MAX; nType++) {
 			struct COLUMN_STATUS	*Stat = &g_columnStatus[nType];
 			if (Stat->nNumber == nColumn) {
-				extern	const char	***g_sNameList;
+				extern	const TCHAR	***g_sNameList;
 				int		nIndex = m_listColumn.GetItemCount();
 				CString	strMax;
-				strMax.Format("%d", Stat->nWidthMax);
+				strMax.Format(TEXT("%d"), Stat->nWidthMax);
 				m_listColumn.InsertItem(nIndex, g_sNameList[0][1+nType]);
 				m_listColumn.SetItemText(nIndex, 1, strMax);
 				m_listColumn.SetItemData(nIndex, nType);
@@ -100,10 +100,10 @@ BOOL CDlgEditShowColumn::OnInitDialog()
 	}
 	if (!bFoundFormat) { /* Conspiracy 198 */
 		struct COLUMN_STATUS	*Stat = &g_columnStatus[COLUMN_FORMAT];
-		extern	const char	***g_sNameList;
+		extern	const TCHAR	***g_sNameList;
 		int		nIndex = m_listColumn.GetItemCount();
 		CString	strMax;
-		strMax.Format("%d", Stat->nWidthMax);
+		strMax.Format(TEXT("%d"), Stat->nWidthMax);
 		m_listColumn.InsertItem(nIndex, g_sNameList[0][1+COLUMN_FORMAT]);
 		m_listColumn.SetItemText(nIndex, 1, strMax);
 		m_listColumn.SetItemData(nIndex, COLUMN_FORMAT);
@@ -178,15 +178,15 @@ void CDlgEditShowColumn::OnOK()
 		struct COLUMN_STATUS	*Stat;
 		Stat = &g_columnStatus[m_listColumn.GetItemData(nIndex)];
 		Stat->bShowFlag = nIndex ? ListView_GetCheckState(m_listColumn.GetSafeHwnd(), nIndex) : TRUE;
-		Stat->nWidthMax = atoi(m_listColumn.GetItemText(nIndex, 1));
+		Stat->nWidthMax = _tstoi(m_listColumn.GetItemText(nIndex, 1));
 		Stat->nNumber = COLUMN_TREE_ITEM + nIndex;
 	}
 
 	if (g_columnStatus[COLUMN_FILE_NAME].bShowFlag == false) {
-		MessageBox("[表示項目設定]でファイル名が非表示に設定されています\n\n"
+		MessageBox(TEXT("[表示項目設定]でファイル名が非表示に設定されています\n\n"
 		           "STE 上でファイル名を変更したい場合は、ファイル名の表示を\n"
-				   "有効にしてください",
-		           "警告", MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				   "有効にしてください"),
+		           TEXT("警告"), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 	}
 
 	COptionPage::OnOK();
@@ -202,13 +202,13 @@ void CDlgEditShowColumn::OnBtResetPage()
 	};
 
 	for (int nType = COLUMN_TREE_ITEM; nType < COLUMN_MAX; nType++) {
-		extern	const char	***g_sNameList;
+		extern	const TCHAR	***g_sNameList;
 		int		nIndex = m_listColumn.GetItemCount();
 		struct COLUMN_STATUS	*Stat;
 		//Stat = &g_columnStatus[m_listColumn.GetItemData(nType)];
 		Stat = &g_columnStatus[nType];
 		CString	strMax;
-		strMax.Format("%d", nColumnMax[nType]);
+		strMax.Format(TEXT("%d"), nColumnMax[nType]);
 		m_listColumn.InsertItem(nIndex, g_sNameList[0][1+nType]);
 		m_listColumn.SetItemText(nIndex, 1, strMax);
 		m_listColumn.SetItemData(nIndex, nType);

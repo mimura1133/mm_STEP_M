@@ -44,27 +44,27 @@ enum {
 
 
 struct tagInfo {
-	char	*tag;
+	LPTSTR	tag;
 	DWORD	idStart;
 	DWORD	idEnd;
 };
 
 static tagInfo STagInfo[] = {
-	{"body", BEGIN_BODY, END_BODY},
-	{"center", BEGIN_CENTER, END_CENTER},
-	{"left", BEGIN_LEFTJUST, END_LEFTJUST},
-	{"right", BEGIN_RIGHTJUST, END_RIGHTJUST},
-	{"font", BEGIN_FONT, END_FONT},
-	{"b", BEGIN_BOLD, END_BOLD},
-	{"u", BEGIN_UNDERLINE, END_UNDERLINE},
-	{"i", BEGIN_ITALICS, END_ITALICS},
-	{"br", NEWLINE, NEWLINE},
-	{"h1", HEADER1, TAG_UNKNOWN},
-	{"h2", HEADER2, TAG_UNKNOWN},
-	{"h3", HEADER3, TAG_UNKNOWN},
-	{"h4", HEADER4, TAG_UNKNOWN},
-	{"h5", HEADER5, TAG_UNKNOWN},
-	{"h", TAG_UNKNOWN, END_HEADER},
+	{TEXT("body"), BEGIN_BODY, END_BODY},
+	{TEXT("center"), BEGIN_CENTER, END_CENTER},
+	{TEXT("left"), BEGIN_LEFTJUST, END_LEFTJUST},
+	{TEXT("right"), BEGIN_RIGHTJUST, END_RIGHTJUST},
+	{TEXT("font"), BEGIN_FONT, END_FONT},
+	{TEXT("b"), BEGIN_BOLD, END_BOLD},
+	{TEXT("u"), BEGIN_UNDERLINE, END_UNDERLINE},
+	{TEXT("i"), BEGIN_ITALICS, END_ITALICS},
+	{TEXT("br"), NEWLINE, NEWLINE},
+	{TEXT("h1"), HEADER1, TAG_UNKNOWN},
+	{TEXT("h2"), HEADER2, TAG_UNKNOWN},
+	{TEXT("h3"), HEADER3, TAG_UNKNOWN},
+	{TEXT("h4"), HEADER4, TAG_UNKNOWN},
+	{TEXT("h5"), HEADER5, TAG_UNKNOWN},
+	{TEXT("h"), TAG_UNKNOWN, END_HEADER},
 	{NULL, 0, 0}
 };
 
@@ -81,7 +81,7 @@ static DWORD headerFontSizes[5] = {8, 10, 12, 14, 18};
 ///////////////////////////////////////////////////////////////////////////////
 
 /* Skip whitespaces and return a pointer to the first non-whitespace character */
-static LPCSTR SkipWS(LPCSTR ptr)
+static LPCTSTR SkipWS(LPCTSTR ptr)
 {
 	while(0 != *ptr && *ptr <= ' ') {
 		ptr++;
@@ -92,11 +92,11 @@ static LPCSTR SkipWS(LPCSTR ptr)
 
 
 /* Parses a literal string enclosed in quotes from the markup stream */
-static LPCSTR GetString(LPCSTR str, CString &output)
+static LPCTSTR GetString(LPCTSTR str, CString &output)
 {
 	ASSERT('"' == *str);
-	LPCSTR end;
-	LPCSTR start;
+	LPCTSTR end;
+	LPCTSTR start;
 	
 	str++;
 	start = str;
@@ -119,9 +119,9 @@ static LPCSTR GetString(LPCSTR str, CString &output)
 
 	/* Calculate the length and allocate a conversion buffer */
 	DWORD length = end - start;
-	char *newstr = output.GetBuffer(length + 1);
-	LPCSTR src = start;
-	char *dst = newstr;
+	auto newstr = output.GetBuffer(length + 1);
+	LPCTSTR src = start;
+	auto dst = newstr;
 
 	// Copy over the new string and convert carriage returns to spaces
 	while(src < end) {
@@ -159,11 +159,11 @@ static LPCSTR GetString(LPCSTR str, CString &output)
 	Returns:
 		Pointer to the first character after the tag or string literal.
 */
-static LPCSTR GetID(LPCSTR src, CString &tagString, BOOL &isString)
+static LPCTSTR GetID(LPCTSTR src, CString &tagString, BOOL &isString)
 {
 	DWORD length;
-	LPCSTR retVal;
-	LPCSTR end;
+	LPCTSTR retVal;
+	LPCTSTR end;
 
 	/* Skip the the beginning of the text to parse */
 	src = SkipWS(src);
@@ -185,7 +185,7 @@ static LPCSTR GetID(LPCSTR src, CString &tagString, BOOL &isString)
 
 		// Store the tag ID into the string buffer
 		length = end - src;
-		char *tmp = tagString.GetBuffer(length + 1);
+		auto tmp = tagString.GetBuffer(length + 1);
 		memcpy(tmp, src, length);
 		tmp[length] = 0;
 		tagString.ReleaseBuffer(length);
@@ -247,7 +247,7 @@ void CSMLDoc::CSMLTagOptionList::Reset()
 }
 
 
-CString *CSMLDoc::CSMLTagOptionList::GetParam(LPCSTR param) {
+CString *CSMLDoc::CSMLTagOptionList::GetParam(LPCTSTR param) {
 	POSITION pos;
 
 	// Get the head of the list
@@ -274,21 +274,21 @@ CString CSMLDoc::CSMLTagOptionList::GetParamTypeface(CString &defaultFace) {
 	value = GetParam(_T("face"));
 
 	if(NULL != value) {
-		LPCSTR faceStr = *value;
+		LPCTSTR faceStr = *value;
 		UINT id = 0;
 
 		// Translate the typeface
-		if(0 == _stricmp(faceStr, "ANSI_FIXED_FONT")) {
+		if(0 == _tcsicmp(faceStr, TEXT("ANSI_FIXED_FONT"))) {
 			id = ANSI_FIXED_FONT;
-		} else if(0 == _stricmp(faceStr, "ANSI_VAR_FONT")) {
+		} else if(0 == _tcsicmp(faceStr, TEXT("ANSI_VAR_FONT"))) {
 			id = ANSI_VAR_FONT;
-		} else if(0 == _stricmp(faceStr, "DEFAULT_GUI_FONT")) {
+		} else if(0 == _tcsicmp(faceStr, TEXT("DEFAULT_GUI_FONT"))) {
 			id = DEFAULT_GUI_FONT;
-		} else if(0 == _stricmp(faceStr, "OEM_FIXED_FONT")) {
+		} else if(0 == _tcsicmp(faceStr, TEXT("OEM_FIXED_FONT"))) {
 			id = OEM_FIXED_FONT;
-		} else if(0 == _stricmp(faceStr, "SYSTEM_FONT")) {
+		} else if(0 == _tcsicmp(faceStr, TEXT("SYSTEM_FONT"))) {
 			id = SYSTEM_FONT;
-		} else if(0 == _stricmp(faceStr, "SYSTEM_FIXED_FONT")) {
+		} else if(0 == _tcsicmp(faceStr, TEXT("SYSTEM_FIXED_FONT"))) {
 			id = SYSTEM_FIXED_FONT;
 		}
 
@@ -316,7 +316,7 @@ DWORD CSMLDoc::CSMLTagOptionList::GetParamSize(DWORD defaultSize)
 	value = GetParam(_T("size"));
 	if(NULL != value) {
 		// It was found, so translate it to a number
-		defaultSize = atoi(*value);
+		defaultSize = _tstoi(*value);
 	}
 
 	return defaultSize;
@@ -342,73 +342,73 @@ static BOOL GetHexNibble(char ch, UCHAR *out)
 }
 
 // Translate a color value or windows system color into an RGB value 
-static COLORREF ConvertColor(COLORREF defaultColor, const char *srcTxt)
+static COLORREF ConvertColor(COLORREF defaultColor, LPCTSTR srcTxt)
 {
-	if(0 == _strnicmp(srcTxt, _T("COLOR_"), 6)) {
+	if(0 == _tcsncicmp(srcTxt, _T("COLOR_"), 6)) {
 		srcTxt = &(srcTxt[6]);
-		if(0 == _stricmp(srcTxt, "3DDKSHADOW")) {
+		if(0 == _tcsicmp(srcTxt, TEXT("3DDKSHADOW"))) {
 			defaultColor = COLOR_3DDKSHADOW;
-		} else if(0 == _stricmp(srcTxt, "3DFACE")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("3DFACE"))) {
 			defaultColor = COLOR_3DFACE;
-		} else if(0 == _stricmp(srcTxt, "BTNFACE")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("BTNFACE"))) {
 			defaultColor = COLOR_BTNFACE;
-		} else if(0 == _stricmp(srcTxt, "3DHILIGHT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("3DHILIGHT"))) {
 			defaultColor = COLOR_3DHILIGHT;
-		} else if(0 == _stricmp(srcTxt, "3DLIGHT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("3DLIGHT"))) {
 			defaultColor = COLOR_3DLIGHT;
-		} else if(0 == _stricmp(srcTxt, "3DSHADOW")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("3DSHADOW"))) {
 			defaultColor = COLOR_3DSHADOW;
-		} else if(0 == _stricmp(srcTxt, "ACTIVEBORDER")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("ACTIVEBORDER"))) {
 			defaultColor = COLOR_ACTIVEBORDER;
-		} else if(0 == _stricmp(srcTxt, "ACTIVECAPTION")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("ACTIVECAPTION"))) {
 			defaultColor = COLOR_ACTIVECAPTION;
-		} else if(0 == _stricmp(srcTxt, "APPWORKSPACE")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("APPWORKSPACE"))) {
 			defaultColor = COLOR_APPWORKSPACE;
-		} else if(0 == _stricmp(srcTxt, "BACKGROUND")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("BACKGROUND"))) {
 			defaultColor = COLOR_BACKGROUND;
-		} else if(0 == _stricmp(srcTxt, "BTNTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("BTNTEXT"))) {
 			defaultColor = COLOR_BTNTEXT;
-		} else if(0 == _stricmp(srcTxt, "CAPTIONTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("CAPTIONTEXT"))) {
 			defaultColor = COLOR_CAPTIONTEXT;
 #ifdef COLOR_GRADIENTACTIVECAPTION
-		} else if(0 == _stricmp(srcTxt, "GRADIENTACTIVECAPTION")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("GRADIENTACTIVECAPTION"))) {
 			defaultColor = COLOR_GRADIENTACTIVECAPTION;
 #endif
 #ifdef GRADIENTINACTIVECAPTION
-		} else if(0 == _stricmp(srcTxt, "GRADIENTINACTIVECAPTION")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("GRADIENTINACTIVECAPTION"))) {
 			defaultColor = COLOR_GRADIENTINACTIVECAPTION;
 #endif
-		} else if(0 == _stricmp(srcTxt, "GRAYTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("GRAYTEXT"))) {
 			defaultColor = COLOR_GRAYTEXT;
-		} else if(0 == _stricmp(srcTxt, "HIGHLIGHT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("HIGHLIGHT"))) {
 			defaultColor = COLOR_HIGHLIGHT;
-		} else if(0 == _stricmp(srcTxt, "HIGHLIGHTTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("HIGHLIGHTTEXT"))) {
 			defaultColor = COLOR_HIGHLIGHTTEXT;
 #ifdef HOTLIGHT
-		} else if(0 == _stricmp(srcTxt, "HOTLIGHT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("HOTLIGHT"))) {
 			defaultColor = COLOR_HOTLIGHT;
 #endif
-		} else if(0 == _stricmp(srcTxt, "INACTIVEBORDER")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("INACTIVEBORDER"))) {
 			defaultColor = COLOR_INACTIVEBORDER;
-		} else if(0 == _stricmp(srcTxt, "INACTIVECAPTION")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("INACTIVECAPTION"))) {
 			defaultColor = COLOR_INACTIVECAPTION;
-		} else if(0 == _stricmp(srcTxt, "INACTIVECAPTIONTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("INACTIVECAPTIONTEXT"))) {
 			defaultColor = COLOR_INACTIVECAPTIONTEXT;
-		} else if(0 == _stricmp(srcTxt, "INFOBK")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("INFOBK"))) {
 			defaultColor = COLOR_INFOBK;
-		} else if(0 == _stricmp(srcTxt, "INFOTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("INFOTEXT"))) {
 			defaultColor = COLOR_INFOTEXT;
-		} else if(0 == _stricmp(srcTxt, "MENU")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("MENU"))) {
 			defaultColor = COLOR_MENU;
-		} else if(0 == _stricmp(srcTxt, "MENUTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("MENUTEXT"))) {
 			defaultColor = COLOR_MENUTEXT;
-		} else if(0 == _stricmp(srcTxt, "SCROLLBAR")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("SCROLLBAR"))) {
 			defaultColor = COLOR_SCROLLBAR;
-		} else if(0 == _stricmp(srcTxt, "WINDOW")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("WINDOW"))) {
 			defaultColor = COLOR_WINDOW;
-		} else if(0 == _stricmp(srcTxt, "WINDOWFRAME")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("WINDOWFRAME"))) {
 			defaultColor = COLOR_WINDOWFRAME;
-		} else if(0 == _stricmp(srcTxt, "WINDOWTEXT")) {
+		} else if(0 == _tcsicmp(srcTxt, TEXT("WINDOWTEXT"))) {
 			defaultColor = COLOR_WINDOWTEXT;
 		} else {
 			TRACE1("Unknown system color %s\n", srcTxt);
@@ -735,13 +735,13 @@ void CSMLDoc::AddGroup(CSMLDoc::CSMLTextGroup &line)
 //////////////////////////////////////////////////////////////////////////////
 //	Parsing
 //////////////////////////////////////////////////////////////////////////////
-LPCSTR CSMLDoc::ParseTag(LPCSTR src, CString &tagText, DWORD &tagID, CSMLDoc::CSMLTagOptionList &paramList)
+LPCTSTR CSMLDoc::ParseTag(LPCTSTR src, CString &tagText, DWORD &tagID, CSMLDoc::CSMLTagOptionList &paramList)
 {
 	ASSERT(NULL != src);
 	ASSERT('<' == *src);
 
 	BOOL isString;
-	LPCSTR retVal;
+	LPCTSTR retVal;
 	bool endingTag;
 
 	// Determine if this is a termination tag
@@ -839,7 +839,7 @@ BOOL CSMLDoc::ParseSMLText(UINT nID)
 	hInst = AfxGetInstanceHandle();
 
 	// Find the resource
-	hSrc = FindResource(hInst, MAKEINTRESOURCE(nID), "SMLDOC");
+	hSrc = FindResource(hInst, MAKEINTRESOURCE(nID), TEXT("SMLDOC"));
 	if(NULL == hSrc) {
 		return FALSE;
 	}
@@ -860,15 +860,15 @@ BOOL CSMLDoc::ParseSMLText(UINT nID)
 }
 
 
-BOOL CSMLDoc::ParseSMLText(LPCSTR src)
+BOOL CSMLDoc::ParseSMLText(LPCTSTR src)
 {
 	ASSERT(NULL != src);
 
 	CSMLFontInfo		*fontInfo;
 	DWORD			length;
 	DWORD			tagID;
-	LPCSTR			start;
-	LPCSTR			end;
+	LPCTSTR			start;
+	LPCTSTR			end;
 	CString			tagString;
 	CSMLTextGroup		textGroup;
 	CSMLFontInfoList	fontInfoStack;

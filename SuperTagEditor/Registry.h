@@ -14,7 +14,7 @@
 inline CString MyProfile_GetString(LPCTSTR sSec, LPCTSTR sKey, LPCTSTR value, LPCTSTR strINI) {
 	static CString buff;
 	buff.Empty();
-	Profile_GetString(sSec, sKey, value == NULL ? "" : value, buff.GetBuffer(1024*2+1), 1024*2, strINI);
+	Profile_GetString(sSec, sKey, value == NULL ? TEXT("") : value, buff.GetBuffer(1024*2+1), 1024*2, strINI);
 	buff.ReleaseBuffer();
 	return buff;
 }

@@ -68,7 +68,7 @@ BOOL CDlgListSort::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	extern	const char	***g_sNameList;
+	extern	const TCHAR	***g_sNameList;
 	int i; for (i = 0; g_sNameList[0][i] != NULL; i++) {
 		m_listKey1.AddString(g_sNameList[0][i]);
 		m_listKey2.AddString(g_sNameList[0][i]);

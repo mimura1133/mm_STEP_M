@@ -14,8 +14,8 @@
 HRESULT LoadHeaderAttribute(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszName, FILE_INFO *pFileMP3, BOOL *pIsProtected);
 HRESULT LoadHeaderAttribute(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszName, FILE_INFO *pFileMP3, BOOL *pIsProtected);
 
-bool WriteAttributeStr(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR sValue, BOOL bSeparate = FALSE);
-bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCSTR sValue, BOOL bSeparate = FALSE);
+bool WriteAttributeStr(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, LPCTSTR sValue, BOOL bSeparate = FALSE);
+bool WriteAttributeStr(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, LPCTSTR sValue, BOOL bSeparate = FALSE);
 bool WriteAttributeDWORD(IWMHeaderInfo *pHeaderInfo, LPCWSTR pwszAttrName, DWORD dwValue);
 bool WriteAttributeDWORD(IWMHeaderInfo3 *pHeaderInfo, LPCWSTR pwszAttrName, DWORD dwValue);
 

@@ -30,10 +30,10 @@ bool ConvExt(FILE_INFO* pFileMP3)
 
 		if (nFormat == nFileTypeMP3 || nFormat == nFileTypeMP3V1 || nFormat == nFileTypeMP3V11 || nFormat == nFileTypeID3V2) {
 			// MP3 形式に変換
-			strNewFileName.Format("%s%s", fname, ".mp3");
+			strNewFileName.Format(TEXT("%s%s"), fname, TEXT(".mp3"));
 		} else if (nFormat == nFileTypeRMP) {
 			// RIFF MP3 形式に変換
-			strNewFileName.Format("%s%s", fname, ".rmp");
+			strNewFileName.Format(TEXT("%s%s"), fname, TEXT(".rmp"));
 		}
 		if (STEPFileNameChange(pFileMP3, strNewFileName) == false) {
 			return false;
@@ -42,7 +42,7 @@ bool ConvExt(FILE_INFO* pFileMP3)
 	return true;
 }
 
-bool DeleteTagID3v1(const char *sFileName, HWND hWnd)
+bool DeleteTagID3v1(LPCTSTR sFileName, HWND hWnd)
 {
 	// ID3v1 タグの取得
 	CId3tagv1	id3v1/*(USE_SCMPX_GENRE_ANIMEJ)*/;
@@ -57,7 +57,7 @@ bool DeleteTagID3v1(const char *sFileName, HWND hWnd)
 	return true;
 }
 
-bool DeleteTagID3v2(const char *sFileName, HWND hWnd)
+bool DeleteTagID3v2(LPCTSTR sFileName, HWND hWnd)
 {
 	// ID3v2 タグの取得
 	CId3tagv2	id3v2/*(USE_SCMPX_GENRE_ANIMEJ)*/;
@@ -73,7 +73,7 @@ bool DeleteTagID3v2(const char *sFileName, HWND hWnd)
 	return true;
 }
 
-bool DeleteTagSIF(const char* sFileName, HWND hWnd) {
+bool DeleteTagSIF(LPCTSTR sFileName, HWND hWnd) {
 	CRMP rmp;
 	if (rmp.Load(sFileName) != ERROR_SUCCESS) {
 		return false;
@@ -84,7 +84,7 @@ bool DeleteTagSIF(const char* sFileName, HWND hWnd) {
 	return true;
 }
 
-bool MakeTagID3v2(const char *sFileName, HWND hWnd)
+bool MakeTagID3v2(LPCTSTR sFileName, HWND hWnd)
 {
 	CId3tagv2	id3v2/*(USE_SCMPX_GENRE_ANIMEJ)*/;
 	switch (nId3v2VersionNew) {
@@ -124,7 +124,7 @@ bool MakeTagID3v2(const char *sFileName, HWND hWnd)
 	return(true);
 }
 
-bool MakeTagSIF(const char* sFileName, HWND hWnd) {
+bool MakeTagSIF(LPCTSTR sFileName, HWND hWnd) {
 	CRMP rmp;
 	if (rmp.MakeTag(hWnd, sFileName) != ERROR_SUCCESS) {
 		return false;
@@ -138,7 +138,7 @@ bool ConvFileFormat(FILE_INFO* pFileMP3, UINT nType, HWND hWnd) {
 	if (nType == nFileTypeMP3 || nType == nFileTypeMP3V1 || nType == nFileTypeMP3V11) { // 標準MP3形式に変換
 		if (nFormat == nFileTypeRMP) { // RIFF形式 => 標準MP3形式
 			if (DeleteTagSIF(GetFullPath(pFileMP3), hWnd) == false) {
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました",  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"),  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeMP3);
@@ -150,7 +150,7 @@ bool ConvFileFormat(FILE_INFO* pFileMP3, UINT nType, HWND hWnd) {
 			}
 		} else if (nFormat == nFileTypeID3V2) { // ID3v2形式 => 標準MP3形式
 			if (DeleteTagID3v2(GetFullPath(pFileMP3), hWnd) == false) {
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました",  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"),  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeMP3);
@@ -168,43 +168,43 @@ bool ConvFileFormat(FILE_INFO* pFileMP3, UINT nType, HWND hWnd) {
 		if (nFormat == nFileTypeMP3 || nFormat == nFileTypeMP3V1 || nFormat == nFileTypeMP3V11) { // 標準MP3形式 => ID3v2形式
 			if (MakeTagID3v2(GetFullPath(pFileMP3), hWnd) == false) {
 				STEPInitDataSIF(pFileMP3);				// SIF のクリア
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeID3V2);
 			extern bool ConvID3tagToSIField(FILE_INFO *pFileMP3);
 			ConvID3tagToSIField(pFileMP3);	// ID3 tag から SIF にコピー
-			if (strlen(GetTrackNumberSI(pFileMP3)) == 0 && GetBTrackNumber(pFileMP3) != (BYTE)0xff) {
+			if (lstrlen(GetTrackNumberSI(pFileMP3)) == 0 && GetBTrackNumber(pFileMP3) != (BYTE)0xff) {
 				CString strTrackNumber;
-				strTrackNumber.Format("%d", GetBTrackNumber(pFileMP3));
+				strTrackNumber.Format(TEXT("%d"), GetBTrackNumber(pFileMP3));
 				SetTrackNumberSI(pFileMP3, strTrackNumber);
 			}
-			if (strlen(GetDiskNumberSI(pFileMP3)) == 0 && GetBDiskNumber(pFileMP3) != (BYTE)0xff) {
+			if (lstrlen(GetDiskNumberSI(pFileMP3)) == 0 && GetBDiskNumber(pFileMP3) != (BYTE)0xff) {
 				CString strDiskNumber;
-				strDiskNumber.Format("%d", GetBDiskNumber(pFileMP3));
+				strDiskNumber.Format(TEXT("%d"), GetBDiskNumber(pFileMP3));
 				SetDiskNumberSI(pFileMP3, strDiskNumber);
 			}
 		} else if (nFormat == nFileTypeRMP) { // RIFF形式 => ID3v2形式
 			// RIFF MP3 => (標準MP3形式) => ID3v2 変換
 			if (DeleteTagSIF(GetFullPath(pFileMP3), hWnd) == false) {
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました",  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"),  GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeMP3);
 			if (MakeTagID3v2(GetFullPath(pFileMP3), hWnd) == false) {
 				STEPInitDataSIF(pFileMP3);				// SIF のクリア
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeID3V2);
 			if (GetBTrackNumber(pFileMP3) != (BYTE)0xff) {
 				CString strTrackNumber;
-				strTrackNumber.Format("%d", GetBTrackNumber(pFileMP3));
+				strTrackNumber.Format(TEXT("%d"), GetBTrackNumber(pFileMP3));
 				SetTrackNumberSI(pFileMP3, strTrackNumber);
 			}
 			if (GetBDiskNumber(pFileMP3) != (BYTE)0xff) {
 				CString strDiskNumber;
-				strDiskNumber.Format("%d", GetBDiskNumber(pFileMP3));
+				strDiskNumber.Format(TEXT("%d"), GetBDiskNumber(pFileMP3));
 				SetDiskNumberSI(pFileMP3, strDiskNumber);
 			}
 		} else {
@@ -214,27 +214,27 @@ bool ConvFileFormat(FILE_INFO* pFileMP3, UINT nType, HWND hWnd) {
 	} else if (nType == nFileTypeRMP) { // RIFF形式に変換
 		if (nFormat == nFileTypeMP3 || nFormat == nFileTypeMP3V1 || nFormat == nFileTypeMP3V11) { // 標準MP3形式 => RIFF形式
 			if (MakeTagSIF(GetFullPath(pFileMP3), hWnd) == FALSE) {
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeRMP);
-			SetFileTypeName(pFileMP3, "RIFF MP3");
+			SetFileTypeName(pFileMP3, TEXT("RIFF MP3"));
 			extern bool ConvID3tagToSIField(FILE_INFO *pFileMP3);
 			ConvID3tagToSIField(pFileMP3);	// ID3 tag から SIF にコピー
 		} else if (nFormat == nFileTypeID3V2) { // ID3v2形式 => RIFF形式
 			// ID3v2 => (標準MP3形式) => RIFF MP3 変換
 			if (DeleteTagID3v2(GetFullPath(pFileMP3), hWnd) == false) {
 				// 変換失敗
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return(false);
 			}
 			SetFormat(pFileMP3, nFileTypeMP3);
 			if (MakeTagSIF(GetFullPath(pFileMP3), hWnd) == FALSE) {
-				MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+				MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileMP3), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 				return false;
 			}
 			SetFormat(pFileMP3, nFileTypeRMP);
-			SetFileTypeName(pFileMP3, "RIFF MP3");
+			SetFileTypeName(pFileMP3, TEXT("RIFF MP3"));
 		} else {
 			// 未対応の形式
 			//return true;
@@ -391,11 +391,11 @@ bool WINAPI ConvFileFormatAuto(FILE_INFO* pFileInfo, int nProcFlag, HWND hWnd) {
 #ifdef RECONVERT_ID3V2
 	else if(GetFormat(pFileInfo) == nFileTypeID3V2) {
 		if (DeleteTagID3v2(GetFullPath(pFileInfo), hWnd) == false) {
-			MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileInfo), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileInfo), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return(false);
 		}
 		if (MakeTagID3v2(GetFullPath(pFileInfo), hWnd) == false) {
-			MessageBox(hWnd, "ファイル形式の変換に失敗しました", GetFullPath(pFileInfo), MB_ICONSTOP|MB_OK|MB_TOPMOST);
+			MessageBox(hWnd, TEXT("ファイル形式の変換に失敗しました"), GetFullPath(pFileInfo), MB_ICONSTOP|MB_OK|MB_TOPMOST);
 			return(false);
 		}
 	}

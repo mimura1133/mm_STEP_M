@@ -13,13 +13,13 @@ extern STEP_API HMENU (WINAPI *STEPGetMenu)(UINT);
 extern STEP_API void (WINAPI *STEPAddToolBarButton)(HBITMAP, UINT, char*);
 extern STEP_API UINT (WINAPI *STEPRegisterExt)(UINT, LPCTSTR, HBITMAP);
 extern STEP_API UINT (WINAPI *STEPKeyAssign)(UINT, LPCTSTR, LPCTSTR);
-extern STEP_API const char* (WINAPI *STEPGetGenreNameSIF)(BYTE byGenre);
-extern STEP_API BYTE (WINAPI *STEPGetGenreCode)(const char* szGenre);
-extern STEP_API bool (WINAPI *STEPIsUserGenre)(const char* szGenre);
+extern STEP_API LPCTSTR (WINAPI *STEPGetGenreNameSIF)(BYTE byGenre);
+extern STEP_API BYTE (WINAPI *STEPGetGenreCode)(LPCTSTR szGenre);
+extern STEP_API bool (WINAPI *STEPIsUserGenre)(LPCTSTR szGenre);
 extern STEP_API int (WINAPI *STEPGetNumericTrackNumber)(const char* szTrackNumber, char* szNumericNumber, int size); /* STEP 037 */
-extern STEP_API int (WINAPI *STEPGetIntegerTrackNumber)(const char* szTrackNumber); /* STEP 037 */
+extern STEP_API int (WINAPI *STEPGetIntegerTrackNumber)(LPCTSTR szTrackNumber); /* STEP 037 */
 extern STEP_API int (WINAPI *STEPGetNumericDiskNumber)(const char* szDiskNumber, char* szNumericNumber, int size); /* STEP 037 */
-extern STEP_API int (WINAPI *STEPGetIntegerDiskNumber)(const char* szDiskNumber); /* STEP 037 */
+extern STEP_API int (WINAPI *STEPGetIntegerDiskNumber)(LPCTSTR szDiskNumber); /* STEP 037 */
 
 extern STEP_API void (WINAPI *STEPProcessSelectedFiles)(LPCTSTR, STEPProcessSelectedFilesCB);
 extern STEP_API void (WINAPI *STEPProcessSelectedFilesForUpdate)(LPCTSTR, STEPProcessSelectedFilesCB);
@@ -36,7 +36,7 @@ extern STEP_API const char* (WINAPI *STEPGetSubItemText)(int nItem, int nColumn)
 extern STEP_API void (WINAPI *STEPGetFileInfo)(int nItem, FILE_INFO* info);
 extern STEP_API UINT (WINAPI *STEPGETColumnType)(int nColumn);
 extern STEP_API bool (WINAPI *STEPIsCurrentCellEditOK)(void);
-extern STEP_API bool (WINAPI *STEPIsNumeric)(const char* szText); /* STEP 037 */
+extern STEP_API bool (WINAPI *STEPIsNumeric)(LPCTSTR szText); /* STEP 037 */
 extern STEP_API void (WINAPI *STEPConvSiFieldToId3tag)(FILE_INFO* pFileInfo); /* STEP 037 */
 
 extern STEP_API void (WINAPI *STEPInitDataSIF)(FILE_INFO* info);

@@ -62,16 +62,16 @@ public:
 	void	ExecKbmplayCommand(int, LPARAM = 0, BOOL bPlay = FALSE);//追加 by Kobarin
 	void	ExecLilithCommand(int, LPARAM = 0, BOOL bPlay = TRUE); /* WildCherry 070 */
 	void	ExecReplace(bool);
-	void	LoadPlayList(const char *);
+	void	LoadPlayList(LPCTSTR);
 	void	PlayFile(int);
-	bool	LoadFormatFile(LPCSTR, CString *, CString *, CString *);
+	bool	LoadFormatFile(LPCTSTR, CString *, CString *, CString *);
 	bool	ExecWriteList(WRITE_FORMAT *);
 	//追加 by Kobarin
 	static HDDEDATA CALLBACK DdemlCallback(UINT uType, UINT uFmt,
 										   HCONV hConv, HSZ hszTpc1, HSZ hszTpc2, 
 										   HDDEDATA hData,
 										   DWORD dwData1, DWORD dwData2);
-	void   OnDDE(char *sFileName);
+	void   OnDDE(LPTSTR sFileName);
 	//追加 ここまで
 
 // オペレーション
@@ -368,7 +368,7 @@ private:
 	void DoMoveFolder(UINT index);
 	void OnUpdateTeikei(CCmdUI* pCmdUI, int nIndex);
 	void OnTeikei(int nIndex);
-	BOOL SelectDirectory(char *sLocal, bool bCopy);
+	BOOL SelectDirectory(LPTSTR sLocal, bool bCopy);
 	void OnPluginCommand(UINT nID);
 	void OnUpdatePluginCommand(CCmdUI* pCmdUI);
 };

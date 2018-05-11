@@ -153,7 +153,7 @@ BOOL COptionPage::Create(CRect &rect, CWnd *pParentWnd)
 	ASSERT_KINDOF(CWnd, pParentWnd);
 
 
-	LPCSTR			pTmplName;
+	LPCTSTR			pTmplName;
 	BOOL			result;
 	LPDLGTEMPLATE	pTemplate;
 	CDialogTemplate tmpl;

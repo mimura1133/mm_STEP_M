@@ -144,7 +144,7 @@ CString CHistoryComboEx::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix,
 
 	m_sSection = lpszSection;
 	m_sKeyPrefix = lpszKeyPrefix;
-	m_sKeyCurItem = lpszKeyCurItem == NULL ? "" : lpszKeyCurItem;
+	m_sKeyCurItem = lpszKeyCurItem == NULL ? TEXT("") : lpszKeyCurItem;
 	m_bSaveRestoreLastCurrent = bSaveRestoreLastCurrent;
 	//CWinApp* pApp = AfxGetApp();
 
@@ -157,9 +157,9 @@ CString CHistoryComboEx::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix,
 	do
 	{
 		CString sKey;
-		sKey.Format("%s%d", m_sKeyPrefix, n++);
+		sKey.Format(TEXT("%s%d"), m_sKeyPrefix, n++);
 		sText = MyGetProfileString(m_sSection, sKey, NULL);
-		cbiItem.pszText = (LPSTR) (LPCSTR) sText;
+		cbiItem.pszText = const_cast<LPTSTR>(implicit_cast<LPCTSTR>(sText));
     
 		if (!sText.IsEmpty()) {
 			CComboBoxEx::InsertItem(&cbiItem);
@@ -216,7 +216,7 @@ CString CHistoryComboEx::LoadHistory(CRecentFileList *pListMRU, BOOL bSelectMost
 
 	for (int n = 0; n < nNumItems; n++)
 	{		
-		cbiItem.pszText = (LPSTR) (LPCTSTR) (*pListMRU)[n];
+		cbiItem.pszText = const_cast<LPTSTR>(implicit_cast<LPCTSTR>((*pListMRU)[n]));
 		CComboBoxEx::InsertItem(&cbiItem);
 	}
 	
@@ -256,7 +256,7 @@ void CHistoryComboEx::SaveHistory(BOOL bAddCurrentItemtoHistory)
 		
 		if (!sCurItem.IsEmpty())
 		{
-			cbiItem.pszText = (LPSTR) (LPCSTR) (sCurItem);
+			cbiItem.pszText = const_cast<LPTSTR>(implicit_cast<LPCTSTR>(sCurItem));
 			InsertItem(&cbiItem);
 		}
 	}
@@ -267,7 +267,7 @@ void CHistoryComboEx::SaveHistory(BOOL bAddCurrentItemtoHistory)
 	for (int n = 0; n < nMax; n++)
 	{
 		CString sKey;
-		sKey.Format("%s%d", m_sKeyPrefix, n);
+		sKey.Format(TEXT("%s%d"), m_sKeyPrefix, n);
 		CString sText;
 		GetLBText(n, sText);
 		//pApp->WriteProfileString(m_sSection, sKey, sText);		
@@ -323,7 +323,7 @@ void CHistoryComboEx::ClearHistory(BOOL bDeleteRegistryEntries)
     
 		for (int n = 0; n < nMax; n++)
 		{
-			sKey.Format("%s%d", m_sKeyPrefix, n);
+			sKey.Format(TEXT("%s%d"), m_sKeyPrefix, n);
 			rk.DeleteValue(sKey);
 		}
     
