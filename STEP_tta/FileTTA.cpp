@@ -21,7 +21,7 @@ static void get_id3v2_tag (tta_info *ttainfo);
 static bool del_id3v1_tag (tta_info *ttainfo);
 //static void del_id3v2_tag (tta_info *ttainfo);
 
-static int open_tta_file (const char *filename, tta_info *ttainfo) {
+static int open_tta_file (LPCTSTR filename, tta_info *ttainfo) {
 	tta_hdr ttahdr;
 	unsigned long checksum;
 	unsigned long datasize;
@@ -40,7 +40,18 @@ static int open_tta_file (const char *filename, tta_info *ttainfo) {
 
 	// get file size
 	ttainfo->FILESIZE = GetFileSize(ttainfo->HFILE, NULL);
+#if UNICODE
+	{
+		TCHAR tmp[MAX_PATH];
+		if (GetShortPathName(filename, tmp, MAX_PATH)) {
+			lstrcpynA((char*)ttainfo->filename, CStringA(tmp), MAX_PATH - 1);
+		} else {
+			lstrcpynA((char*)ttainfo->filename, CStringA(filename), MAX_PATH - 1);
+		}
+	}
+#else
 	lstrcpyn((char*)ttainfo->filename, filename, MAX_PATH - 1);
+#endif
 
 	// ID3V1 support
 	get_id3v1_tag(ttainfo);
@@ -124,7 +135,7 @@ static bool del_id3v1_tag (tta_info *ttainfo) {
 	if (!ttainfo->id3v1.id3has) return true;
 
 	// delete ID3V1 tag
-	hFile = CreateFile((char*)ttainfo->filename, GENERIC_READ|GENERIC_WRITE,
+	hFile = CreateFileA(reinterpret_cast<LPCSTR>(ttainfo->filename), GENERIC_READ|GENERIC_WRITE,
 		FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
 		//tta_error(OPEN_ERROR, ttainfo->filename);
@@ -260,11 +271,11 @@ bool LoadAttributeFileTTA(FILE_INFO *pFileMP3)
 	tta_info ttainfo;
 	if (open_tta_file(GetFullPath(pFileMP3), &ttainfo) == 0) {
 		CString strFormat;
-		strFormat.Format("%d kb/s %d Hz %.02f %%", (char*)ttainfo.BITRATE, (char*)ttainfo.SAMPLERATE, ttainfo.COMPRESS);
+		strFormat.Format(TEXT("%d kb/s %d Hz %.02f %%"), (int)ttainfo.BITRATE, (int)ttainfo.SAMPLERATE, ttainfo.COMPRESS);
 		SetAudioFormat(pFileMP3, strFormat);
 		SetPlayTime(pFileMP3, ttainfo.LENGTH/1000);
 	} else {
-		SetAudioFormat(pFileMP3, "Unknown");
+		SetAudioFormat(pFileMP3, TEXT("Unknown"));
 	} 
     return true;
 }
@@ -384,11 +395,11 @@ bool WriteAttributeFileTTA(FILE_INFO *pFileMP3)
 		}
 	}
 	if  (!bOptID3TagAutoDelete) {
-		tagv1.SetTitle(GetTrackName(pFileMP3));
-		tagv1.SetArtist(GetArtistName(pFileMP3));
-		tagv1.SetAlbum(GetAlbumName(pFileMP3));
-		tagv1.SetYear(GetYear(pFileMP3));
-		tagv1.SetComment(GetComment(pFileMP3));
+		tagv1.SetTitle(static_cast<CStringA>(GetTrackName(pFileMP3)));
+		tagv1.SetArtist(static_cast<CStringA>(GetArtistName(pFileMP3)));
+		tagv1.SetAlbum(static_cast<CStringA>(GetAlbumName(pFileMP3)));
+		tagv1.SetYear(static_cast<CStringA>(GetYear(pFileMP3)));
+		tagv1.SetComment(static_cast<CStringA>(GetComment(pFileMP3)));
 		tagv1.SetGenre(STEPGetGenreCode(GetGenre(pFileMP3)));
 		if (GetBTrackNumber(pFileMP3) > 0) {
 			tagv1.SetTrackNo(GetBTrackNumber(pFileMP3));
