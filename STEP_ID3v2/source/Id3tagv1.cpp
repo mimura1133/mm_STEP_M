@@ -95,7 +95,7 @@ void CId3tagv1::SetScmpxGenre(BOOL bSwitch)
 	m_bScmpxGenre = bSwitch;
 }
 
-CStringA CId3tagv1::GetTitle() const
+CString CId3tagv1::GetTitle() const
 {
 	return reinterpret_cast<const char*>(m_szTitle.data());
 }
@@ -106,7 +106,7 @@ void CId3tagv1::SetTitle(const char *title)
 	CopyText(m_szTitle, title, 30);
 }
 
-CStringA CId3tagv1::GetArtist() const
+CString CId3tagv1::GetArtist() const
 {
 	return reinterpret_cast<const char*>(m_szArtist.data());
 }
@@ -117,7 +117,7 @@ void CId3tagv1::SetArtist(const char *artist)
 	CopyText(m_szArtist, artist, 30);
 }
 
-CStringA CId3tagv1::GetAlbum() const
+CString CId3tagv1::GetAlbum() const
 {
 	return reinterpret_cast<const char*>(m_szAlbum.data());
 }
@@ -128,7 +128,7 @@ void CId3tagv1::SetAlbum(const char *album)
 	CopyText(m_szAlbum, album, 30);
 }
 
-CStringA CId3tagv1::GetYear() const
+CString CId3tagv1::GetYear() const
 {
 	return reinterpret_cast<const char*>(m_szYear.data());
 }
@@ -198,7 +198,7 @@ void CId3tagv1::SetTrackNo(const char *szTrackNo)
 		m_cTrackNo = atoi(szTrackNo);
 }
 
-CStringA CId3tagv1::GetComment() const
+CString CId3tagv1::GetComment() const
 {
 	return reinterpret_cast<const char*>(m_szComment.data());
 }
@@ -406,7 +406,7 @@ DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CId3tagv1::Save(HWND, const char *szFileName)
+DWORD CId3tagv1::Save(HWND, LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -433,7 +433,7 @@ DWORD CId3tagv1::Save(HWND, const char *szFileName)
 	p += 2;
 	*p = m_cGenre;
 
-	if(fopen_s(&fp, szFileName,"r+b") != 0)
+	if(_tfopen_s(&fp, szFileName, TEXT("r+b")) != 0)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
